@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Posts Dashboard",
-  description: "A responsive dashboard for managing posts from JSONPlaceholder APIITO",
+  description: "A responsive dashboard for managing posts from JSONPlaceholder API",
 };
 
 export default function RootLayout({
