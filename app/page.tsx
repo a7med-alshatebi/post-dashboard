@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { Header } from '../components/header';
 import { BackToTop } from '../components/back-to-top';
 import { ShareEmailModal } from '../components/share-email-modal';
+import { ConfirmDialog } from '../components/confirm-dialog';
+import { EditPostModal } from '../components/edit-post-modal';
+import { useToast } from '../components/toast';
+import { FullPageLoader } from '../components/loading-spinner';
 
 interface Post {
   id: number;
@@ -29,6 +33,28 @@ export default function PostDashboard() {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [postToShare, setPostToShare] = useState<Post | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(10);
+  const [confirmDialog, setConfirmDialog] = useState<{
+    isOpen: boolean;
+    postId: number | null;
+    title: string;
+    message: string;
+  }>({
+    isOpen: false,
+    postId: null,
+    title: '',
+    message: ''
+  });
+  const [editModal, setEditModal] = useState<{
+    isOpen: boolean;
+    post: Post | null;
+  }>({
+    isOpen: false,
+    post: null
+  });
+
+  const { addToast } = useToast();
 
   useEffect(() => {
     fetchPostsAndUsers();
@@ -51,14 +77,37 @@ export default function PostDashboard() {
 
       setPosts(postsData);
       setUsers(usersData);
+      
+      addToast({
+        type: 'success',
+        title: 'Data loaded successfully',
+        message: `Loaded ${postsData.length} posts and ${usersData.length} users`
+      });
     } catch (error) {
       console.error('Error fetching data:', error);
+      addToast({
+        type: 'error',
+        title: 'Failed to load data',
+        message: 'Please check your connection and try again.'
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const deletePost = async (postId: number) => {
+    setConfirmDialog({
+      isOpen: true,
+      postId,
+      title: 'Delete Post',
+      message: `Are you sure you want to delete post #${postId}? This action cannot be undone.`
+    });
+  };
+
+  const confirmDelete = async () => {
+    const postId = confirmDialog.postId;
+    if (!postId) return;
+
     try {
       setDeletingIds(prev => new Set(prev).add(postId));
       
@@ -68,17 +117,28 @@ export default function PostDashboard() {
 
       if (response.ok) {
         setPosts(posts.filter(post => post.id !== postId));
+        addToast({
+          type: 'success',
+          title: 'Post deleted',
+          message: `Post #${postId} has been successfully deleted.`
+        });
       } else {
-        console.error('Failed to delete post');
+        throw new Error('Failed to delete post');
       }
     } catch (error) {
       console.error('Error deleting post:', error);
+      addToast({
+        type: 'error',
+        title: 'Delete failed',
+        message: 'Failed to delete the post. Please try again.'
+      });
     } finally {
       setDeletingIds(prev => {
         const newSet = new Set(prev);
         newSet.delete(postId);
         return newSet;
       });
+      setConfirmDialog({ isOpen: false, postId: null, title: '', message: '' });
     }
   };
 
@@ -90,6 +150,48 @@ export default function PostDashboard() {
   const handleCloseShareModal = () => {
     setShareModalOpen(false);
     setPostToShare(null);
+  };
+
+  const handleEditPost = (post: Post) => {
+    setEditModal({ isOpen: true, post });
+  };
+
+  const handleCloseEditModal = () => {
+    setEditModal({ isOpen: false, post: null });
+  };
+
+  const handleSavePost = async (updatedPost: Post) => {
+    try {
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${updatedPost.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedPost),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+
+      if (response.ok) {
+        const savedPost = await response.json();
+        setPosts(posts.map(post => 
+          post.id === savedPost.id ? savedPost : post
+        ));
+        addToast({
+          type: 'success',
+          title: 'Post updated',
+          message: `Post #${savedPost.id} has been successfully updated.`
+        });
+      } else {
+        throw new Error('Failed to update post');
+      }
+    } catch (error) {
+      console.error('Error updating post:', error);
+      addToast({
+        type: 'error',
+        title: 'Update failed',
+        message: 'Failed to update the post. Please try again.'
+      });
+      throw error;
+    }
   };
 
   const getUserName = (userId: number) => {
@@ -104,25 +206,34 @@ export default function PostDashboard() {
     return matchesSearch && matchesUser;
   });
 
+  // Pagination logic
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedUserId]);
+
   // Clear all filters
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedUserId(null);
+    setCurrentPage(1);
   };
 
   // Check if any filters are active
   const hasActiveFilters = searchTerm.length > 0 || selectedUserId !== null;
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 safe-area-inset">
-        <div className="text-center p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 max-w-sm mx-auto">
-          <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4 sm:mb-6"></div>
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">Loading Posts</h3>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Fetching data from JSONPlaceholder API...</p>
-        </div>
-      </div>
-    );
+    return <FullPageLoader text="Loading Posts" />;
   }
 
   return (
@@ -148,6 +259,11 @@ export default function PostDashboard() {
                 <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
                   <span className="truncate">All Posts ({filteredPosts.length})</span>
+                  {totalPages > 1 && (
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                  )}
                 </h2>
                 <div className="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
@@ -241,7 +357,7 @@ export default function PostDashboard() {
 
           {/* Mobile view */}
           <div className="block lg:hidden p-3 sm:p-4 space-y-3 sm:space-y-4">
-            {filteredPosts.map((post, index) => (
+            {currentPosts.map((post, index) => (
               <div 
                 key={post.id} 
                 className="group bg-gradient-to-r from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02] hover:border-blue-300 dark:hover:border-blue-500"
@@ -259,6 +375,16 @@ export default function PostDashboard() {
                     </div>
                   </div>
                   <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditPost(post)}
+                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm flex-shrink-0"
+                    >
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      <span className="hidden xs:inline">Edit</span>
+                      <span className="xs:hidden sr-only">Edit</span>
+                    </button>
                     <button
                       onClick={() => handleSharePost(post)}
                       className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm flex-shrink-0"
@@ -349,7 +475,7 @@ export default function PostDashboard() {
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
-                  {filteredPosts.map((post, index) => (
+                  {currentPosts.map((post, index) => (
                     <tr 
                       key={post.id} 
                       className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700 dark:hover:to-gray-600 transition-all duration-300 hover:shadow-sm"
@@ -404,6 +530,15 @@ export default function PostDashboard() {
                       <td className="px-4 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
                         <div className="flex gap-2">
                           <button
+                            onClick={() => handleEditPost(post)}
+                            className="min-touch-target group-hover:scale-110 transition-all duration-200 inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 border border-transparent text-xs lg:text-sm font-medium rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm hover:shadow-md"
+                          >
+                            <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit
+                          </button>
+                          <button
                             onClick={() => handleSharePost(post)}
                             className="min-touch-target group-hover:scale-110 transition-all duration-200 inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 border border-transparent text-xs lg:text-sm font-medium rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm hover:shadow-md"
                           >
@@ -438,6 +573,82 @@ export default function PostDashboard() {
                 </tbody>
               </table>
             </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="px-4 sm:px-6 lg:px-8 py-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1 flex justify-between sm:hidden">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Next
+                    </button>
+                  </div>
+                  <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                        Showing{' '}
+                        <span className="font-medium">{indexOfFirstPost + 1}</span>
+                        {' '}to{' '}
+                        <span className="font-medium">
+                          {Math.min(indexOfLastPost, filteredPosts.length)}
+                        </span>
+                        {' '}of{' '}
+                        <span className="font-medium">{filteredPosts.length}</span>
+                        {' '}results
+                      </p>
+                    </div>
+                    <div>
+                      <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        <button
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <button
+                            key={page}
+                            onClick={() => handlePageChange(page)}
+                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                              page === currentPage
+                                ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
+                                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ))}
+
+                        <button
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Empty States */}
@@ -515,6 +726,30 @@ export default function PostDashboard() {
           author={getUserName(postToShare.userId)}
           isOpen={shareModalOpen}
           onClose={handleCloseShareModal}
+        />
+      )}
+
+      {/* Confirm Delete Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() => setConfirmDialog({ isOpen: false, postId: null, title: '', message: '' })}
+        onConfirm={confirmDelete}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+        loading={confirmDialog.postId ? deletingIds.has(confirmDialog.postId) : false}
+      />
+
+      {/* Edit Post Modal */}
+      {editModal.isOpen && editModal.post && (
+        <EditPostModal
+          isOpen={editModal.isOpen}
+          onClose={handleCloseEditModal}
+          onSave={handleSavePost}
+          post={editModal.post}
+          users={users}
         />
       )}
     </div>
