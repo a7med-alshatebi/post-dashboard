@@ -5,9 +5,15 @@ import { useTheme } from 'next-themes';
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
+  // Debug log to check theme value and setTheme call
+  console.log('Current theme:', theme);
+
   return (
     <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      onClick={() => {
+        console.log('Toggling theme. Current:', theme);
+        setTheme(theme === 'dark' ? 'light' : 'dark');
+      }}
       className="p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
       aria-label="Toggle theme"
     >
