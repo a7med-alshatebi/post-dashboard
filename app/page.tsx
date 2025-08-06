@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Header } from '../components/header';
 import { BackToTop } from '../components/back-to-top';
 
@@ -267,18 +268,20 @@ export default function PostDashboard() {
                     )}
                   </button>
                 </div>
-                <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3 capitalize leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                  {searchTerm ? (
-                    <span dangerouslySetInnerHTML={{
-                      __html: post.title.replace(
-                        new RegExp(`(${searchTerm})`, 'gi'),
-                        '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
-                      )
-                    }} />
-                  ) : (
-                    post.title
-                  )}
-                </h3>
+                <Link href={`/post/${post.id}`}>
+                  <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2 cursor-pointer">
+                    {searchTerm ? (
+                      <span dangerouslySetInnerHTML={{
+                        __html: post.title.replace(
+                          new RegExp(`(${searchTerm})`, 'gi'),
+                          '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
+                        )
+                      }} />
+                    ) : (
+                      post.title
+                    )}
+                  </h3>
+                </Link>
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                     {getUserName(post.userId).charAt(0)}
@@ -340,18 +343,20 @@ export default function PostDashboard() {
                       </td>
                       <td className="px-4 lg:px-8 py-4 lg:py-6 max-w-md">
                         <div className="group-hover:translate-x-1 transition-transform">
-                          <h3 className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white capitalize leading-relaxed group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" title={post.title}>
-                            {searchTerm ? (
-                              <span dangerouslySetInnerHTML={{
-                                __html: (post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title).replace(
-                                  new RegExp(`(${searchTerm})`, 'gi'),
-                                  '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
-                                )
-                              }} />
-                            ) : (
-                              post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title
-                            )}
-                          </h3>
+                          <Link href={`/post/${post.id}`}>
+                            <h3 className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white capitalize leading-relaxed hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer" title={post.title}>
+                              {searchTerm ? (
+                                <span dangerouslySetInnerHTML={{
+                                  __html: (post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title).replace(
+                                    new RegExp(`(${searchTerm})`, 'gi'),
+                                    '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
+                                  )
+                                }} />
+                              ) : (
+                                post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title
+                              )}
+                            </h3>
+                          </Link>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                             {post.title.length} characters
                           </p>

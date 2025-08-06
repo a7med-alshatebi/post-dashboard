@@ -9,9 +9,12 @@ interface HeaderProps {
   subtitle?: string;
   showStats?: boolean;
   stats?: {
-    posts: number;
+    posts?: number;
     filteredPosts?: number;
-    users: number;
+    users?: number;
+    postId?: number;
+    comments?: number;
+    author?: string;
   };
 }
 
@@ -124,17 +127,36 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
           
           {showStats && stats && (
             <div className="flex flex-wrap gap-2 sm:gap-4 justify-center mt-4 sm:mt-6">
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                📊 {stats.posts} Posts
-              </div>
+              {stats.posts !== undefined && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  📊 {stats.posts} Posts
+                </div>
+              )}
               {stats.filteredPosts !== undefined && (
                 <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
                   🔍 {stats.filteredPosts} Filtered
                 </div>
               )}
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                👥 {stats.users} Authors
-              </div>
+              {stats.users !== undefined && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  👥 {stats.users} {typeof stats.users === 'number' ? 'Authors' : ''}
+                </div>
+              )}
+              {stats.postId !== undefined && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  🆔 Post #{stats.postId}
+                </div>
+              )}
+              {stats.comments !== undefined && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  💬 {stats.comments} Comments
+                </div>
+              )}
+              {stats.author && typeof stats.author === 'string' && stats.author !== 'Loading...' && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  ✍️ {stats.author}
+                </div>
+              )}
             </div>
           )}
         </div>

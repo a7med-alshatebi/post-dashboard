@@ -278,18 +278,20 @@ export default function PostsPage() {
                     </div>
 
                     {/* Post Title */}
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-3 capitalize leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                      {searchTerm ? (
-                        <span dangerouslySetInnerHTML={{
-                          __html: post.title.replace(
-                            new RegExp(`(${searchTerm})`, 'gi'),
-                            '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
-                          )
-                        }} />
-                      ) : (
-                        post.title
-                      )}
-                    </h3>
+                    <Link href={`/post/${post.id}`}>
+                      <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2 cursor-pointer">
+                        {searchTerm ? (
+                          <span dangerouslySetInnerHTML={{
+                            __html: post.title.replace(
+                              new RegExp(`(${searchTerm})`, 'gi'),
+                              '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
+                            )
+                          }} />
+                        ) : (
+                          post.title
+                        )}
+                      </h3>
+                    </Link>
 
                     {/* Post Body */}
                     <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
