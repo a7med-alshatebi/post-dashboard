@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Header } from '../components/header';
 import { BackToTop } from '../components/back-to-top';
+import { ShareEmailModal } from '../components/share-email-modal';
 
 interface Post {
   id: number;
@@ -26,6 +27,8 @@ export default function PostDashboard() {
   const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [postToShare, setPostToShare] = useState<Post | null>(null);
 
   useEffect(() => {
     fetchPostsAndUsers();
@@ -55,29 +58,38 @@ export default function PostDashboard() {
     }
   };
 
-  const deletePost = async (id: number) => {
+  const deletePost = async (postId: number) => {
     try {
-      setDeletingIds(prev => new Set(prev).add(id));
+      setDeletingIds(prev => new Set(prev).add(postId));
       
-      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-        method: 'DELETE',
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+        method: 'DELETE'
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to delete post');
+      if (response.ok) {
+        setPosts(posts.filter(post => post.id !== postId));
+      } else {
+        console.error('Failed to delete post');
       }
-
-      // Remove the post from the local state
-      setPosts(prev => prev.filter(post => post.id !== id));
     } catch (error) {
       console.error('Error deleting post:', error);
     } finally {
       setDeletingIds(prev => {
         const newSet = new Set(prev);
-        newSet.delete(id);
+        newSet.delete(postId);
         return newSet;
       });
     }
+  };
+
+  const handleSharePost = (post: Post) => {
+    setPostToShare(post);
+    setShareModalOpen(true);
+  };
+
+  const handleCloseShareModal = () => {
+    setShareModalOpen(false);
+    setPostToShare(null);
   };
 
   const getUserName = (userId: number) => {
@@ -246,27 +258,39 @@ export default function PostDashboard() {
                       </span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => deletePost(post.id)}
-                    disabled={deletingIds.has(post.id)}
-                    className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm flex-shrink-0"
-                  >
-                    {deletingIds.has(post.id) ? (
-                      <>
-                        <div className="animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 mr-1.5"></div>
-                        <span className="hidden xs:inline">Deleting...</span>
-                        <span className="xs:hidden">...</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                        <span className="hidden xs:inline">Delete</span>
-                        <span className="xs:hidden sr-only">Delete</span>
-                      </>
-                    )}
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleSharePost(post)}
+                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm flex-shrink-0"
+                    >
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      <span className="hidden xs:inline">Share</span>
+                      <span className="xs:hidden sr-only">Share</span>
+                    </button>
+                    <button
+                      onClick={() => deletePost(post.id)}
+                      disabled={deletingIds.has(post.id)}
+                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm flex-shrink-0"
+                    >
+                      {deletingIds.has(post.id) ? (
+                        <>
+                          <div className="animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 mr-1.5"></div>
+                          <span className="hidden xs:inline">Deleting...</span>
+                          <span className="xs:hidden">...</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                          <span className="hidden xs:inline">Delete</span>
+                          <span className="xs:hidden sr-only">Delete</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <Link href={`/post/${post.id}`}>
                   <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2 cursor-pointer">
@@ -378,25 +402,36 @@ export default function PostDashboard() {
                         </div>
                       </td>
                       <td className="px-4 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
-                        <button
-                          onClick={() => deletePost(post.id)}
-                          disabled={deletingIds.has(post.id)}
-                          className="min-touch-target group-hover:scale-110 transition-all duration-200 inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 border border-transparent text-xs lg:text-sm font-medium rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md"
-                        >
-                          {deletingIds.has(post.id) ? (
-                            <>
-                              <div className="animate-spin rounded-full h-3 w-3 lg:h-4 lg:w-4 border-2 border-red-300 border-t-red-600 mr-1.5 lg:mr-2"></div>
-                              Deleting...
-                            </>
-                          ) : (
-                            <>
-                              <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                              </svg>
-                              Delete
-                            </>
-                          )}
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleSharePost(post)}
+                            className="min-touch-target group-hover:scale-110 transition-all duration-200 inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 border border-transparent text-xs lg:text-sm font-medium rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm hover:shadow-md"
+                          >
+                            <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            Share
+                          </button>
+                          <button
+                            onClick={() => deletePost(post.id)}
+                            disabled={deletingIds.has(post.id)}
+                            className="min-touch-target group-hover:scale-110 transition-all duration-200 inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 border border-transparent text-xs lg:text-sm font-medium rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md"
+                          >
+                            {deletingIds.has(post.id) ? (
+                              <>
+                                <div className="animate-spin rounded-full h-3 w-3 lg:h-4 lg:w-4 border-2 border-red-300 border-t-red-600 mr-1.5 lg:mr-2"></div>
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                                Delete
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -472,6 +507,16 @@ export default function PostDashboard() {
 
       {/* Back to Top Button */}
       <BackToTop />
+
+      {/* Share Email Modal */}
+      {shareModalOpen && postToShare && (
+        <ShareEmailModal
+          post={postToShare}
+          author={getUserName(postToShare.userId)}
+          isOpen={shareModalOpen}
+          onClose={handleCloseShareModal}
+        />
+      )}
     </div>
   );
 }

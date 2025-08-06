@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Header } from '../../../components/header';
 import { BackToTop } from '../../../components/back-to-top';
+import { ShareEmailModal } from '../../../components/share-email-modal';
 
 interface Post {
   id: number;
@@ -52,6 +53,15 @@ export default function PostPage({ params }: PostPageProps) {
   const [error, setError] = useState<string | null>(null);
   const [commentsLoading, setCommentsLoading] = useState(false);
   const [postId, setPostId] = useState<string>('');
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
+  const handleSharePost = () => {
+    setShareModalOpen(true);
+  };
+
+  const handleCloseShareModal = () => {
+    setShareModalOpen(false);
+  };
 
   useEffect(() => {
     const getParams = async () => {
@@ -272,6 +282,15 @@ export default function PostPage({ params }: PostPageProps) {
               
               <div className="flex gap-2 ml-4">
                 <button
+                  onClick={handleSharePost}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Share
+                </button>
+                <button
                   onClick={() => router.back()}
                   className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
                 >
@@ -390,6 +409,16 @@ export default function PostPage({ params }: PostPageProps) {
 
       {/* Back to Top Button */}
       <BackToTop />
+
+      {/* Share Email Modal */}
+      {shareModalOpen && post && author && (
+        <ShareEmailModal
+          post={post}
+          author={author.name}
+          isOpen={shareModalOpen}
+          onClose={handleCloseShareModal}
+        />
+      )}
     </div>
   );
 }
