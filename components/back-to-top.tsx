@@ -55,8 +55,8 @@ export function BackToTop() {
             />
           </svg>
 
-          {/* Tooltip */}
-          <div className="absolute bottom-full right-1/2 translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          {/* Tooltip - Hidden on mobile/small screens */}
+          <div className="hidden sm:block absolute bottom-full right-1/2 translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
             <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-lg backdrop-blur-sm">
               Back to top
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-700 rotate-45"></div>
