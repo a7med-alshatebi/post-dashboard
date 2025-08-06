@@ -6,7 +6,12 @@ export default {
     './pages/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+      },
+    },
   },
   plugins: [],
 };
