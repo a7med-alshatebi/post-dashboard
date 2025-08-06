@@ -93,21 +93,21 @@ export default function PostDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div className="min-h-screen bg-background text-foreground py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Post Dashboard</h1>
-            <p className="mt-2 text-gray-600 dark:text-gray-300">
+            <h1 className="text-3xl font-bold text-foreground">Post Dashboard</h1>
+            <p className="mt-2 text-foreground/70">
               Manage and view posts from JSONPlaceholder API
             </p>
           </div>
           <ThemeToggle />
         </div>
 
-        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+        <div className="bg-background shadow-sm rounded-lg overflow-hidden">
+          <div className="px-6 py-4 border-b border-foreground/20">
+            <h2 className="text-lg font-medium text-foreground">
               Posts ({posts.length})
             </h2>
           </div>
@@ -115,7 +115,7 @@ export default function PostDashboard() {
           {/* Mobile view */}
           <div className="block sm:hidden">
             {posts.map((post) => (
-              <div key={post.id} className="border-b border-gray-200 dark:border-gray-700 p-4">
+              <div key={post.id} className="border-b border-foreground/20 p-4">
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
                     ID: {post.id}
@@ -135,10 +135,10 @@ export default function PostDashboard() {
                     )}
                   </button>
                 </div>
-                <h3 className="font-medium text-gray-900 dark:text-white mb-1 capitalize">
+                <h3 className="font-medium text-foreground mb-1 capitalize">
                   {post.title}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-foreground/70">
                   Author: {getUserName(post.userId)}
                 </p>
               </div>
@@ -147,10 +147,10 @@ export default function PostDashboard() {
 
           {/* Desktop table view */}
           <div className="hidden sm:block overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+            <table className="min-w-full divide-y divide-foreground/20">
+              <thead className="bg-background">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-foreground/70 uppercase tracking-wider">
                     ID
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -164,18 +164,18 @@ export default function PostDashboard() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="bg-background divide-y divide-foreground/20">
                 {posts.map((post) => (
-                  <tr key={post.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <tr key={post.id} className="hover:bg-foreground/5">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600 dark:text-blue-400">
                       {post.id}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-white max-w-md">
+                    <td className="px-6 py-4 text-sm text-foreground max-w-md">
                       <div className="truncate capitalize" title={post.title}>
                         {post.title}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground/70">
                       {getUserName(post.userId)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -202,13 +202,13 @@ export default function PostDashboard() {
 
           {posts.length === 0 && !loading && (
             <div className="text-center py-12">
-              <div className="text-gray-400 dark:text-gray-500 mb-4">
+              <div className="text-foreground/40 mb-4">
                 <svg className="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white">No posts</h3>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">No posts available to display.</p>
+              <h3 className="text-sm font-medium text-foreground">No posts</h3>
+              <p className="mt-1 text-sm text-foreground/70">No posts available to display.</p>
             </div>
           )}
         </div>
