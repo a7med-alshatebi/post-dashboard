@@ -1,7 +1,10 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Only Tailwind base, components, utilities. No custom CSS variables. */
 
 body {
   font-family: Arial, Helvetica, sans-serif;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
-
