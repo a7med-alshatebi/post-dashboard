@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
-import { AddPostForm } from '../../components/add-post-form';
+import { AddPostForm } from '../../components/add-pst-form';
 
 interface Post {
   id: number;
