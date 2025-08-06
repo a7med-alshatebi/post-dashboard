@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ThemeToggle } from '../components/theme-toggle';
+import { Header } from '../components/header';
 
 interface Post {
   id: number;
@@ -22,6 +22,8 @@ export default function PostDashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchPostsAndUsers();
@@ -81,6 +83,22 @@ export default function PostDashboard() {
     return user ? user.name : `User ${userId}`;
   };
 
+  // Filter posts based on search term and selected user
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesUser = selectedUserId === null || post.userId === selectedUserId;
+    return matchesSearch && matchesUser;
+  });
+
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedUserId(null);
+  };
+
+  // Check if any filters are active
+  const hasActiveFilters = searchTerm.length > 0 || selectedUserId !== null;
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 safe-area-inset">
@@ -95,59 +113,121 @@ export default function PostDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
-      {/* Header with gradient overlay */}
-      <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-          <div className="flex flex-col gap-4 sm:gap-6">
-            <div className="text-center">
-              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 tracking-tight leading-tight">
-                Post Dashboard
-              </h1>
-              <p className="text-sm sm:text-lg lg:text-xl text-blue-100 max-w-2xl mx-auto px-2">
-                Manage and explore posts from JSONPlaceholder API with modern interface
-              </p>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-              <div className="flex flex-wrap gap-2 sm:gap-4 justify-center sm:justify-start">
-                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                  📊 {posts.length} Posts
-                </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                  👥 {users.length} Authors
-                </div>
-              </div>
-              
-              <div className="flex justify-center sm:justify-end">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-1.5 sm:p-2 border border-white/20">
-                  <ThemeToggle />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Header */}
+      <Header 
+        title="Post Dashboard"
+        subtitle="Manage and explore posts from JSONPlaceholder API with modern interface"
+        showStats={true}
+        stats={{
+          posts: posts.length,
+          filteredPosts: hasActiveFilters ? filteredPosts.length : undefined,
+          users: users.length
+        }}
+      />
 
       {/* Main content */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 -mt-3 sm:-mt-6 relative z-10">
         <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
           <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
-                <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
-                <span className="truncate">All Posts ({posts.length})</span>
-              </h2>
-              <div className="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                Live Data
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
+                  <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
+                  <span className="truncate">All Posts ({filteredPosts.length})</span>
+                </h2>
+                <div className="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  Live Data
+                </div>
               </div>
+
+              {/* Filter Controls */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                {/* Search Bar */}
+                <div className="flex-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg className="h-4 w-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search posts by title..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    >
+                      <svg className="h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+
+                {/* User Filter Dropdown */}
+                <div className="relative min-w-0 sm:min-w-[200px]">
+                  <select
+                    value={selectedUserId || ''}
+                    onChange={(e) => setSelectedUserId(e.target.value ? Number(e.target.value) : null)}
+                    className="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer"
+                  >
+                    <option value="">All Authors</option>
+                    {users.map(user => (
+                      <option key={user.id} value={user.id}>
+                        {user.name} (ID: {user.id})
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Clear Filters Button */}
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="min-touch-target inline-flex items-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 whitespace-nowrap"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Clear Filters
+                  </button>
+                )}
+              </div>
+
+              {/* Filter Summary */}
+              {hasActiveFilters && (
+                <div className="flex flex-wrap gap-2 text-xs">
+                  {searchTerm && (
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
+                      Search: &quot;{searchTerm}&quot;
+                    </span>
+                  )}
+                  {selectedUserId && (
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-purple-800 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300">
+                      Author: {getUserName(selectedUserId)}
+                    </span>
+                  )}
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                    {filteredPosts.length} of {posts.length} posts
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
           {/* Mobile view */}
           <div className="block lg:hidden p-3 sm:p-4 space-y-3 sm:space-y-4">
-            {posts.map((post, index) => (
+            {filteredPosts.map((post, index) => (
               <div 
                 key={post.id} 
                 className="group bg-gradient-to-r from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-600 hover:shadow-lg transition-all duration-300 hover:scale-[1.01] sm:hover:scale-[1.02] hover:border-blue-300 dark:hover:border-blue-500"
@@ -187,7 +267,16 @@ export default function PostDashboard() {
                   </button>
                 </div>
                 <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3 capitalize leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                  {post.title}
+                  {searchTerm ? (
+                    <span dangerouslySetInnerHTML={{
+                      __html: post.title.replace(
+                        new RegExp(`(${searchTerm})`, 'gi'),
+                        '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
+                      )
+                    }} />
+                  ) : (
+                    post.title
+                  )}
                 </h3>
                 <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
@@ -232,7 +321,7 @@ export default function PostDashboard() {
                   </tr>
                 </thead>
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
-                  {posts.map((post, index) => (
+                  {filteredPosts.map((post, index) => (
                     <tr 
                       key={post.id} 
                       className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700 dark:hover:to-gray-600 transition-all duration-300 hover:shadow-sm"
@@ -251,7 +340,16 @@ export default function PostDashboard() {
                       <td className="px-4 lg:px-8 py-4 lg:py-6 max-w-md">
                         <div className="group-hover:translate-x-1 transition-transform">
                           <h3 className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white capitalize leading-relaxed group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" title={post.title}>
-                            {post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title}
+                            {searchTerm ? (
+                              <span dangerouslySetInnerHTML={{
+                                __html: (post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title).replace(
+                                  new RegExp(`(${searchTerm})`, 'gi'),
+                                  '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
+                                )
+                              }} />
+                            ) : (
+                              post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title
+                            )}
                           </h3>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                             {post.title.length} characters
@@ -301,6 +399,7 @@ export default function PostDashboard() {
             </div>
           </div>
 
+          {/* Empty States */}
           {posts.length === 0 && !loading && (
             <div className="text-center py-12 sm:py-20 px-4 sm:px-8">
               <div className="max-w-md mx-auto">
@@ -322,6 +421,43 @@ export default function PostDashboard() {
                   </svg>
                   Refresh Posts
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* No Filtered Results */}
+          {posts.length > 0 && filteredPosts.length === 0 && !loading && (
+            <div className="text-center py-12 sm:py-20 px-4 sm:px-8">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-200 to-orange-300 dark:from-yellow-600 dark:to-orange-700 rounded-2xl sm:rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+                  <svg className="w-8 h-8 sm:w-12 sm:h-12 text-yellow-600 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">No Posts Found</h3>
+                <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed mb-4 sm:mb-6">
+                  No posts match your current filters. Try adjusting your search criteria or clearing the filters.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button 
+                    onClick={clearFilters}
+                    className="min-touch-target inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Clear Filters
+                  </button>
+                  <button 
+                    onClick={fetchPostsAndUsers}
+                    className="min-touch-target inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Refresh Posts
+                  </button>
+                </div>
               </div>
             </div>
           )}
