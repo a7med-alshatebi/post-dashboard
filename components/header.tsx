@@ -15,6 +15,8 @@ interface HeaderProps {
     postId?: number;
     comments?: number;
     author?: string;
+    email?: string;
+    website?: string;
   };
 }
 
@@ -155,6 +157,16 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
               {stats.author && typeof stats.author === 'string' && stats.author !== 'Loading...' && (
                 <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
                   ✍️ {stats.author}
+                </div>
+              )}
+              {stats.email && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  📧 {stats.email}
+                </div>
+              )}
+              {stats.website && stats.website !== 'N/A' && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
+                  🌐 {stats.website}
                 </div>
               )}
             </div>

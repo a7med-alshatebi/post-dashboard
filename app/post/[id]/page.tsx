@@ -54,6 +54,10 @@ export default function PostPage({ params }: PostPageProps) {
   const [commentsLoading, setCommentsLoading] = useState(false);
   const [postId, setPostId] = useState<string>('');
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  
+  // Pagination for comments
+  const [currentPage, setCurrentPage] = useState(1);
+  const [commentsPerPage] = useState(5);
 
   const handleSharePost = () => {
     setShareModalOpen(true);
@@ -61,6 +65,21 @@ export default function PostPage({ params }: PostPageProps) {
 
   const handleCloseShareModal = () => {
     setShareModalOpen(false);
+  };
+
+  // Pagination logic for comments
+  const indexOfLastComment = currentPage * commentsPerPage;
+  const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+  const currentComments = comments.slice(indexOfFirstComment, indexOfLastComment);
+  const totalPages = Math.ceil(comments.length / commentsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    // Scroll to comments section
+    const commentsSection = document.getElementById('comments-section');
+    if (commentsSection) {
+      commentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   useEffect(() => {
@@ -314,16 +333,23 @@ export default function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* Comments Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
+        <div id="comments-section" className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
           <div className="px-6 sm:px-8 lg:px-12 py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </div>
-              Comments ({comments.length})
-            </h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                Comments ({comments.length})
+              </h2>
+              {totalPages > 1 && (
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  Page {currentPage} of {totalPages}
+                </span>
+              )}
+            </div>
           </div>
           
           <div className="px-6 sm:px-8 lg:px-12 py-6">
@@ -359,7 +385,7 @@ export default function PostPage({ params }: PostPageProps) {
               </div>
             ) : (
               <div className="space-y-6">
-                {comments.map((comment, index) => (
+                {currentComments.map((comment, index) => (
                   <div 
                     key={comment.id}
                     className="border-b border-gray-100 dark:border-gray-700 last:border-b-0 pb-6 last:pb-0"
@@ -391,6 +417,82 @@ export default function PostPage({ params }: PostPageProps) {
               </div>
             )}
           </div>
+
+          {/* Comments Pagination */}
+          {totalPages > 1 && (
+            <div className="px-6 sm:px-8 lg:px-12 py-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center justify-between">
+                <div className="flex-1 flex justify-between sm:hidden">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                </div>
+                <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      Showing{' '}
+                      <span className="font-medium">{indexOfFirstComment + 1}</span>
+                      {' '}to{' '}
+                      <span className="font-medium">
+                        {Math.min(indexOfLastComment, comments.length)}
+                      </span>
+                      {' '}of{' '}
+                      <span className="font-medium">{comments.length}</span>
+                      {' '}comments
+                    </p>
+                  </div>
+                  <div>
+                    <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                      
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                            page === currentPage
+                              ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
+                              : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Back to Dashboard Button */}

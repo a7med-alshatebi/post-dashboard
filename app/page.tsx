@@ -58,7 +58,7 @@ export default function PostDashboard() {
 
   useEffect(() => {
     fetchPostsAndUsers();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchPostsAndUsers = async () => {
     try {
@@ -374,45 +374,44 @@ export default function PostDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5 sm:gap-2">
                     <button
                       onClick={() => handleEditPost(post)}
-                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm flex-shrink-0"
+                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm flex-shrink-0"
+                      title="Edit Post"
                     >
-                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
-                      <span className="hidden xs:inline">Edit</span>
-                      <span className="xs:hidden sr-only">Edit</span>
+                      <span className="hidden sm:inline">Edit</span>
                     </button>
                     <button
                       onClick={() => handleSharePost(post)}
-                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm flex-shrink-0"
+                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm flex-shrink-0"
+                      title="Share Post"
                     >
-                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span className="hidden xs:inline">Share</span>
-                      <span className="xs:hidden sr-only">Share</span>
+                      <span className="hidden sm:inline">Share</span>
                     </button>
                     <button
                       onClick={() => deletePost(post.id)}
                       disabled={deletingIds.has(post.id)}
-                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2.5 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm flex-shrink-0"
+                      className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm flex-shrink-0"
+                      title="Delete Post"
                     >
                       {deletingIds.has(post.id) ? (
                         <>
-                          <div className="animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 mr-1.5"></div>
-                          <span className="hidden xs:inline">Deleting...</span>
-                          <span className="xs:hidden">...</span>
+                          <div className="animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 sm:mr-1.5"></div>
+                          <span className="hidden sm:inline">Deleting...</span>
                         </>
                       ) : (
                         <>
-                          <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-3 h-3 sm:mr-1" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                           </svg>
-                          <span className="hidden xs:inline">Delete</span>
-                          <span className="xs:hidden sr-only">Delete</span>
+                          <span className="hidden sm:inline">Delete</span>
                         </>
                       )}
                     </button>
@@ -436,7 +435,15 @@ export default function PostDashboard() {
                   <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                     {getUserName(post.userId).charAt(0)}
                   </div>
-                  <span className="truncate">Author: <span className="font-medium">{getUserName(post.userId)}</span></span>
+                  <span className="truncate">Author: 
+                    <Link 
+                      href={`/user/${post.userId}`}
+                      className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 ml-1"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {getUserName(post.userId)}
+                    </Link>
+                  </span>
                 </div>
               </div>
             ))}
@@ -518,9 +525,12 @@ export default function PostDashboard() {
                             {getUserName(post.userId).charAt(0)}
                           </div>
                           <div>
-                            <p className="text-xs lg:text-sm font-medium text-gray-900 dark:text-white">
+                            <Link
+                              href={`/user/${post.userId}`}
+                              className="text-xs lg:text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
+                            >
                               {getUserName(post.userId)}
-                            </p>
+                            </Link>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
                               User ID: {post.userId}
                             </p>
@@ -576,25 +586,75 @@ export default function PostDashboard() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-4 sm:px-6 lg:px-8 py-4 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 flex justify-between sm:hidden">
-                    <button
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Next
-                    </button>
+              <div className="px-3 sm:px-6 lg:px-8 py-4 border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+                <div className="flex flex-col gap-4">
+                  {/* Mobile pagination */}
+                  <div className="flex flex-col gap-3 sm:hidden">
+                    <div className="text-center">
+                      <p className="text-xs text-gray-600 dark:text-gray-300">
+                        Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                        <span className="text-gray-500 dark:text-gray-400 ml-2">
+                          ({indexOfFirstPost + 1}-{Math.min(indexOfLastPost, filteredPosts.length)} of {filteredPosts.length})
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex justify-between items-center gap-3">
+                      <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="min-touch-target flex-1 inline-flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm"
+                      >
+                        <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        Previous
+                      </button>
+                      
+                      {/* Mobile page numbers - show max 5 pages */}
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                          let pageNumber;
+                          if (totalPages <= 5) {
+                            pageNumber = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNumber = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNumber = totalPages - 4 + i;
+                          } else {
+                            pageNumber = currentPage - 2 + i;
+                          }
+                          
+                          return (
+                            <button
+                              key={pageNumber}
+                              onClick={() => handlePageChange(pageNumber)}
+                              className={`min-touch-target w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                pageNumber === currentPage
+                                  ? 'bg-blue-500 text-white shadow-md'
+                                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                              }`}
+                            >
+                              {pageNumber}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      
+                      <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="min-touch-target flex-1 inline-flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm"
+                      >
+                        Next
+                        <svg className="h-4 w-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                  <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                  
+                  {/* Desktop pagination */}
+                  <div className="hidden sm:flex sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
                         Showing{' '}
@@ -609,35 +669,49 @@ export default function PostDashboard() {
                       </p>
                     </div>
                     <div>
-                      <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                      <nav className="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
                         <button
                           onClick={() => handlePageChange(currentPage - 1)}
                           disabled={currentPage === 1}
-                          className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="relative inline-flex items-center px-2 py-2 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                         >
                           <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         </button>
                         
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                          <button
-                            key={page}
-                            onClick={() => handlePageChange(page)}
-                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                              page === currentPage
-                                ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
-                                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        ))}
+                        {/* Show limited page numbers on desktop too for better UX */}
+                        {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                          let pageNumber;
+                          if (totalPages <= 7) {
+                            pageNumber = i + 1;
+                          } else if (currentPage <= 4) {
+                            pageNumber = i + 1;
+                          } else if (currentPage >= totalPages - 3) {
+                            pageNumber = totalPages - 6 + i;
+                          } else {
+                            pageNumber = currentPage - 3 + i;
+                          }
+                          
+                          return (
+                            <button
+                              key={pageNumber}
+                              onClick={() => handlePageChange(pageNumber)}
+                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-all duration-200 ${
+                                pageNumber === currentPage
+                                  ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
+                                  : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
+                              }`}
+                            >
+                              {pageNumber}
+                            </button>
+                          );
+                        })}
 
                         <button
                           onClick={() => handlePageChange(currentPage + 1)}
                           disabled={currentPage === totalPages}
-                          className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="relative inline-flex items-center px-2 py-2 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                         >
                           <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />

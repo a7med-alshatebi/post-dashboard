@@ -27,6 +27,8 @@ export default function PostsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState<'id' | 'title' | 'author'>('id');
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 20;
 
   useEffect(() => {
     fetchPostsAndUsers();
@@ -104,10 +106,27 @@ export default function PostsPage() {
       }
     });
 
+  // Pagination logic
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredAndSortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredAndSortedPosts.length / postsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedUserId, sortBy]);
+
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedUserId(null);
     setSortBy('id');
+    setCurrentPage(1);
   };
 
   const hasActiveFilters = searchTerm.length > 0 || selectedUserId !== null || sortBy !== 'id';
@@ -123,6 +142,7 @@ export default function PostsPage() {
       </div>
     );
   }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
       {/* Header */}
@@ -148,6 +168,11 @@ export default function PostsPage() {
                 <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
                   <span className="truncate">All Posts ({filteredAndSortedPosts.length})</span>
+                  {totalPages > 1 && (
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                  )}
                 </h2>
                 
                 {/* New Post Button */}
@@ -244,86 +269,230 @@ export default function PostsPage() {
 
           {/* Posts Grid */}
           <div className="p-4 sm:p-6 lg:p-8">
-            {filteredAndSortedPosts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                {filteredAndSortedPosts.map((post, index) => (
-                  <div 
-                    key={post.id}
-                    className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-blue-300 dark:hover:border-blue-500"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    {/* Post Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
-                          #{post.id}
+            {currentPosts.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                  {currentPosts.map((post, index) => (
+                    <div 
+                      key={post.id}
+                      className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] hover:border-blue-300 dark:hover:border-blue-500"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      {/* Post Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+                            #{post.id}
+                          </div>
+                          <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full">
+                            Post {post.id}
+                          </span>
                         </div>
-                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full">
-                          Post {post.id}
-                        </span>
+                        <button
+                          onClick={() => deletePost(post.id)}
+                          disabled={deletingIds.has(post.id)}
+                          className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center p-2 border border-transparent rounded-lg text-red-600 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50"
+                        >
+                          {deletingIds.has(post.id) ? (
+                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-red-300 border-t-red-600"></div>
+                          ) : (
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                        </button>
                       </div>
-                      <button
-                        onClick={() => deletePost(post.id)}
-                        disabled={deletingIds.has(post.id)}
-                        className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center p-2 border border-transparent rounded-lg text-red-600 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50"
-                      >
-                        {deletingIds.has(post.id) ? (
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-red-300 border-t-red-600"></div>
-                        ) : (
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                          </svg>
-                        )}
-                      </button>
-                    </div>
 
-                    {/* Post Title */}
-                    <Link href={`/post/${post.id}`}>
-                      <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2 cursor-pointer">
+                      {/* Post Title */}
+                      <Link href={`/post/${post.id}`}>
+                        <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2 cursor-pointer">
+                          {searchTerm ? (
+                            <span dangerouslySetInnerHTML={{
+                              __html: post.title.replace(
+                                new RegExp(`(${searchTerm})`, 'gi'),
+                                '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
+                              )
+                            }} />
+                          ) : (
+                            post.title
+                          )}
+                        </h3>
+                      </Link>
+
+                      {/* Post Body */}
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
                         {searchTerm ? (
                           <span dangerouslySetInnerHTML={{
-                            __html: post.title.replace(
+                            __html: post.body.replace(
                               new RegExp(`(${searchTerm})`, 'gi'),
                               '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
                             )
                           }} />
                         ) : (
-                          post.title
+                          post.body
                         )}
-                      </h3>
-                    </Link>
+                      </p>
 
-                    {/* Post Body */}
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
-                      {searchTerm ? (
-                        <span dangerouslySetInnerHTML={{
-                          __html: post.body.replace(
-                            new RegExp(`(${searchTerm})`, 'gi'),
-                            '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>'
-                          )
-                        }} />
-                      ) : (
-                        post.body
-                      )}
-                    </p>
-
-                    {/* Post Footer */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                          {getUserName(post.userId).charAt(0)}
+                      {/* Post Footer */}
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                            {getUserName(post.userId).charAt(0)}
+                          </div>
+                          <Link 
+                            href={`/user/${post.userId}`}
+                            className="text-sm font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                          >
+                            {getUserName(post.userId)}
+                          </Link>
                         </div>
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">
-                          {getUserName(post.userId)}
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {post.body.length} chars
                         </span>
                       </div>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {post.body.length} chars
-                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 rounded-b-2xl sm:rounded-b-3xl -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pb-6">
+                    <div className="flex flex-col gap-4">
+                      {/* Mobile pagination */}
+                      <div className="flex flex-col gap-3 sm:hidden">
+                        <div className="text-center">
+                          <p className="text-xs text-gray-600 dark:text-gray-300">
+                            Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                            <span className="text-gray-500 dark:text-gray-400 ml-2">
+                              ({indexOfFirstPost + 1}-{Math.min(indexOfLastPost, filteredAndSortedPosts.length)} of {filteredAndSortedPosts.length})
+                            </span>
+                          </p>
+                        </div>
+                        <div className="flex justify-between items-center gap-3">
+                          <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="min-touch-target flex-1 inline-flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm"
+                          >
+                            <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                            Previous
+                          </button>
+                          
+                          {/* Mobile page numbers - show max 5 pages */}
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                              let pageNumber;
+                              if (totalPages <= 5) {
+                                pageNumber = i + 1;
+                              } else if (currentPage <= 3) {
+                                pageNumber = i + 1;
+                              } else if (currentPage >= totalPages - 2) {
+                                pageNumber = totalPages - 4 + i;
+                              } else {
+                                pageNumber = currentPage - 2 + i;
+                              }
+                              
+                              return (
+                                <button
+                                  key={pageNumber}
+                                  onClick={() => handlePageChange(pageNumber)}
+                                  className={`min-touch-target w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                    pageNumber === currentPage
+                                      ? 'bg-blue-500 text-white shadow-md'
+                                      : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                                  }`}
+                                >
+                                  {pageNumber}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          
+                          <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="min-touch-target flex-1 inline-flex items-center justify-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm"
+                          >
+                            Next
+                            <svg className="h-4 w-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Desktop pagination */}
+                      <div className="hidden sm:flex sm:items-center sm:justify-between">
+                        <div>
+                          <p className="text-sm text-gray-700 dark:text-gray-300">
+                            Showing{' '}
+                            <span className="font-medium">{indexOfFirstPost + 1}</span>
+                            {' '}to{' '}
+                            <span className="font-medium">
+                              {Math.min(indexOfLastPost, filteredAndSortedPosts.length)}
+                            </span>
+                            {' '}of{' '}
+                            <span className="font-medium">{filteredAndSortedPosts.length}</span>
+                            {' '}results
+                          </p>
+                        </div>
+                        <div>
+                          <nav className="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
+                            <button
+                              onClick={() => handlePageChange(currentPage - 1)}
+                              disabled={currentPage === 1}
+                              className="relative inline-flex items-center px-2 py-2 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                            >
+                              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                            
+                            {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                              let pageNumber;
+                              if (totalPages <= 7) {
+                                pageNumber = i + 1;
+                              } else if (currentPage <= 4) {
+                                pageNumber = i + 1;
+                              } else if (currentPage >= totalPages - 3) {
+                                pageNumber = totalPages - 6 + i;
+                              } else {
+                                pageNumber = currentPage - 3 + i;
+                              }
+                              
+                              return (
+                                <button
+                                  key={pageNumber}
+                                  onClick={() => handlePageChange(pageNumber)}
+                                  className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-all duration-200 ${
+                                    pageNumber === currentPage
+                                      ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
+                                      : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
+                                  }`}
+                                >
+                                  {pageNumber}
+                                </button>
+                              );
+                            })}
+
+                            <button
+                              onClick={() => handlePageChange(currentPage + 1)}
+                              disabled={currentPage === totalPages}
+                              className="relative inline-flex items-center px-2 py-2 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                            >
+                              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                          </nav>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             ) : (
               /* Empty State */
               <div className="text-center py-12">
