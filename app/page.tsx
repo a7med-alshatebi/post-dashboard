@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Header } from '../components/header';
+import { BackToTop } from '../components/back-to-top';
 
 interface Post {
   id: number;
@@ -463,6 +464,9 @@ export default function PostDashboard() {
           )}
         </div>
       </div>
+
+      {/* Back to Top Button */}
+      <BackToTop />
     </div>
   );
 }

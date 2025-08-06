@@ -1,6 +1,7 @@
 'use client';
 
 import { Header } from '../../components/header';
+import { BackToTop } from '../../components/back-to-top';
 
 export default function PostsPage() {
   return (
@@ -46,6 +47,9 @@ export default function PostsPage() {
           </div>
         </div>
       </div>
+
+      {/* Back to Top Button */}
+      <BackToTop />
     </div>
   );
 }
