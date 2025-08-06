@@ -40,7 +40,7 @@ interface Comment {
 }
 
 interface PostPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function PostPage({ params }: PostPageProps) {
@@ -51,15 +51,27 @@ export default function PostPage({ params }: PostPageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [commentsLoading, setCommentsLoading] = useState(false);
+  const [postId, setPostId] = useState<string | null>(null);
+
+  // First, resolve the params Promise
+  useEffect(() => {
+    const getParams = async () => {
+      const resolvedParams = await params;
+      setPostId(resolvedParams.id);
+    };
+    getParams();
+  }, [params]);
 
   useEffect(() => {
+    if (!postId) return;
+    
     const fetchPostData = async () => {
       try {
         setLoading(true);
         setError(null);
 
         // Fetch post details
-        const postResponse = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`);
+        const postResponse = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`);
         if (!postResponse.ok) {
           if (postResponse.status === 404) {
             throw new Error('Post not found');
@@ -78,7 +90,7 @@ export default function PostPage({ params }: PostPageProps) {
 
         // Fetch comments
         setCommentsLoading(true);
-        const commentsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}/comments`);
+        const commentsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
         if (commentsResponse.ok) {
           const commentsData = await commentsResponse.json();
           setComments(commentsData);
@@ -93,7 +105,7 @@ export default function PostPage({ params }: PostPageProps) {
     };
 
     fetchPostData();
-  }, [params.id]);
+  }, [postId]);
 
   // Loading state
   if (loading) {
@@ -150,7 +162,7 @@ export default function PostPage({ params }: PostPageProps) {
               </h2>
               
               <p className="text-gray-600 dark:text-gray-300 mb-8">
-                The post you're looking for might have been removed or doesn't exist.
+                The post you&apos;re looking for might have been removed or doesn&apos;t exist.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -188,10 +200,10 @@ export default function PostPage({ params }: PostPageProps) {
       {/* Header */}
       <Header 
         title={post?.title || 'Post Details'}
-        subtitle={`Post #${params.id} by ${author?.name || 'Unknown Author'}`}
+        subtitle={`Post #${postId} by ${author?.name || 'Unknown Author'}`}
         showStats={true}
         stats={{
-          postId: Number(params.id),
+          postId: Number(postId),
           comments: comments.length,
           author: author?.name || 'Loading...'
         }}
@@ -209,7 +221,7 @@ export default function PostPage({ params }: PostPageProps) {
           <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
-          <span className="text-gray-500 dark:text-gray-400">Post #{params.id}</span>
+          <span className="text-gray-500 dark:text-gray-400">Post #{postId}</span>
         </nav>
       </div>
 
