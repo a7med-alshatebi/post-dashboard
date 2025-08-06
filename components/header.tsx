@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ThemeToggle } from './theme-toggle';
 
 interface HeaderProps {
   title?: string;
@@ -62,12 +61,8 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
               ))}
             </div>
 
-            {/* Theme Toggle & Mobile Menu Button */}
+            {/* Mobile Menu Button */}
             <div className="flex items-center gap-3">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-1.5 sm:p-2 border border-white/20">
-                <ThemeToggle />
-              </div>
-              
               {/* Mobile menu button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

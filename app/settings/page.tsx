@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
 
 interface Settings {
+  theme: 'light' | 'dark' | 'system';
   postsPerPage: number;
   autoRefresh: boolean;
   refreshInterval: number;
@@ -17,7 +19,23 @@ interface Settings {
 }
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
+  
   const [settings, setSettings] = useState<Settings>({
+    theme: 'system',
+    postsPerPage: 20,
+    autoRefresh: false,
+    refreshInterval: 30,
+    notifications: true,
+    compactView: false,
+    showAnimations: true,
+    defaultSort: 'id',
+    language: 'en',
+    timezone: 'UTC',
+  });
+
+  const [originalSettings, setOriginalSettings] = useState<Settings>({
+    theme: 'system',
     postsPerPage: 20,
     autoRefresh: false,
     refreshInterval: 30,
@@ -32,17 +50,30 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+  // Check if there are unsaved changes
+  const hasChanges = JSON.stringify(settings) !== JSON.stringify(originalSettings);
+
   // Load settings from localStorage on component mount
   useEffect(() => {
     const savedSettings = localStorage.getItem('dashboardSettings');
     if (savedSettings) {
       try {
-        setSettings(JSON.parse(savedSettings));
+        const parsed = JSON.parse(savedSettings);
+        setSettings(parsed);
+        setOriginalSettings(parsed);
+        // Sync theme with next-themes
+        if (parsed.theme && parsed.theme !== theme) {
+          setTheme(parsed.theme);
+        }
       } catch (error) {
         console.error('Failed to parse saved settings:', error);
       }
+    } else if (theme) {
+      // If no saved settings but theme exists, sync initial theme
+      setSettings(prev => ({ ...prev, theme: theme as 'light' | 'dark' | 'system' }));
+      setOriginalSettings(prev => ({ ...prev, theme: theme as 'light' | 'dark' | 'system' }));
     }
-  }, []);
+  }, [theme, setTheme]);
 
   // Save settings to localStorage
   const saveSettings = async () => {
@@ -54,6 +85,7 @@ export default function SettingsPage() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       localStorage.setItem('dashboardSettings', JSON.stringify(settings));
+      setOriginalSettings(settings); // Update original settings after successful save
       setSaveStatus('success');
       
       // Clear success message after 3 seconds
@@ -69,6 +101,7 @@ export default function SettingsPage() {
   // Reset to default settings
   const resetToDefaults = () => {
     setSettings({
+      theme: 'system',
       postsPerPage: 20,
       autoRefresh: false,
       refreshInterval: 30,
@@ -84,6 +117,11 @@ export default function SettingsPage() {
   // Handle setting changes
   const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+    
+    // Special handling for theme changes - apply immediately
+    if (key === 'theme') {
+      setTheme(value as string);
+    }
   };
 
   return (
@@ -181,6 +219,33 @@ export default function SettingsPage() {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Theme Selection */}
+                <div className="space-y-3 md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Theme Preference
+                  </label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {[
+                      { value: 'light', label: 'Light', icon: '☀️', desc: 'Always light mode' },
+                      { value: 'dark', label: 'Dark', icon: '🌙', desc: 'Always dark mode' },
+                      { value: 'system', label: 'System', icon: '💻', desc: 'Follow system preference' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => updateSetting('theme', option.value as 'light' | 'dark' | 'system')}
+                        className={`p-4 border-2 rounded-xl transition-all duration-200 text-center ${
+                          settings.theme === option.value
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 shadow-lg'
+                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:shadow-md'
+                        }`}
+                      >
+                        <div className="text-2xl mb-2">{option.icon}</div>
+                        <div className="font-medium text-sm">{option.label}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{option.desc}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 {/* Posts per Page */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -410,6 +475,69 @@ export default function SettingsPage() {
               </div>
             </div>
 
+          </div>
+
+          {/* Action Buttons - Mobile Responsive */}
+          <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 sm:p-4 lg:p-6">
+            <div className="flex flex-col xs:flex-row gap-2 sm:gap-3 lg:gap-4 xs:justify-end max-w-full">
+              <button
+                onClick={resetToDefaults}
+                className="w-full xs:w-auto min-touch-target inline-flex items-center justify-center px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 border border-gray-300 dark:border-gray-600 text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span className="xs:hidden">Reset</span>
+                <span className="hidden xs:inline sm:hidden">Reset Default</span>
+                <span className="hidden sm:inline">Reset to Defaults</span>
+              </button>
+              
+              <button
+                onClick={saveSettings}
+                disabled={!hasChanges || isSaving}
+                className="w-full xs:w-auto min-touch-target inline-flex items-center justify-center px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 border border-transparent text-xs sm:text-sm font-medium rounded-lg sm:rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
+              >
+                {isSaving ? (
+                  <>
+                    <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-1.5 sm:mr-2"></div>
+                    <span className="xs:hidden">Saving...</span>
+                    <span className="hidden xs:inline sm:hidden">Saving...</span>
+                    <span className="hidden sm:inline">Saving Changes...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="xs:hidden">Save</span>
+                    <span className="hidden xs:inline sm:hidden">Save Changes</span>
+                    <span className="hidden sm:inline">Save All Changes</span>
+                  </>
+                )}
+              </button>
+            </div>
+            
+            {/* Status Indicators */}
+            <div className="mt-2 sm:mt-3 text-center xs:text-right space-y-0.5">
+              {hasChanges && !isSaving && (
+                <p className="text-xs text-orange-600 dark:text-orange-400 font-medium">
+                  <span className="xs:hidden">• Unsaved changes</span>
+                  <span className="hidden xs:inline">• You have unsaved changes</span>
+                </p>
+              )}
+              {saveStatus === 'success' && (
+                <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+                  <span className="xs:hidden">✓ Saved!</span>
+                  <span className="hidden xs:inline">✓ Settings saved successfully</span>
+                </p>
+              )}
+              {saveStatus === 'error' && (
+                <p className="text-xs text-red-600 dark:text-red-400 font-medium">
+                  <span className="xs:hidden">✗ Save failed</span>
+                  <span className="hidden xs:inline">✗ Failed to save settings</span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
