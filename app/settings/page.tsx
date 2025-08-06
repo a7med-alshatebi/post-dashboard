@@ -20,6 +20,7 @@ interface Settings {
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   
   const [settings, setSettings] = useState<Settings>({
     theme: 'system',
@@ -50,18 +51,25 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+  // Prevent hydration issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Check if there are unsaved changes
   const hasChanges = JSON.stringify(settings) !== JSON.stringify(originalSettings);
 
   // Load settings from localStorage on component mount
   useEffect(() => {
+    if (!mounted) return;
+    
     const savedSettings = localStorage.getItem('dashboardSettings');
     if (savedSettings) {
       try {
         const parsed = JSON.parse(savedSettings);
         setSettings(parsed);
         setOriginalSettings(parsed);
-        // Sync theme with next-themes
+        // Sync theme with next-themes only on initial load
         if (parsed.theme && parsed.theme !== theme) {
           setTheme(parsed.theme);
         }
@@ -73,7 +81,14 @@ export default function SettingsPage() {
       setSettings(prev => ({ ...prev, theme: theme as 'light' | 'dark' | 'system' }));
       setOriginalSettings(prev => ({ ...prev, theme: theme as 'light' | 'dark' | 'system' }));
     }
-  }, [theme, setTheme]);
+  }, [mounted]); // Only run when mounted
+
+  // Sync settings theme with next-themes when it changes (for system theme changes)
+  useEffect(() => {
+    if (theme && theme !== settings.theme) {
+      setSettings(prev => ({ ...prev, theme: theme as 'light' | 'dark' | 'system' }));
+    }
+  }, [theme]);
 
   // Save settings to localStorage
   const saveSettings = async () => {
@@ -118,9 +133,17 @@ export default function SettingsPage() {
   const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
     setSettings(prev => ({ ...prev, [key]: value }));
     
-    // Special handling for theme changes - apply immediately
+    // Special handling for theme changes - apply immediately and save to localStorage
     if (key === 'theme') {
       setTheme(value as string);
+      // Save theme immediately to localStorage to prevent conflicts
+      const currentSettings = JSON.parse(localStorage.getItem('dashboardSettings') || '{}');
+      localStorage.setItem('dashboardSettings', JSON.stringify({
+        ...currentSettings,
+        theme: value
+      }));
+      // Also update the theme storage key used by next-themes
+      localStorage.setItem('theme-preference', value as string);
     }
   };
 
@@ -224,27 +247,41 @@ export default function SettingsPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Theme Preference
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {[
-                      { value: 'light', label: 'Light', icon: '☀️', desc: 'Always light mode' },
-                      { value: 'dark', label: 'Dark', icon: '🌙', desc: 'Always dark mode' },
-                      { value: 'system', label: 'System', icon: '💻', desc: 'Follow system preference' }
-                    ].map((option) => (
-                      <button
-                        key={option.value}
-                        onClick={() => updateSetting('theme', option.value as 'light' | 'dark' | 'system')}
-                        className={`p-4 border-2 rounded-xl transition-all duration-200 text-center ${
-                          settings.theme === option.value
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 shadow-lg'
-                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:shadow-md'
-                        }`}
-                      >
-                        <div className="text-2xl mb-2">{option.icon}</div>
-                        <div className="font-medium text-sm">{option.label}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{option.desc}</div>
-                      </button>
-                    ))}
-                  </div>
+                  {mounted ? (
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { value: 'light', label: 'Light', icon: '☀️', desc: 'Always light mode' },
+                        { value: 'dark', label: 'Dark', icon: '🌙', desc: 'Always dark mode' },
+                        { value: 'system', label: 'System', icon: '💻', desc: 'Follow system preference' }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => updateSetting('theme', option.value as 'light' | 'dark' | 'system')}
+                          className={`p-4 border-2 rounded-xl transition-all duration-200 text-center ${
+                            settings.theme === option.value
+                              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 shadow-lg'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:shadow-md'
+                          }`}
+                        >
+                          <div className="text-2xl mb-2">{option.icon}</div>
+                          <div className="font-medium text-sm">{option.label}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{option.desc}</div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 gap-3">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="p-4 border-2 border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700">
+                          <div className="animate-pulse">
+                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full mx-auto mb-2"></div>
+                            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-12 mx-auto mb-1"></div>
+                            <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded w-16 mx-auto"></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 {/* Posts per Page */}
                 <div className="space-y-2">
