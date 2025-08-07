@@ -27,6 +27,7 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, signOut } = useAuth();
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   
   const navigation = [
     { name: 'Dashboard', href: '/', icon: '🏠' },
@@ -60,6 +61,22 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
       };
     }
   }, [showUserMenu]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    }
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isMobileMenuOpen]);
 
   return (
     <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
@@ -185,7 +202,7 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+            <div ref={mobileMenuRef} className="md:hidden mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
               <div className="space-y-2">
                 {navigation.map((item) => (
                   <Link
