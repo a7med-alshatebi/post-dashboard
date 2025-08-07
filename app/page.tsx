@@ -8,7 +8,7 @@ import { ShareEmailModal } from '../components/share-email-modal';
 import { ConfirmDialog } from '../components/confirm-dialog';
 import { EditPostModal } from '../components/edit-post-modal';
 import { useToast } from '../components/toast';
-import { DashboardSkeleton } from '../components/skeleton';
+import { DashboardSkeleton } from '../components/analytics-skeleton';
 
 interface Post {
   id: number;

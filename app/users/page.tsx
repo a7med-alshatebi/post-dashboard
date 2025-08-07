@@ -112,11 +112,99 @@ export default function UsersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
-        <div className="text-center p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 max-w-sm mx-auto">
-          <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4 sm:mb-6"></div>
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">Loading Users</h3>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Fetching user data from API...</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+        {/* Header */}
+        <Header 
+          title="Users Directory"
+          subtitle="Browse and manage user profiles and their contributions"
+          showStats={true}
+          stats={{
+            users: 0,
+            posts: 0
+          }}
+        />
+        
+        {/* Main content skeleton */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 -mt-3 sm:-mt-6 relative z-10">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
+            
+            {/* Search and Filter Controls Skeleton */}
+            <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                  <div className="hidden sm:flex items-center gap-2">
+                    <div className="w-2 h-2 bg-gray-200 dark:bg-gray-700 rounded-full shimmer"></div>
+                    <div className="h-4 w-16 bg-gray-200 dark:bg-gray-700 rounded shimmer"></div>
+                  </div>
+                </div>
+
+                {/* Search Bar Skeleton */}
+                <div className="flex-1 relative max-w-md">
+                  <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-xl shimmer"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Users Grid Skeleton */}
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                {Array.from({ length: 8 }, (_, i) => (
+                  <div 
+                    key={i}
+                    className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-600"
+                  >
+                    {/* User Avatar and Info Skeleton */}
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-12 h-12 bg-gray-200 dark:bg-gray-600 rounded-full shimmer flex-shrink-0"></div>
+                      <div className="min-w-0 flex-1">
+                        <div className="h-5 bg-gray-200 dark:bg-gray-600 rounded shimmer mb-2"></div>
+                        <div className="h-4 w-20 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                      </div>
+                    </div>
+
+                    {/* User Stats Skeleton */}
+                    <div className="space-y-3 mb-4">
+                      <div className="flex items-center justify-between">
+                        <div className="h-4 w-12 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                        <div className="h-6 w-8 bg-gray-200 dark:bg-gray-600 rounded-full shimmer"></div>
+                      </div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                      <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                    </div>
+
+                    {/* User Location Skeleton */}
+                    <div className="border-t border-gray-100 dark:border-gray-600 pt-3">
+                      <div className="h-3 w-24 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                    </div>
+
+                    {/* Hover indicator skeleton */}
+                    <div className="mt-4">
+                      <div className="h-4 w-20 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination Skeleton */}
+              <div className="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+                <div className="hidden sm:flex sm:items-center sm:justify-between">
+                  <div className="h-5 w-48 bg-gray-200 dark:bg-gray-700 rounded shimmer"></div>
+                  <div className="flex gap-1">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <div key={i} className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded shimmer"></div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Mobile Pagination Skeleton */}
+                <div className="flex justify-between sm:hidden">
+                  <div className="h-10 w-20 bg-gray-200 dark:bg-gray-700 rounded-md shimmer"></div>
+                  <div className="h-10 w-16 bg-gray-200 dark:bg-gray-700 rounded-md shimmer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

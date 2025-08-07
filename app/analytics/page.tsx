@@ -1,10 +1,26 @@
 'use client';
 
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
+import { AnalyticsSkeleton } from '../../components/analytics-skeleton';
 
 export default function AnalyticsPage() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time for analytics data
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <AnalyticsSkeleton />;
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
       <Header 
