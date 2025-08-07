@@ -34,7 +34,7 @@ export default function PostDashboard() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [postToShare, setPostToShare] = useState<Post | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage, setPostsPerPage] = useState(20);
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
     postId: number | null;
@@ -55,6 +55,21 @@ export default function PostDashboard() {
   });
 
   const { addToast } = useToast();
+
+  // Load settings from localStorage
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('dashboardSettings');
+    if (savedSettings) {
+      try {
+        const settings = JSON.parse(savedSettings);
+        if (settings.postsPerPage) {
+          setPostsPerPage(settings.postsPerPage);
+        }
+      } catch (error) {
+        console.error('Failed to parse saved settings:', error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     fetchPostsAndUsers();
@@ -207,10 +222,11 @@ export default function PostDashboard() {
   });
 
   // Pagination logic
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const shouldShowPagination = postsPerPage < 100 && filteredPosts.length > postsPerPage;
+  const indexOfLastPost = shouldShowPagination ? currentPage * postsPerPage : filteredPosts.length;
+  const indexOfFirstPost = shouldShowPagination ? indexOfLastPost - postsPerPage : 0;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const totalPages = shouldShowPagination ? Math.ceil(filteredPosts.length / postsPerPage) : 1;
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -220,7 +236,7 @@ export default function PostDashboard() {
   // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedUserId]);
+  }, [searchTerm, selectedUserId, postsPerPage]);
 
   // Clear all filters
   const clearFilters = () => {
@@ -335,23 +351,31 @@ export default function PostDashboard() {
               </div>
 
               {/* Filter Summary */}
-              {hasActiveFilters && (
-                <div className="flex flex-wrap gap-2 text-xs">
-                  {searchTerm && (
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
-                      Search: &quot;{searchTerm}&quot;
+              <div className="flex flex-wrap gap-2 text-xs">
+                {hasActiveFilters && (
+                  <>
+                    {searchTerm && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
+                        Search: &quot;{searchTerm}&quot;
+                      </span>
+                    )}
+                    {selectedUserId && (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-purple-800 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300">
+                        Author: {getUserName(selectedUserId)}
+                      </span>
+                    )}
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                      {filteredPosts.length} of {posts.length} posts
                     </span>
+                  </>
+                )}
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-green-800 bg-green-100 dark:bg-green-900/30 dark:text-green-300">
+                  {postsPerPage === 100 ? 'All posts' : `${postsPerPage} per page`}
+                  {shouldShowPagination && (
+                    <span className="ml-1">• Page {currentPage} of {totalPages}</span>
                   )}
-                  {selectedUserId && (
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-purple-800 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300">
-                      Author: {getUserName(selectedUserId)}
-                    </span>
-                  )}
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                    {filteredPosts.length} of {posts.length} posts
-                  </span>
-                </div>
-              )}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -585,7 +609,7 @@ export default function PostDashboard() {
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {shouldShowPagination && (
               <div className="px-3 sm:px-6 lg:px-8 py-4 border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
                 <div className="flex flex-col gap-3">
                   {/* Mobile pagination */}
