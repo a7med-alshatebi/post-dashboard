@@ -28,6 +28,7 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
   const { user, signOut } = useAuth();
   const userMenuRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
   
   const navigation = [
     { name: 'Dashboard', href: '/', icon: '🏠' },
@@ -65,7 +66,9 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
   // Close mobile menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(target) &&
+          mobileButtonRef.current && !mobileButtonRef.current.contains(target)) {
         setIsMobileMenuOpen(false);
       }
     }
@@ -180,6 +183,7 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
 
               {/* Mobile menu button */}
               <button
+                ref={mobileButtonRef}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
