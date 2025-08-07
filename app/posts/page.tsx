@@ -133,11 +133,109 @@ export default function PostsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 safe-area-inset">
-        <div className="text-center p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 max-w-sm mx-auto">
-          <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4 sm:mb-6"></div>
-          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">Loading Posts</h3>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Fetching posts data...</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+        {/* Header */}
+        <Header 
+          title="Posts Management"
+          subtitle="Create, edit, and manage all your posts in one place"
+          showStats={true}
+          stats={{
+            posts: 0,
+            users: 0
+          }}
+        />
+
+        {/* Main Content Skeleton */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 -mt-3 sm:-mt-6 relative z-10">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            
+            {/* Header Controls Skeleton */}
+            <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                  <div className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded-xl shimmer"></div>
+                </div>
+
+                {/* Filter Controls Skeleton */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="lg:col-span-2 h-10 bg-gray-200 dark:bg-gray-700 rounded-xl shimmer"></div>
+                  <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-xl shimmer"></div>
+                  <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-xl shimmer"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Posts Grid Skeleton matching actual post cards */}
+            <div className="p-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div 
+                    key={i} 
+                    className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 p-6"
+                  >
+                    {/* Post Header Skeleton */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-lg shimmer"></div>
+                        <div className="h-6 w-16 bg-gray-200 dark:bg-gray-600 rounded-full shimmer"></div>
+                      </div>
+                      <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-lg shimmer"></div>
+                    </div>
+
+                    {/* Post Title Skeleton */}
+                    <div className="space-y-2 mb-3">
+                      <div className="h-7 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                      <div className="h-7 w-3/4 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                    </div>
+
+                    {/* Post Body Skeleton */}
+                    <div className="space-y-2 mb-4">
+                      <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                      <div className="h-4 w-2/3 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                    </div>
+
+                    {/* Post Footer Skeleton */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-600">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-gray-200 dark:bg-gray-600 rounded-full shimmer"></div>
+                        <div className="h-4 w-20 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                      </div>
+                      <div className="h-4 w-12 bg-gray-200 dark:bg-gray-600 rounded shimmer"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination Skeleton */}
+              <div className="mt-6 sm:mt-8 border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
+                <div className="hidden sm:flex sm:items-center sm:justify-between">
+                  <div className="h-5 w-48 bg-gray-200 dark:bg-gray-700 rounded shimmer"></div>
+                  <div className="flex gap-1">
+                    {Array.from({ length: 7 }, (_, i) => (
+                      <div key={i} className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded shimmer"></div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Mobile Pagination Skeleton */}
+                <div className="sm:hidden">
+                  <div className="text-center mb-4">
+                    <div className="h-4 w-24 mx-auto bg-gray-200 dark:bg-gray-700 rounded shimmer mb-2"></div>
+                    <div className="h-3 w-32 mx-auto bg-gray-200 dark:bg-gray-700 rounded shimmer"></div>
+                  </div>
+                  <div className="flex justify-center items-center gap-2">
+                    <div className="w-12 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                    <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                    <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                    <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                    <div className="w-12 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg shimmer"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
