@@ -180,13 +180,18 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
 
               {/* Mobile menu button */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors duration-200 relative z-50"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Button clicked, current state:', isMobileMenuOpen);
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                }}
+                className="md:hidden p-3 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors duration-200 relative z-50 focus:outline-none focus:ring-2 focus:ring-white/50"
                 aria-label={isMobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
                 type="button"
               >
                 <svg
-                  className={`w-5 h-5 transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-90' : ''}`}
+                  className="w-5 h-5 transition-all duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -204,7 +209,10 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
 
           {/* Mobile Navigation Menu */}
           {isMobileMenuOpen && (
-            <div ref={mobileMenuRef} className="md:hidden mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+            <div 
+              ref={mobileMenuRef} 
+              className="md:hidden mt-4 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 relative z-30"
+            >
               <div className="space-y-2">
                 {navigation.map((item) => (
                   <Link
