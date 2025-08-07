@@ -44,6 +44,7 @@ export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(8);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const { addToast } = useToast();
 
@@ -65,11 +66,14 @@ export default function UsersPage() {
       setUsers(usersData);
       setPosts(postsData);
       
-      addToast({
-        type: 'success',
-        title: 'Data loaded successfully',
-        message: `Loaded ${usersData.length} users and ${postsData.length} posts`
-      });
+      // Only show success toast on non-first loads (like refresh actions)
+      if (!isFirstLoad) {
+        addToast({
+          type: 'success',
+          title: 'Data refreshed successfully',
+          message: `Loaded ${usersData.length} users and ${postsData.length} posts`
+        });
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
       addToast({
@@ -80,11 +84,28 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [addToast]);
+  }, [addToast, isFirstLoad]);
 
   useEffect(() => {
     fetchUsersAndPosts();
   }, [fetchUsersAndPosts]);
+
+  // Show success toast after page is fully loaded and rendered
+  useEffect(() => {
+    if (!loading && isFirstLoad && users.length > 0 && posts.length > 0) {
+      // Use setTimeout to ensure the page is fully rendered before showing the toast
+      const timer = setTimeout(() => {
+        addToast({
+          type: 'success',
+          title: 'Welcome to Users page!',
+          message: `Successfully loaded ${users.length} users and ${posts.length} posts`
+        });
+        setIsFirstLoad(false);
+      }, 500); // Small delay to ensure page is fully rendered
+
+      return () => clearTimeout(timer);
+    }
+  }, [loading, isFirstLoad, users.length, posts.length, addToast]);
 
   const getUserPostCount = (userId: number) => {
     return posts.filter(post => post.userId === userId).length;

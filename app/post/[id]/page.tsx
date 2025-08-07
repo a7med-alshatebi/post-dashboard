@@ -57,7 +57,7 @@ export default function PostPage({ params }: PostPageProps) {
   
   // Pagination for comments
   const [currentPage, setCurrentPage] = useState(1);
-  const [commentsPerPage] = useState(5);
+  const [commentsPerPage, setCommentsPerPage] = useState(5);
 
   const handleSharePost = () => {
     setShareModalOpen(true);
@@ -65,6 +65,34 @@ export default function PostPage({ params }: PostPageProps) {
 
   const handleCloseShareModal = () => {
     setShareModalOpen(false);
+  };
+
+  // Calculate comments per page based on post ID
+  const getCommentsPerPage = (postId: string) => {
+    const id = parseInt(postId);
+    if (isNaN(id)) return 5; // Default fallback
+    
+    // Different pagination for different posts
+    const paginationMap: { [key: number]: number } = {
+      1: 8,   // Post 1: 8 comments per page
+      2: 3,   // Post 2: 3 comments per page
+      3: 6,   // Post 3: 6 comments per page
+      4: 4,   // Post 4: 4 comments per page
+      5: 7,   // Post 5: 7 comments per page
+      6: 2,   // Post 6: 2 comments per page
+      7: 9,   // Post 7: 9 comments per page
+      8: 5,   // Post 8: 5 comments per page
+      9: 3,   // Post 9: 3 comments per page
+      10: 10, // Post 10: 10 comments per page
+    };
+    
+    // For posts beyond 10, use a formula to generate different values
+    if (id > 10) {
+      const calculatedValue = ((id % 7) + 2); // This will give values between 2-8
+      return calculatedValue;
+    }
+    
+    return paginationMap[id] || 5; // Default to 5 if not in map
   };
 
   // Pagination logic for comments
@@ -86,6 +114,8 @@ export default function PostPage({ params }: PostPageProps) {
     const getParams = async () => {
       const resolvedParams = await params;
       setPostId(resolvedParams.id);
+      // Set different comments per page based on post ID
+      setCommentsPerPage(getCommentsPerPage(resolvedParams.id));
     };
     getParams();
   }, [params]);
@@ -421,24 +451,77 @@ export default function PostPage({ params }: PostPageProps) {
           {/* Comments Pagination */}
           {totalPages > 1 && (
             <div className="px-6 sm:px-8 lg:px-12 py-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 flex justify-between sm:hidden">
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
+              <div className="flex flex-col gap-3">
+                {/* Mobile pagination */}
+                <div className="flex flex-col gap-2 sm:hidden">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                      Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      ({indexOfFirstComment + 1}-{Math.min(indexOfLastComment, comments.length)} of {comments.length} comments)
+                    </p>
+                    <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+                      {commentsPerPage} per page for Post #{postId}
+                    </p>
+                  </div>
+                  <div className="flex justify-center items-center gap-2">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm min-h-[40px]"
+                      aria-label="Previous page"
+                    >
+                      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                    
+                    {/* Mobile page numbers - show max 3 pages for better fit */}
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: Math.min(totalPages, 3) }, (_, i) => {
+                        let pageNumber;
+                        if (totalPages <= 3) {
+                          pageNumber = i + 1;
+                        } else if (currentPage <= 2) {
+                          pageNumber = i + 1;
+                        } else if (currentPage >= totalPages - 1) {
+                          pageNumber = totalPages - 2 + i;
+                        } else {
+                          pageNumber = currentPage - 1 + i;
+                        }
+                        
+                        return (
+                          <button
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
+                              pageNumber === currentPage
+                                ? 'bg-blue-500 text-white shadow-md'
+                                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                            }`}
+                          >
+                            {pageNumber}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm min-h-[40px]"
+                      aria-label="Next page"
+                    >
+                      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                
+                {/* Desktop pagination */}
+                <div className="hidden sm:flex sm:items-center sm:justify-between">
                   <div>
                     <p className="text-sm text-gray-700 dark:text-gray-300">
                       Showing{' '}
@@ -450,40 +533,56 @@ export default function PostPage({ params }: PostPageProps) {
                       {' '}of{' '}
                       <span className="font-medium">{comments.length}</span>
                       {' '}comments
+                      <span className="text-blue-600 dark:text-blue-400 ml-2">
+                        ({commentsPerPage} per page for Post #{postId})
+                      </span>
                     </p>
                   </div>
                   <div>
-                    <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    <nav className="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-3 py-2 rounded-l-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                       >
-                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="h-4 w-4 md:h-5 md:w-5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                       </button>
                       
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <button
-                          key={page}
-                          onClick={() => handlePageChange(page)}
-                          className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                            page === currentPage
-                              ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
-                              : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      ))}
+                      {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                        let pageNumber;
+                        if (totalPages <= 7) {
+                          pageNumber = i + 1;
+                        } else if (currentPage <= 4) {
+                          pageNumber = i + 1;
+                        } else if (currentPage >= totalPages - 3) {
+                          pageNumber = totalPages - 6 + i;
+                        } else {
+                          pageNumber = currentPage - 3 + i;
+                        }
+                        
+                        return (
+                          <button
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={`relative inline-flex items-center px-3 md:px-4 py-2 border text-sm font-medium transition-all duration-200 ${
+                              pageNumber === currentPage
+                                ? 'z-10 bg-blue-50 border-blue-500 text-blue-600 dark:bg-blue-900/20 dark:border-blue-400 dark:text-blue-400'
+                                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-600'
+                            }`}
+                          >
+                            {pageNumber}
+                          </button>
+                        );
+                      })}
 
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-3 py-2 rounded-r-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                       >
-                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="h-4 w-4 md:h-5 md:w-5" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                         </svg>
                       </button>
