@@ -109,11 +109,7 @@ export default function UserPage({ params }: UserPageProps) {
       setUser(userData);
       setPosts(postsData);
       
-      addToast({
-        type: 'success',
-        title: 'User data loaded',
-        message: `Loaded ${postsData.length} posts for ${userData.name}`
-      });
+      // Remove toast notification to prevent spam during navigation
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       console.error('Error fetching user data:', error);
@@ -126,7 +122,7 @@ export default function UserPage({ params }: UserPageProps) {
     } finally {
       setLoading(false);
     }
-  }, [userId, addToast]);
+  }, [userId]); // Remove addToast from dependencies
 
   useEffect(() => {
     const getParams = async () => {
