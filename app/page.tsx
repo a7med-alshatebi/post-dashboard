@@ -8,7 +8,7 @@ import { ShareEmailModal } from '../components/share-email-modal';
 import { ConfirmDialog } from '../components/confirm-dialog';
 import { EditPostModal } from '../components/edit-post-modal';
 import { useToast } from '../components/toast';
-import { FullPageLoader } from '../components/loading-spinner';
+import { DashboardSkeleton } from '../components/skeleton';
 
 interface Post {
   id: number;
@@ -249,7 +249,7 @@ export default function PostDashboard() {
   const hasActiveFilters = searchTerm.length > 0 || selectedUserId !== null;
 
   if (loading) {
-    return <FullPageLoader text="Loading Posts" />;
+    return <DashboardSkeleton />;
   }
 
   return (
@@ -427,7 +427,7 @@ export default function PostDashboard() {
                     >
                       {deletingIds.has(post.id) ? (
                         <>
-                          <div className="animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 sm:mr-1.5"></div>
+                          <div className="w-3 h-3 sm:mr-1.5 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
                           <span className="hidden sm:inline">Deleting...</span>
                         </>
                       ) : (
@@ -588,7 +588,7 @@ export default function PostDashboard() {
                           >
                             {deletingIds.has(post.id) ? (
                               <>
-                                <div className="animate-spin rounded-full h-3 w-3 lg:h-4 lg:w-4 border-2 border-red-300 border-t-red-600 mr-1.5 lg:mr-2"></div>
+                                <div className="w-3 h-3 lg:w-4 lg:h-4 mr-1.5 lg:mr-2 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
                                 Deleting...
                               </>
                             ) : (
