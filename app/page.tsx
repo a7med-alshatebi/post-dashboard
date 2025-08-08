@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { Header } from '../components/header';
 import { BackToTop } from '../components/back-to-top';
@@ -248,6 +249,7 @@ export default function PostDashboard() {
 
   // Check if any filters are active
   const hasActiveFilters = searchTerm.length > 0 || selectedUserId !== null;
+  const { t } = useTranslation('common');
 
   if (loading) {
     return <DashboardSkeleton />;
@@ -257,8 +259,8 @@ export default function PostDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
       {/* Header */}
       <Header 
-        title="Posts Dashboard"
-        subtitle="Manage and explore posts from JSONPlaceholder API with modern interface"
+        title={t('title')}
+        subtitle={t('subtitle')}
         showStats={true}
         stats={{
           posts: posts.length,
