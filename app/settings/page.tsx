@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import useTranslation from 'next-translate/useTranslation';
-import setLanguage from 'next-translate/setLanguage';
 import { useTheme } from 'next-themes';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
@@ -22,7 +20,6 @@ interface Settings {
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
-  const { t, lang } = useTranslation('common');
   const [mounted, setMounted] = useState(false);
   
   const [settings, setSettings] = useState<Settings>({
@@ -61,13 +58,6 @@ export default function SettingsPage() {
 
   // Check if there are unsaved changes
   const hasChanges = JSON.stringify(settings) !== JSON.stringify(originalSettings);
-
-  // Update language and locale
-  const handleLanguageChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLang = e.target.value;
-    updateSetting('language', newLang);
-    await setLanguage(newLang);
-  };
 
   // Load settings from localStorage on component mount
   useEffect(() => {
@@ -483,15 +473,15 @@ export default function SettingsPage() {
                 {/* Language */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {t('language')}
+                    Language
                   </label>
                   <select
                     value={settings.language}
-                    onChange={handleLanguageChange}
+                    onChange={(e) => updateSetting('language', e.target.value)}
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   >
-                    <option value="en">{t('english')}</option>
-                    <option value="ar">{t('arabic')}</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
                   </select>
                 </div>
 
