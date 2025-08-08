@@ -148,12 +148,13 @@ export default function AddPostPage() {
               ) : (
                 <div className="space-y-4">
                   {posts.map((post, index) => (
-                    <div 
-                      key={post.id} 
-                      className={`p-4 border rounded-xl transition-all duration-300 hover:shadow-md ${
+                    <Link 
+                      key={post.id}
+                      href={`/post/${post.id}`}
+                      className={`block p-4 border rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer ${
                         index === 0 && post.id > 100 
-                          ? 'border-green-300 bg-green-50 dark:border-green-600 dark:bg-green-900/20' 
-                          : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50'
+                          ? 'border-green-300 bg-green-50 dark:border-green-600 dark:bg-green-900/20 hover:border-green-400 dark:hover:border-green-500' 
+                          : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10'
                       }`}
                     >
                       <div className="flex items-start justify-between mb-3">
@@ -176,14 +177,27 @@ export default function AddPostPage() {
                         </span>
                       </div>
                       
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2 capitalize line-clamp-2">
+                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2 capitalize line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {post.title}
                       </h4>
                       
-                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 mb-3">
                         {post.body}
                       </p>
-                    </div>
+                      
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          Click to view
+                        </span>
+                        <span className="text-blue-500 dark:text-blue-400 font-medium">
+                          →
+                        </span>
+                      </div>
+                    </Link>
                   ))}
                 </div>
               )}
