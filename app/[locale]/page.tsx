@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Header } from '../components/header';
-import { BackToTop } from '../components/back-to-top';
-import { ShareEmailModal } from '../components/share-email-modal';
-import { ConfirmDialog } from '../components/confirm-dialog';
-import { EditPostModal } from '../components/edit-post-modal';
-import { useToast } from '../components/toast';
-import { DashboardSkeleton } from '../components/analytics-skeleton';
+import { Header } from '../../components/header';
+import { BackToTop } from '../../components/back-to-top';
+import { ShareEmailModal } from '../../components/share-email-modal';
+import { ConfirmDialog } from '../../components/confirm-dialog';
+import { EditPostModal } from '../../components/edit-post-modal';
+import { useToast } from '../../components/toast';
+import { DashboardSkeleton } from '../../components/analytics-skeleton';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface Post {
   id: number;
@@ -25,6 +26,9 @@ interface User {
 }
 
 export default function PostDashboard() {
+  const { t } = useTranslation('posts');
+  const { t: tCommon, locale } = useTranslation('common');
+  
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -95,8 +99,8 @@ export default function PostDashboard() {
       
       addToast({
         type: 'success',
-        title: 'Data loaded successfully',
-        message: `Loaded ${postsData.length} posts and ${usersData.length} users`
+        title: tCommon('success'),
+        message: `${t('loadingPosts')} ${postsData.length} posts and ${usersData.length} users`
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -256,7 +260,7 @@ export default function PostDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
       {/* Header */}
       <Header 
-        title="Post Dashboard"
+        title={t('title')}
         subtitle="Manage and explore posts from JSONPlaceholder API with modern interface"
         showStats={true}
         stats={{
@@ -274,7 +278,7 @@ export default function PostDashboard() {
               <div className="flex items-center justify-between">
                 <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
-                  <span className="truncate">All Posts ({filteredPosts.length})</span>
+                  <span className="truncate">{t('title')} ({filteredPosts.length})</span>
                   {totalPages > 1 && (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
                       Page {currentPage} of {totalPages}
@@ -298,7 +302,7 @@ export default function PostDashboard() {
                   </div>
                   <input
                     type="text"
-                    placeholder="Search posts by title..."
+                    placeholder={t('postTitle')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm"
@@ -322,7 +326,7 @@ export default function PostDashboard() {
                     onChange={(e) => setSelectedUserId(e.target.value ? Number(e.target.value) : null)}
                     className="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer"
                   >
-                    <option value="">All Authors</option>
+                    <option value="">{t('author')} - {tCommon('filter')}</option>
                     {users.map(user => (
                       <option key={user.id} value={user.id}>
                         {user.name} (ID: {user.id})
@@ -345,7 +349,7 @@ export default function PostDashboard() {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                    Clear Filters
+                    {tCommon('cancel')} {tCommon('filter')}
                   </button>
                 )}
               </div>
@@ -356,12 +360,12 @@ export default function PostDashboard() {
                   <>
                     {searchTerm && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
-                        Search: &quot;{searchTerm}&quot;
+                        {tCommon('search')}: &quot;{searchTerm}&quot;
                       </span>
                     )}
                     {selectedUserId && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-purple-800 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300">
-                        Author: {getUserName(selectedUserId)}
+                        {t('author')}: {getUserName(selectedUserId)}
                       </span>
                     )}
                     <span className="inline-flex items-center px-2.5 py-1 rounded-full text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">

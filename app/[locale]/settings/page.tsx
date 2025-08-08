@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
-import { Header } from '../../components/header';
-import { BackToTop } from '../../components/back-to-top';
+import { Header } from '../../../components/header';
+import { BackToTop } from '../../../components/back-to-top';
 
 interface Settings {
   theme: 'light' | 'dark' | 'system';

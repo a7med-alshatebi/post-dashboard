@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "../components/theme-provider";
-import { ToastProvider } from "../components/toast";
-import { AuthProvider } from "../contexts/AuthContext";
+import { notFound, redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,24 +18,15 @@ export const metadata: Metadata = {
   description: "A modern dashboard for managing posts from JSONPlaceholder API",
 };
 
+const locales = ['en', 'ar'];
+const defaultLocale = 'en';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider>
-          <AuthProvider>
-            <ToastProvider>
-              {children}
-            </ToastProvider>
-          </AuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+  // This is a simple redirect to the default locale
+  // In a real app, you might want to detect user's preferred language
+  redirect(`/${defaultLocale}`);
 }

@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from '../hooks/useTranslation';
+import LanguageSwitcher from './language-switcher';
 
 interface HeaderProps {
   title?: string;
@@ -21,21 +23,22 @@ interface HeaderProps {
   };
 }
 
-export function Header({ title = 'Dashboard', subtitle, showStats = false, stats }: HeaderProps) {
+export function Header({ title, subtitle, showStats = false, stats }: HeaderProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, signOut } = useAuth();
+  const { t, locale } = useTranslation('common');
   const userMenuRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
   
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: '🏠' },
-    { name: 'Posts', href: '/posts', icon: '📝' },
-    { name: 'Users', href: '/users', icon: '👥' },
-    { name: 'Analytics', href: '/analytics', icon: '📊' },
-    { name: 'Settings', href: '/settings', icon: '⚙️' },
+    { name: t('siteName'), href: `/${locale}`, icon: '🏠', key: 'dashboard' },
+    { name: 'Posts', href: `/${locale}/posts`, icon: '📝', key: 'posts' },
+    { name: 'Users', href: `/${locale}/users`, icon: '👥', key: 'users' },
+    { name: 'Analytics', href: `/${locale}/analytics`, icon: '📊', key: 'analytics' },
+    { name: t('settings'), href: `/${locale}/settings`, icon: '⚙️', key: 'settings' },
   ];
 
   const handleSignOut = async () => {
@@ -90,11 +93,11 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
         <nav className="py-4">
           <div className="flex items-center justify-between">
             {/* Logo/Brand */}
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href={`/${locale}`} className="flex items-center gap-3 group">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform duration-200">
                 <span className="text-lg sm:text-xl">📊</span>
               </div>
-              <span className="text-lg sm:text-xl font-bold text-white hidden sm:block">Post Dashboard</span>
+              <span className="text-lg sm:text-xl font-bold text-white hidden sm:block">{t('siteName')}</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -117,6 +120,9 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
 
             {/* Right side actions */}
             <div className="flex items-center gap-3">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+              
               {/* User Menu (Desktop) */}
               {user ? (
                 <div className="hidden md:flex items-center gap-3">
@@ -164,7 +170,7 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                           </svg>
-                          Sign Out
+                          {t('logout')}
                         </button>
                       </div>
                     )}
@@ -173,10 +179,10 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
               ) : (
                 <div className="hidden md:flex items-center">
                   <Link
-                    href="/login"
+                    href={`/${locale}/login`}
                     className="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors duration-200 text-sm font-medium"
                   >
-                    Sign In
+                    {t('login')}
                   </Link>
                 </div>
               )}
@@ -271,19 +277,19 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        Sign Out
+                        {t('logout')}
                       </button>
                     </div>
                   ) : (
                     <Link
-                      href="/login"
+                      href={`/${locale}/login`}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                       </svg>
-                      Sign In
+                      {t('login')}
                     </Link>
                   )}
                 </div>
@@ -296,7 +302,7 @@ export function Header({ title = 'Dashboard', subtitle, showStats = false, stats
         <div className="py-6 sm:py-8 lg:py-12">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 tracking-tight leading-tight">
-              {title}
+              {title || t('siteName')}
             </h1>
             {subtitle && (
               <p className="text-sm sm:text-lg lg:text-xl text-blue-100 max-w-2xl mx-auto px-2">

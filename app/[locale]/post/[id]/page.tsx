@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Header } from '../../../components/header';
-import { BackToTop } from '../../../components/back-to-top';
-import { ShareEmailModal } from '../../../components/share-email-modal';
+import { Header } from '../../../../components/header';
+import { BackToTop } from '../../../../components/back-to-top';
+import { ShareEmailModal } from '../../../../components/share-email-modal';
 
 interface Post {
   id: number;

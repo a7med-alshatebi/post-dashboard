@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Header } from '../../components/header';
-import { BackToTop } from '../../components/back-to-top';
-import { AnalyticsSkeleton } from '../../components/analytics-skeleton';
+import { Header } from '../../../components/header';
+import { BackToTop } from '../../../components/back-to-top';
+import { AnalyticsSkeleton } from '../../../components/analytics-skeleton';
 
 export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);

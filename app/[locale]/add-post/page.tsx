@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Header } from '../../components/header';
-import { BackToTop } from '../../components/back-to-top';
-import { AddPostForm } from '../../components/add-pst-form';
+import { Header } from '../../../components/header';
+import { BackToTop } from '../../../components/back-to-top';
+import { AddPostForm } from '../../../components/add-pst-form';
 
 interface Post {
   id: number;

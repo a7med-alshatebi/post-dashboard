@@ -1,0 +1,13 @@
+{
+  "title": "Users",
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone",
+  "website": "Website",
+  "company": "Company",
+  "address": "Address",
+  "userDetails": "User Details",
+  "userPosts": "User Posts",
+  "noUsers": "No users found",
+  "loadingUsers": "Loading users..."
+}
