@@ -242,7 +242,7 @@ export default function PostDashboard() {
   const clearFilters = () => {
     setSearchTerm('');
     setSelectedUserId(null);
-    setCurrentPage(1);
+    setCurrentPage(1);  
   };
 
   // Check if any filters are active
