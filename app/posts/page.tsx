@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Header } from '../../../components/header';
-import { BackToTop } from '../../../components/back-to-top';
+import { Header } from '../../components/header';
+import { BackToTop } from '../../components/back-to-top';
 
 interface Post {
   id: number;

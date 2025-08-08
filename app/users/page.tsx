@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { Header } from '../../../components/header';
-import { BackToTop } from '../../../components/back-to-top';
-import { useToast } from '../../../components/toast';
+import { Header } from '../../components/header';
+import { BackToTop } from '../../components/back-to-top';
+import { useToast } from '../../components/toast';
 
 interface User {
   id: number;

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Header } from '../../components/header';
-import { BackToTop } from '../../components/back-to-top';
-import { ShareEmailModal } from '../../components/share-email-modal';
-import { ConfirmDialog } from '../../components/confirm-dialog';
-import { EditPostModal } from '../../components/edit-post-modal';
-import { useToast } from '../../components/toast';
-import { DashboardSkeleton } from '../../components/analytics-skeleton';
+import { Header } from '../components/header';
+import { BackToTop } from '../components/back-to-top';
+import { ShareEmailModal } from '../components/share-email-modal';
+import { ConfirmDialog } from '../components/confirm-dialog';
+import { EditPostModal } from '../components/edit-post-modal';
+import { useToast } from '../components/toast';
+import { DashboardSkeleton } from '../components/analytics-skeleton';
 
 interface Post {
   id: number;
