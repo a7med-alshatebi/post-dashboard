@@ -60,14 +60,6 @@ html {
 }
 
 /* RTL Support */
-html.rtl {
-  direction: rtl;
-}
-
-html.ltr {
-  direction: ltr;
-}
-
 [dir="rtl"] {
   text-align: right;
 }
@@ -97,16 +89,4 @@ html.ltr {
 [dir="rtl"] .rtl\:space-x-reverse > * + * {
   margin-right: var(--tw-space-x-reverse);
   margin-left: calc(var(--tw-space-x-reverse) * 0);
-}
-
-/* Additional RTL utilities for consistent behavior */
-html.rtl * {
-  /* Prevent any layout shifts during hydration */
-  text-align: inherit;
-}
-
-/* Ensure toggle switches and form controls maintain proper direction */
-[dir="rtl"] input[type="range"], 
-[dir="rtl"] .toggle-switch {
-  direction: ltr;
 }

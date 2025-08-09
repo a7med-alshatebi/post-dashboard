@@ -2,14 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// Extend the Window interface to include our global variables
-declare global {
-  interface Window {
-    __INITIAL_LOCALE__?: string;
-    __IS_RTL__?: boolean;
-  }
-}
-
 // Translation types
 type TranslationKey = string;
 type Translations = Record<string, any>;
@@ -39,24 +31,7 @@ interface I18nProviderProps {
 }
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
-  // Get initial locale from pre-hydration script or localStorage
-  const getInitialLocale = (): string => {
-    if (typeof window !== 'undefined') {
-      // Check if we have pre-hydration values first
-      if (window.__INITIAL_LOCALE__) {
-        return window.__INITIAL_LOCALE__;
-      }
-      // Fallback to localStorage check
-      try {
-        return localStorage.getItem('locale') || 'en';
-      } catch {
-        return 'en';
-      }
-    }
-    return 'en';
-  };
-
-  const [locale, setLocaleState] = useState<string>(getInitialLocale);
+  const [locale, setLocaleState] = useState<string>('en');
   const [translations, setTranslations] = useState<Translations>({});
 
   // Load translations when locale changes
@@ -82,17 +57,14 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     loadTranslations();
   }, [locale]);
 
-  // Load saved locale from localStorage with pre-hydration support
+  // Load saved locale from localStorage
   useEffect(() => {
-    const initialLocale = getInitialLocale();
-    if (initialLocale !== locale && initialLocale in LOCALES) {
-      setLocaleState(initialLocale);
-    }
-    
-    // Ensure DOM is in sync (should already be set by pre-hydration script)
-    if (typeof document !== 'undefined' && initialLocale in LOCALES) {
-      document.documentElement.lang = initialLocale;
-      document.documentElement.dir = initialLocale === 'ar' ? 'rtl' : 'ltr';
+    const savedLocale = localStorage.getItem('locale');
+    if (savedLocale && savedLocale in LOCALES) {
+      setLocaleState(savedLocale);
+      // Immediately set the document direction for the saved locale
+      document.documentElement.lang = savedLocale;
+      document.documentElement.dir = savedLocale === 'ar' ? 'rtl' : 'ltr';
     }
   }, []);
 
