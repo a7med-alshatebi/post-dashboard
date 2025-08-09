@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../contexts/AuthContext';
+import { useI18n } from '../contexts/I18nContext';
 
 interface HeaderProps {
   title?: string;
@@ -23,6 +24,7 @@ interface HeaderProps {
 
 export function Header({ title, subtitle, showStats = false, stats }: HeaderProps) {
   const pathname = usePathname();
+  const { t, isRTL } = useI18n();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, signOut } = useAuth();
@@ -31,11 +33,11 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
   
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: '🏠', key: 'dashboard' },
-    { name: 'Posts', href: '/posts', icon: '📝', key: 'posts' },
-    { name: 'Users', href: '/users', icon: '👥', key: 'users' },
-    { name: 'Analytics', href: '/analytics', icon: '📊', key: 'analytics' },
-    { name: 'Settings', href: '/settings', icon: '⚙️', key: 'settings' },
+    { name: t('navigation.dashboard'), href: '/', icon: '🏠', key: 'dashboard' },
+    { name: t('navigation.posts'), href: '/posts', icon: '📝', key: 'posts' },
+    { name: t('navigation.users'), href: '/users', icon: '👥', key: 'users' },
+    { name: t('navigation.analytics'), href: '/analytics', icon: '📊', key: 'analytics' },
+    { name: t('navigation.settings'), href: '/settings', icon: '⚙️', key: 'settings' },
   ];
 
   const handleSignOut = async () => {
@@ -107,7 +109,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
                     pathname === item.href
                       ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm border border-white/30'
                       : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`}
+                  } ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
                   <span>{item.icon}</span>
                   {item.name}
@@ -160,12 +162,12 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
                         </div>
                         <button
                           onClick={handleSignOut}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
+                          className={`w-full px-4 py-2 ${isRTL ? 'text-right' : 'text-left'} text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                           </svg>
-                          Logout
+                          {t('navigation.logout')}
                         </button>
                       </div>
                     )}
@@ -177,7 +179,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
                     href="/login"
                     className="px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors duration-200 text-sm font-medium"
                   >
-                    Login
+                    {t('navigation.login')}
                   </Link>
                 </div>
               )}
@@ -228,7 +230,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
                       pathname === item.href
                         ? 'bg-white/20 text-white shadow-lg backdrop-blur-sm'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }`}
+                    } ${isRTL ? 'flex-row-reverse' : ''}`}
                   >
                     <span>{item.icon}</span>
                     {item.name}
@@ -267,24 +269,24 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
                           handleSignOut();
                           setIsMobileMenuOpen(false);
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-all duration-200"
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        Logout
+                        {t('navigation.logout')}
                       </button>
                     </div>
                   ) : (
                     <Link
                       href="/login"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200"
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                       </svg>
-                      Login
+                      {t('navigation.login')}
                     </Link>
                   )}
                 </div>

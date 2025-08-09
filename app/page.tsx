@@ -9,6 +9,7 @@ import { ConfirmDialog } from '../components/confirm-dialog';
 import { EditPostModal } from '../components/edit-post-modal';
 import { useToast } from '../components/toast';
 import { DashboardSkeleton } from '../components/analytics-skeleton';
+import { useI18n } from '../contexts/I18nContext';
 
 interface Post {
   id: number;
@@ -25,6 +26,7 @@ interface User {
 }
 
 export default function PostDashboard() {
+  const { t, isRTL } = useI18n();
   
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -96,15 +98,15 @@ export default function PostDashboard() {
       
       addToast({
         type: 'success',
-        title: 'Success',
-        message: `Loaded ${postsData.length} posts and ${usersData.length} users.`
+        title: t('common.success'),
+        message: `${t('common.loading')} ${postsData.length} ${t('posts.title').toLowerCase()} ${t('posts.of')} ${usersData.length} ${t('navigation.users').toLowerCase()}.`
       });
     } catch (error) {
       console.error('Error fetching data:', error);
       addToast({
         type: 'error',
-        title: 'Failed to load data',
-        message: 'Please check your connection and try again.'
+        title: t('posts.loadDataFailed'),
+        message: t('posts.checkConnection')
       });
     } finally {
       setLoading(false);
@@ -115,8 +117,8 @@ export default function PostDashboard() {
     setConfirmDialog({
       isOpen: true,
       postId,
-      title: 'Delete Post',
-      message: `Are you sure you want to delete post #${postId}? This action cannot be undone.`
+      title: t('posts.deletePost'),
+      message: t('posts.deleteConfirm')
     });
   };
 
@@ -135,8 +137,8 @@ export default function PostDashboard() {
         setPosts(posts.filter(post => post.id !== postId));
         addToast({
           type: 'success',
-          title: 'Post deleted',
-          message: `Post #${postId} has been successfully deleted.`
+          title: t('posts.deleteSuccess'),
+          message: `${t('posts.title')} #${postId} ${t('posts.deleteSuccess').toLowerCase()}.`
         });
       } else {
         throw new Error('Failed to delete post');
@@ -145,8 +147,8 @@ export default function PostDashboard() {
       console.error('Error deleting post:', error);
       addToast({
         type: 'error',
-        title: 'Delete failed',
-        message: 'Failed to delete the post. Please try again.'
+        title: t('posts.deleteFailed'),
+        message: t('posts.deleteFailed') + '. ' + t('common.tryAgain') + '.'
       });
     } finally {
       setDeletingIds(prev => {
@@ -193,8 +195,8 @@ export default function PostDashboard() {
         ));
         addToast({
           type: 'success',
-          title: 'Post updated',
-          message: `Post #${savedPost.id} has been successfully updated.`
+          title: t('posts.updateSuccess'),
+          message: `${t('posts.title')} #${savedPost.id} ${t('posts.updateSuccess').toLowerCase()}.`
         });
       } else {
         throw new Error('Failed to update post');
@@ -203,8 +205,8 @@ export default function PostDashboard() {
       console.error('Error updating post:', error);
       addToast({
         type: 'error',
-        title: 'Update failed',
-        message: 'Failed to update the post. Please try again.'
+        title: t('posts.updateFailed'),
+        message: t('posts.updateFailed') + '. ' + t('common.tryAgain') + '.'
       });
       throw error;
     }
@@ -254,11 +256,11 @@ export default function PostDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
-        title="Posts Dashboard"
-        subtitle="Manage and explore posts from JSONPlaceholder API with modern interface"
+        title={t('dashboard.title')}
+        subtitle={t('dashboard.subtitle')}
         showStats={true}
         stats={{
           posts: posts.length,
@@ -275,16 +277,16 @@ export default function PostDashboard() {
               <div className="flex items-center justify-between">
                 <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
-                  <span className="truncate">Posts Dashboard ({filteredPosts.length})</span>
+                  <span className="truncate">{t('posts.title')} ({filteredPosts.length})</span>
                   {totalPages > 1 && (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Page {currentPage} of {totalPages}
+                      {t('posts.page')} {currentPage} {t('posts.of')} {totalPages}
                     </span>
                   )}
                 </h2>
                 <div className="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  Live Data
+                  {t('posts.liveData')}
                 </div>
               </div>
 
@@ -292,22 +294,22 @@ export default function PostDashboard() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 {/* Search Bar */}
                 <div className="flex-1 relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
                     <svg className="h-4 w-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
                   <input
                     type="text"
-                    placeholder="Search by post title"
+                    placeholder={t('posts.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm"
+                    className={`block w-full ${isRTL ? 'pr-10 pl-3' : 'pl-10 pr-3'} py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm`}
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm('')}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center`}
                     >
                       <svg className="h-4 w-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -323,7 +325,7 @@ export default function PostDashboard() {
                     onChange={(e) => setSelectedUserId(e.target.value ? Number(e.target.value) : null)}
                     className="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer"
                   >
-                    <option value="">Author - Filter</option>
+                    <option value="">{t('posts.filterByAuthor')}</option>
                     {users.map(user => (
                       <option key={user.id} value={user.id}>
                         {user.name} (ID: {user.id})
@@ -343,10 +345,10 @@ export default function PostDashboard() {
                     onClick={clearFilters}
                     className="min-touch-target inline-flex items-center px-4 py-2.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 whitespace-nowrap"
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                    Cancel Filter
+                    {t('posts.clearFilters')}
                   </button>
                 )}
               </div>
@@ -357,23 +359,23 @@ export default function PostDashboard() {
                   <>
                     {searchTerm && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
-                        Search: &quot;{searchTerm}&quot;
+                        {t('common.search')}: &quot;{searchTerm}&quot;
                       </span>
                     )}
                     {selectedUserId && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-purple-800 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300">
-                        Author: {getUserName(selectedUserId)}
+                        {t('posts.author')}: {getUserName(selectedUserId)}
                       </span>
                     )}
                     <span className="inline-flex items-center px-2.5 py-1 rounded-full text-gray-600 bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                      {filteredPosts.length} of {posts.length} posts
+                      {filteredPosts.length} {t('posts.of')} {posts.length} {t('posts.title').toLowerCase()}
                     </span>
                   </>
                 )}
                 <span className="inline-flex items-center px-2.5 py-1 rounded-full text-green-800 bg-green-100 dark:bg-green-900/30 dark:text-green-300">
-                  {postsPerPage === 100 ? 'All posts' : `${postsPerPage} per page`}
+                  {postsPerPage === 100 ? t('common.all') + ' ' + t('posts.title').toLowerCase() : `${postsPerPage} ${t('posts.itemsPerPage')}`}
                   {shouldShowPagination && (
-                    <span className="ml-1">• Page {currentPage} of {totalPages}</span>
+                    <span className={isRTL ? 'mr-1' : 'ml-1'}>• {t('posts.page')} {currentPage} {t('posts.of')} {totalPages}</span>
                   )}
                 </span>
               </div>
@@ -395,7 +397,7 @@ export default function PostDashboard() {
                     </div>
                     <div className="min-w-0">
                       <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full whitespace-nowrap">
-                        Post ID: {post.id}
+                        {t('posts.title')} ID: {post.id}
                       </span>
                     </div>
                   </div>
@@ -403,40 +405,40 @@ export default function PostDashboard() {
                     <button
                       onClick={() => handleEditPost(post)}
                       className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm flex-shrink-0"
-                      title="Edit Post"
+                      title={t('posts.editPost')}
                     >
-                      <svg className="w-3 h-3 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className={`w-3 h-3 ${isRTL ? 'sm:ml-1' : 'sm:mr-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
-                      <span className="hidden sm:inline">Edit</span>
+                      <span className="hidden sm:inline">{t('common.edit')}</span>
                     </button>
                     <button
                       onClick={() => handleSharePost(post)}
                       className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm flex-shrink-0"
-                      title="Share Post"
+                      title={t('posts.share')}
                     >
-                      <svg className="w-3 h-3 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className={`w-3 h-3 ${isRTL ? 'sm:ml-1' : 'sm:mr-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span className="hidden sm:inline">Share</span>
+                      <span className="hidden sm:inline">{t('posts.share')}</span>
                     </button>
                     <button
                       onClick={() => deletePost(post.id)}
                       disabled={deletingIds.has(post.id)}
                       className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm flex-shrink-0"
-                      title="Delete Post"
+                      title={t('posts.deletePost')}
                     >
                       {deletingIds.has(post.id) ? (
                         <>
-                          <div className="w-3 h-3 sm:mr-1.5 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
-                          <span className="hidden sm:inline">Deleting...</span>
+                          <div className={`w-3 h-3 ${isRTL ? 'sm:ml-1.5' : 'sm:mr-1.5'} bg-red-400 dark:bg-red-500 rounded animate-pulse`}></div>
+                          <span className="hidden sm:inline">{t('common.loading')}...</span>
                         </>
                       ) : (
                         <>
-                          <svg className="w-3 h-3 sm:mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className={`w-3 h-3 ${isRTL ? 'sm:ml-1' : 'sm:mr-1'}`} fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                           </svg>
-                          <span className="hidden sm:inline">Delete</span>
+                          <span className="hidden sm:inline">{t('common.delete')}</span>
                         </>
                       )}
                     </button>
@@ -460,7 +462,7 @@ export default function PostDashboard() {
                   <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                     {getUserName(post.userId).charAt(0)}
                   </div>
-                  <span className="truncate">Author: 
+                  <span className="truncate">{t('posts.authorLabel')}: 
                     <Link 
                       href={`/user/${post.userId}`}
                       className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 ml-1"
@@ -480,28 +482,28 @@ export default function PostDashboard() {
               <table className="min-w-full">
                 <thead className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800">
                   <tr>
-                    <th className="px-4 lg:px-8 py-3 lg:py-4 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">
-                      <div className="flex items-center gap-2">
+                    <th className={`px-4 lg:px-8 py-3 lg:py-4 ${isRTL ? 'text-right' : 'text-left'} text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600`}>
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                         ID
                       </div>
                     </th>
-                    <th className="px-4 lg:px-8 py-3 lg:py-4 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">
-                      <div className="flex items-center gap-2">
+                    <th className={`px-4 lg:px-8 py-3 lg:py-4 ${isRTL ? 'text-right' : 'text-left'} text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600`}>
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                        Title
+                        {t('posts.postTitle')}
                       </div>
                     </th>
-                    <th className="px-4 lg:px-8 py-3 lg:py-4 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">
-                      <div className="flex items-center gap-2">
+                    <th className={`px-4 lg:px-8 py-3 lg:py-4 ${isRTL ? 'text-right' : 'text-left'} text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600`}>
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                        Author
+                        {t('posts.author')}
                       </div>
                     </th>
-                    <th className="px-4 lg:px-8 py-3 lg:py-4 text-left text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">
-                      <div className="flex items-center gap-2">
+                    <th className={`px-4 lg:px-8 py-3 lg:py-4 ${isRTL ? 'text-right' : 'text-left'} text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600`}>
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                        Actions
+                        {t('posts.actions')}
                       </div>
                     </th>
                   </tr>
@@ -540,7 +542,7 @@ export default function PostDashboard() {
                             </h3>
                           </Link>
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {post.title.length} characters
+                            {post.title.length} {t('posts.characters')}
                           </p>
                         </div>
                       </td>
@@ -557,7 +559,7 @@ export default function PostDashboard() {
                               {getUserName(post.userId)}
                             </Link>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              User ID: {post.userId}
+                              {t('posts.userId')}: {post.userId}
                             </p>
                           </div>
                         </div>
@@ -571,7 +573,7 @@ export default function PostDashboard() {
                             <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
-                            Edit
+                            {t('common.edit')}
                           </button>
                           <button
                             onClick={() => handleSharePost(post)}
@@ -580,7 +582,7 @@ export default function PostDashboard() {
                             <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            Share
+                            {t('posts.share')}
                           </button>
                           <button
                             onClick={() => deletePost(post.id)}
@@ -590,14 +592,14 @@ export default function PostDashboard() {
                             {deletingIds.has(post.id) ? (
                               <>
                                 <div className="w-3 h-3 lg:w-4 lg:h-4 mr-1.5 lg:mr-2 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
-                                Deleting...
+                                {t('posts.deleting')}
                               </>
                             ) : (
                               <>
                                 <svg className="w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                                 </svg>
-                                Delete
+                                {t('common.delete')}
                               </>
                             )}
                           </button>
@@ -617,7 +619,7 @@ export default function PostDashboard() {
                   <div className="flex flex-col gap-2 sm:hidden">
                     <div className="text-center">
                       <p className="text-xs text-gray-600 dark:text-gray-300">
-                        Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                        {t('posts.page')} <span className="font-medium">{currentPage}</span> {t('posts.of')} <span className="font-medium">{totalPages}</span>
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         ({indexOfFirstPost + 1}-{Math.min(indexOfLastPost, filteredPosts.length)} of {filteredPosts.length})
@@ -682,15 +684,15 @@ export default function PostDashboard() {
                   <div className="hidden sm:flex sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        Showing{' '}
+                        {t('posts.showing')}{' '}
                         <span className="font-medium">{indexOfFirstPost + 1}</span>
-                        {' '}to{' '}
+                        {' '}{t('posts.to')}{' '}
                         <span className="font-medium">
                           {Math.min(indexOfLastPost, filteredPosts.length)}
                         </span>
-                        {' '}of{' '}
+                        {' '}{t('posts.of')}{' '}
                         <span className="font-medium">{filteredPosts.length}</span>
-                        {' '}results
+                        {' '}{t('posts.results')}
                       </p>
                     </div>
                     <div>
@@ -759,9 +761,9 @@ export default function PostDashboard() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">No Posts Available</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">{t('posts.noPostsAvailable')}</h3>
                 <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed mb-4 sm:mb-6">
-                  There are currently no posts to display. Posts will appear here once they are loaded from the API.
+                  {t('posts.noPostsDesc')}
                 </p>
                 <button 
                   onClick={fetchPostsAndUsers}
@@ -770,7 +772,7 @@ export default function PostDashboard() {
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  Refresh Posts
+                  {t('posts.refreshPosts')}
                 </button>
               </div>
             </div>
@@ -785,9 +787,9 @@ export default function PostDashboard() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">No Posts Found</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">{t('posts.noPostsFoundTitle')}</h3>
                 <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 leading-relaxed mb-4 sm:mb-6">
-                  No posts match your current filters. Try adjusting your search criteria or clearing the filters.
+                  {t('posts.noPostsFoundDesc')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button 
@@ -797,7 +799,7 @@ export default function PostDashboard() {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                    Clear Filters
+                    {t('posts.clearFilters')}
                   </button>
                   <button 
                     onClick={fetchPostsAndUsers}
@@ -806,7 +808,7 @@ export default function PostDashboard() {
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    Refresh Posts
+                    {t('posts.refreshPosts')}
                   </button>
                 </div>
               </div>

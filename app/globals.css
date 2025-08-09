@@ -58,3 +58,35 @@ html {
     background-position: calc(200px + 100%) 0;
   }
 }
+
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .rtl\:text-right {
+  text-align: right;
+}
+
+[dir="rtl"] .rtl\:text-left {
+  text-align: left;
+}
+
+[dir="rtl"] .rtl\:mr-auto {
+  margin-right: auto;
+}
+
+[dir="rtl"] .rtl\:ml-auto {
+  margin-left: auto;
+}
+
+/* RTL-friendly flex directions */
+[dir="rtl"] .rtl\:flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* RTL-friendly spacing adjustments */
+[dir="rtl"] .rtl\:space-x-reverse > * + * {
+  margin-right: var(--tw-space-x-reverse);
+  margin-left: calc(var(--tw-space-x-reverse) * 0);
+}

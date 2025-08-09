@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
+import { useI18n, LOCALES } from '../../contexts/I18nContext';
 
 interface Settings {
   theme: 'light' | 'dark' | 'system';
@@ -20,6 +21,7 @@ interface Settings {
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
+  const { locale, setLocale, t, isRTL } = useI18n();
   const [mounted, setMounted] = useState(false);
   
   const [settings, setSettings] = useState<Settings>({
@@ -133,6 +135,11 @@ export default function SettingsPage() {
   const updateSetting = <K extends keyof Settings>(key: K, value: Settings[K]) => {
     setSettings(prev => ({ ...prev, [key]: value }));
     
+    // Special handling for language changes - update i18n context
+    if (key === 'language') {
+      setLocale(value as string);
+    }
+    
     // Special handling for theme changes - apply immediately and save to localStorage
     if (key === 'theme') {
       setTheme(value as string);
@@ -151,8 +158,8 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
       {/* Header */}
       <Header 
-        title="Settings"
-        subtitle="Customize your dashboard experience and preferences"
+        title={t('settings.title')}
+        subtitle={t('settings.subtitle')}
         showStats={false}
       />
 
@@ -165,7 +172,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
                 <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
-                Dashboard Settings
+                {t('settings.title')}
               </h2>
               <div className="flex gap-3">
                 <button
@@ -175,7 +182,7 @@ export default function SettingsPage() {
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  Reset to Defaults
+                  {t('settings.resetToDefaults')}
                 </button>
                 <button
                   onClick={saveSettings}
@@ -185,14 +192,14 @@ export default function SettingsPage() {
                   {isSaving ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                      Saving...
+                      {t('common.loading')}...
                     </>
                   ) : (
                     <>
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Save Settings
+                      {t('settings.saveChanges')}
                     </>
                   )}
                 </button>
@@ -212,14 +219,14 @@ export default function SettingsPage() {
                       <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
-                      Settings saved successfully!
+                      {t('settings.changesSaved')}
                     </>
                   ) : (
                     <>
                       <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                       </svg>
-                      Failed to save settings. Please try again.
+                      {t('common.failed')}. {t('common.tryAgain')}.
                     </>
                   )}
                 </div>
@@ -238,21 +245,21 @@ export default function SettingsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                Display Settings
+                {t('settings.displaySettings')}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Theme Selection */}
                 <div className="space-y-3 md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Theme Preference
+                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('settings.themePreference')}
                   </label>
                   {mounted ? (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className={`grid grid-cols-3 gap-3 ${isRTL ? 'direction-rtl' : ''}`}>
                       {[
-                        { value: 'light', label: 'Light', icon: '☀️', desc: 'Always light mode' },
-                        { value: 'dark', label: 'Dark', icon: '🌙', desc: 'Always dark mode' },
-                        { value: 'system', label: 'System', icon: '💻', desc: 'Follow system preference' }
+                        { value: 'light', label: t('settings.lightMode'), icon: '☀️', desc: t('settings.lightModeDesc') },
+                        { value: 'dark', label: t('settings.darkMode'), icon: '🌙', desc: t('settings.darkModeDesc') },
+                        { value: 'system', label: t('settings.systemMode'), icon: '💻', desc: t('settings.systemModeDesc') }
                       ].map((option) => (
                         <button
                           key={option.value}
@@ -264,8 +271,8 @@ export default function SettingsPage() {
                           }`}
                         >
                           <div className="text-2xl mb-2">{option.icon}</div>
-                          <div className="font-medium text-sm">{option.label}</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{option.desc}</div>
+                          <div className={`font-medium text-sm ${isRTL ? 'text-center' : ''}`}>{option.label}</div>
+                          <div className={`text-xs text-gray-500 dark:text-gray-400 mt-1 ${isRTL ? 'text-center' : ''}`}>{option.desc}</div>
                         </button>
                       ))}
                     </div>
@@ -286,7 +293,7 @@ export default function SettingsPage() {
                 {/* Posts per Page */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Posts per Page
+                    {t('settings.postsPerPage')}
                   </label>
                   <select
                     value={settings.postsPerPage}
@@ -303,62 +310,70 @@ export default function SettingsPage() {
                 {/* Default Sort */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Default Sort Order
+                    {t('settings.defaultSortOrder')}
                   </label>
                   <select
                     value={settings.defaultSort}
                     onChange={(e) => updateSetting('defaultSort', e.target.value as 'id' | 'title' | 'author')}
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   >
-                    <option value="id">Sort by ID</option>
-                    <option value="title">Sort by Title</option>
-                    <option value="author">Sort by Author</option>
+                    <option value="id">{t('settings.sortById')}</option>
+                    <option value="title">{t('settings.sortByTitle')}</option>
+                    <option value="author">{t('settings.sortByAuthor')}</option>
                   </select>
                 </div>
 
                 {/* Compact View Toggle */}
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Compact View
+                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
+                    <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      {t('settings.compactView')}
                     </label>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Show more posts in less space
+                    <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      {t('settings.compactViewDesc')}
                     </p>
                   </div>
                   <button
                     onClick={() => updateSetting('compactView', !settings.compactView)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      settings.compactView ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      settings.compactView 
+                        ? 'bg-blue-600' 
+                        : 'bg-gray-200 dark:bg-gray-700'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-200 ${
-                        settings.compactView ? 'translate-x-6' : 'translate-x-1'
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                        settings.compactView 
+                          ? isRTL ? 'translate-x-1' : 'translate-x-6'
+                          : isRTL ? 'translate-x-6' : 'translate-x-1'
                       }`}
                     />
                   </button>
                 </div>
 
                 {/* Show Animations Toggle */}
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Show Animations
+                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
+                    <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      {t('settings.showAnimations')}
                     </label>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Enable smooth transitions and effects
+                    <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      {t('settings.showAnimationsDesc')}
                     </p>
                   </div>
                   <button
                     onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      settings.showAnimations ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      settings.showAnimations 
+                        ? 'bg-blue-600' 
+                        : 'bg-gray-200 dark:bg-gray-700'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-200 ${
-                        settings.showAnimations ? 'translate-x-6' : 'translate-x-1'
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                        settings.showAnimations 
+                          ? isRTL ? 'translate-x-1' : 'translate-x-6'
+                          : isRTL ? 'translate-x-6' : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -374,29 +389,33 @@ export default function SettingsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                 </div>
-                Auto-Refresh Settings
+                {t('settings.autoRefreshSettings')}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Auto Refresh Toggle */}
-                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Auto Refresh
+                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
+                    <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      {t('settings.autoRefresh')}
                     </label>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Automatically refresh posts data
+                    <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      {t('settings.autoRefreshDesc')}
                     </p>
                   </div>
                   <button
                     onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                      settings.autoRefresh ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                      settings.autoRefresh 
+                        ? 'bg-green-600' 
+                        : 'bg-gray-200 dark:bg-gray-700'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-200 ${
-                        settings.autoRefresh ? 'translate-x-6' : 'translate-x-1'
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                        settings.autoRefresh 
+                          ? isRTL ? 'translate-x-1' : 'translate-x-6'
+                          : isRTL ? 'translate-x-6' : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -405,7 +424,7 @@ export default function SettingsPage() {
                 {/* Refresh Interval */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Refresh Interval (seconds)
+                    {t('settings.refreshInterval')}
                   </label>
                   <input
                     type="number"
@@ -417,7 +436,7 @@ export default function SettingsPage() {
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Minimum 10 seconds, maximum 300 seconds
+                    {t('settings.refreshIntervalDesc')}
                   </p>
                 </div>
               </div>
@@ -431,27 +450,31 @@ export default function SettingsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 19l-7-7 7-7m0 14l7-7-7-7" />
                   </svg>
                 </div>
-                Notifications
+                {t('settings.notifications')}
               </h3>
 
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Enable Notifications
+              <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
+                  <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('settings.notifications')}
                   </label>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Show notifications for new posts and updates
+                  <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('settings.notificationsDesc')}
                   </p>
                 </div>
                 <button
                   onClick={() => updateSetting('notifications', !settings.notifications)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    settings.notifications ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    settings.notifications 
+                      ? 'bg-yellow-600' 
+                      : 'bg-gray-200 dark:bg-gray-700'
                   }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-lg transition-transform duration-200 ${
-                      settings.notifications ? 'translate-x-6' : 'translate-x-1'
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                      settings.notifications 
+                        ? isRTL ? 'translate-x-1' : 'translate-x-6'
+                        : isRTL ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
@@ -466,17 +489,17 @@ export default function SettingsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
-                Localization
+                {t('settings.localization')}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Language */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Language
+                    {t('common.language')}
                   </label>
                   <select
-                    value={settings.language}
+                    value={locale}
                     onChange={(e) => updateSetting('language', e.target.value)}
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   >
