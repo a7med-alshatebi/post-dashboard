@@ -333,22 +333,27 @@ export default function SettingsPage() {
                       {t('settings.compactViewDesc')}
                     </p>
                   </div>
-                  <button
-                    onClick={() => updateSetting('compactView', !settings.compactView)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                      settings.compactView 
-                        ? 'bg-blue-600' 
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                  <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
+                    <button
+                      onClick={() => updateSetting('compactView', !settings.compactView)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                         settings.compactView 
-                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                          ? 'bg-blue-600' 
+                          : 'bg-gray-200 dark:bg-gray-700'
                       }`}
-                    />
-                  </button>
+                      role="switch"
+                      aria-checked={settings.compactView}
+                      aria-labelledby="compact-view-label"
+                    >
+                      <span
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                          settings.compactView 
+                            ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                            : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Show Animations Toggle */}
@@ -361,22 +366,27 @@ export default function SettingsPage() {
                       {t('settings.showAnimationsDesc')}
                     </p>
                   </div>
-                  <button
-                    onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                      settings.showAnimations 
-                        ? 'bg-blue-600' 
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                  <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
+                    <button
+                      onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                         settings.showAnimations 
-                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                          ? 'bg-blue-600' 
+                          : 'bg-gray-200 dark:bg-gray-700'
                       }`}
-                    />
-                  </button>
+                      role="switch"
+                      aria-checked={settings.showAnimations}
+                      aria-labelledby="animations-label"
+                    >
+                      <span
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                          settings.showAnimations 
+                            ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                            : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -403,22 +413,27 @@ export default function SettingsPage() {
                       {t('settings.autoRefreshDesc')}
                     </p>
                   </div>
-                  <button
-                    onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                      settings.autoRefresh 
-                        ? 'bg-green-600' 
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                  <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
+                    <button
+                      onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                         settings.autoRefresh 
-                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                          ? 'bg-green-600' 
+                          : 'bg-gray-200 dark:bg-gray-700'
                       }`}
-                    />
-                  </button>
+                      role="switch"
+                      aria-checked={settings.autoRefresh}
+                      aria-labelledby="auto-refresh-label"
+                    >
+                      <span
+                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                          settings.autoRefresh 
+                            ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                            : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Refresh Interval */}
@@ -462,22 +477,27 @@ export default function SettingsPage() {
                     {t('settings.notificationsDesc')}
                   </p>
                 </div>
-                <button
-                  onClick={() => updateSetting('notifications', !settings.notifications)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                    settings.notifications 
-                      ? 'bg-yellow-600' 
-                      : 'bg-gray-200 dark:bg-gray-700'
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
+                  <button
+                    onClick={() => updateSetting('notifications', !settings.notifications)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                       settings.notifications 
-                        ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                        : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                        ? 'bg-yellow-600' 
+                        : 'bg-gray-200 dark:bg-gray-700'
                     }`}
-                  />
-                </button>
+                    role="switch"
+                    aria-checked={settings.notifications}
+                    aria-labelledby="notifications-label"
+                  >
+                    <span
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                        settings.notifications 
+                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                      }`}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
 
