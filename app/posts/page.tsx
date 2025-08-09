@@ -460,11 +460,11 @@ export default function PostsPage() {
                     <div className="flex flex-col gap-3 sm:gap-4">
                       {/* Mobile pagination */}
                       <div className="flex flex-col gap-2 sm:hidden">
-                        <div className={`text-center ${isRTL ? 'text-right' : 'text-left'}`}>
-                          <p className={`text-xs text-gray-600 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
+                        <div className="text-center">
+                          <p className="text-xs text-gray-600 dark:text-gray-300 text-center">
                             {t('common.page')} <span className="font-medium">{currentPage}</span> {t('common.of')} <span className="font-medium">{totalPages}</span>
                           </p>
-                          <p className={`text-xs text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                             ({indexOfFirstPost + 1}-{Math.min(indexOfLastPost, filteredAndSortedPosts.length)} {t('common.of')} {filteredAndSortedPosts.length})
                           </p>
                         </div>
@@ -522,9 +522,9 @@ export default function PostsPage() {
                       </div>
                       
                       {/* Desktop pagination */}
-                      <div className={`hidden sm:flex sm:items-center sm:justify-between ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-                        <div className={isRTL ? 'text-right' : 'text-left'}>
-                          <p className={`text-sm text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
+                      <div className="hidden sm:flex sm:items-center sm:justify-between">
+                        <div>
+                          <p className="text-sm text-gray-700 dark:text-gray-300">
                             {t('posts.showing')}{' '}
                             <span className="font-medium">{indexOfFirstPost + 1}</span>
                             {' '}{t('common.to')}{' '}
