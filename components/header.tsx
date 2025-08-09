@@ -297,7 +297,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
 
         {/* Header Content */}
         <div className="py-6 sm:py-8 lg:py-12">
-          <div className="text-center">
+          <div className="text-center" dir="ltr">
             <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 tracking-tight leading-tight">
               {title || 'Posts Dashboard'}
             </h1>

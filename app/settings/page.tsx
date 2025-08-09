@@ -335,18 +335,17 @@ export default function SettingsPage() {
                   </div>
                   <button
                     onClick={() => updateSetting('compactView', !settings.compactView)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                       settings.compactView 
                         ? 'bg-blue-600' 
                         : 'bg-gray-200 dark:bg-gray-700'
-                    } ${isRTL ? 'flex-row-reverse' : ''}`}
-                    dir="ltr"
+                    }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
                         settings.compactView 
-                          ? (isRTL ? '-translate-x-6' : 'translate-x-6')
-                          : (isRTL ? '-translate-x-1' : 'translate-x-1')
+                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
                       }`}
                     />
                   </button>
@@ -364,18 +363,17 @@ export default function SettingsPage() {
                   </div>
                   <button
                     onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                       settings.showAnimations 
                         ? 'bg-blue-600' 
                         : 'bg-gray-200 dark:bg-gray-700'
                     }`}
-                    dir="ltr"
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
                         settings.showAnimations 
-                          ? (isRTL ? '-translate-x-6' : 'translate-x-6')
-                          : (isRTL ? '-translate-x-1' : 'translate-x-1')
+                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
                       }`}
                     />
                   </button>
@@ -407,18 +405,17 @@ export default function SettingsPage() {
                   </div>
                   <button
                     onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                       settings.autoRefresh 
                         ? 'bg-green-600' 
                         : 'bg-gray-200 dark:bg-gray-700'
                     }`}
-                    dir="ltr"
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
                         settings.autoRefresh 
-                          ? (isRTL ? '-translate-x-6' : 'translate-x-6')
-                          : (isRTL ? '-translate-x-1' : 'translate-x-1')
+                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
                       }`}
                     />
                   </button>
@@ -467,18 +464,17 @@ export default function SettingsPage() {
                 </div>
                 <button
                   onClick={() => updateSetting('notifications', !settings.notifications)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
                     settings.notifications 
                       ? 'bg-yellow-600' 
                       : 'bg-gray-200 dark:bg-gray-700'
                   }`}
-                  dir="ltr"
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                    className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
                       settings.notifications 
-                        ? (isRTL ? '-translate-x-6' : 'translate-x-6')
-                        : (isRTL ? '-translate-x-1' : 'translate-x-1')
+                        ? (isRTL ? 'translate-x-0' : 'translate-x-5')
+                        : (isRTL ? 'translate-x-5' : 'translate-x-0')
                     }`}
                   />
                 </button>
