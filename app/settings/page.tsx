@@ -348,8 +348,8 @@ export default function SettingsPage() {
                       <span
                         className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
                           settings.compactView 
-                            ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                            : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                            ? (isRTL ? '-translate-x-5' : 'translate-x-5')
+                            : (isRTL ? 'translate-x-0' : 'translate-x-0')
                         }`}
                       />
                     </button>
@@ -381,8 +381,8 @@ export default function SettingsPage() {
                       <span
                         className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
                           settings.showAnimations 
-                            ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                            : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                            ? (isRTL ? '-translate-x-5' : 'translate-x-5')
+                            : (isRTL ? 'translate-x-0' : 'translate-x-0')
                         }`}
                       />
                     </button>
@@ -428,8 +428,8 @@ export default function SettingsPage() {
                       <span
                         className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
                           settings.autoRefresh 
-                            ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                            : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                            ? (isRTL ? '-translate-x-5' : 'translate-x-5')
+                            : (isRTL ? 'translate-x-0' : 'translate-x-0')
                         }`}
                       />
                     </button>
@@ -492,8 +492,8 @@ export default function SettingsPage() {
                     <span
                       className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
                         settings.notifications 
-                          ? (isRTL ? 'translate-x-0' : 'translate-x-5')
-                          : (isRTL ? 'translate-x-5' : 'translate-x-0')
+                          ? (isRTL ? '-translate-x-5' : 'translate-x-5')
+                          : (isRTL ? 'translate-x-0' : 'translate-x-0')
                       }`}
                     />
                   </button>
