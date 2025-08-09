@@ -27,7 +27,46 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedLocale = localStorage.getItem('locale') || 'en';
+                  const isRTL = savedLocale === 'ar';
+                  
+                  // Set document attributes
+                  document.documentElement.lang = savedLocale;
+                  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+                  
+                  // Add RTL class to html element for styling
+                  if (isRTL) {
+                    document.documentElement.classList.add('rtl');
+                    document.documentElement.classList.remove('ltr');
+                  } else {
+                    document.documentElement.classList.add('ltr');
+                    document.documentElement.classList.remove('rtl');
+                  }
+                  
+                  // Store in window for React context to use
+                  window.__INITIAL_LOCALE__ = savedLocale;
+                  window.__IS_RTL__ = isRTL;
+                } catch (e) {
+                  // Fallback to English/LTR
+                  document.documentElement.lang = 'en';
+                  document.documentElement.dir = 'ltr';
+                  document.documentElement.classList.add('ltr');
+                  document.documentElement.classList.remove('rtl');
+                  window.__INITIAL_LOCALE__ = 'en';
+                  window.__IS_RTL__ = false;
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

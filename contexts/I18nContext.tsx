@@ -2,6 +2,14 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+// Extend the Window interface to include our global variables
+declare global {
+  interface Window {
+    __INITIAL_LOCALE__?: string;
+    __IS_RTL__?: boolean;
+  }
+}
+
 // Translation types
 type TranslationKey = string;
 type Translations = Record<string, any>;
@@ -30,11 +38,28 @@ interface I18nProviderProps {
   children: ReactNode;
 }
 
-export function I18nProvider({ children }: I18nProviderProps) {
-  const [locale, setLocaleState] = useState<Locale>('en');
-  const [translations, setTranslations] = useState<Translations>(defaultTranslations);
+export const I18nProvider = ({ children }: { children: ReactNode }) => {
+  // Get initial locale from pre-hydration script or localStorage
+  const getInitialLocale = (): string => {
+    if (typeof window !== 'undefined') {
+      // Check if we have pre-hydration values first
+      if (window.__INITIAL_LOCALE__) {
+        return window.__INITIAL_LOCALE__;
+      }
+      // Fallback to localStorage check
+      try {
+        return localStorage.getItem('locale') || 'en';
+      } catch {
+        return 'en';
+      }
+    }
+    return 'en';
+  };
 
-  // Load translations
+  const [locale, setLocaleState] = useState<string>(getInitialLocale);
+  const [translations, setTranslations] = useState<Translations>({});
+
+  // Load translations when locale changes
   useEffect(() => {
     const loadTranslations = async () => {
       try {
@@ -57,20 +82,32 @@ export function I18nProvider({ children }: I18nProviderProps) {
     loadTranslations();
   }, [locale]);
 
-  // Load saved locale from localStorage
+  // Load saved locale from localStorage with pre-hydration support
   useEffect(() => {
-    const savedLocale = localStorage.getItem('locale') as Locale;
-    if (savedLocale && LOCALES[savedLocale]) {
-      setLocaleState(savedLocale);
+    const initialLocale = getInitialLocale();
+    if (initialLocale !== locale && initialLocale in LOCALES) {
+      setLocaleState(initialLocale);
+    }
+    
+    // Ensure DOM is in sync (should already be set by pre-hydration script)
+    if (typeof document !== 'undefined' && initialLocale in LOCALES) {
+      document.documentElement.lang = initialLocale;
+      document.documentElement.dir = initialLocale === 'ar' ? 'rtl' : 'ltr';
     }
   }, []);
 
+  // Update document direction whenever locale changes
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+  }, [locale]);
+
   const setLocale = (newLocale: string) => {
-    if (LOCALES[newLocale as Locale]) {
-      setLocaleState(newLocale as Locale);
+    if (newLocale in LOCALES) {
+      setLocaleState(newLocale);
       localStorage.setItem('locale', newLocale);
       
-      // Update HTML attributes
+      // Update HTML attributes immediately
       document.documentElement.lang = newLocale;
       document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
     }

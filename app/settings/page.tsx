@@ -155,7 +155,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
         title={t('settings.title')}
@@ -174,12 +174,12 @@ export default function SettingsPage() {
                 <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
                 {t('settings.title')}
               </h2>
-              <div className="flex gap-3">
+              <div className={`flex gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <button
                   onClick={resetToDefaults}
                   className="inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                   {t('settings.resetToDefaults')}
@@ -191,12 +191,12 @@ export default function SettingsPage() {
                 >
                   {isSaving ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                      <div className={`animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent ${isRTL ? 'ml-2' : 'mr-2'}`}></div>
                       {t('common.loading')}...
                     </>
                   ) : (
                     <>
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       {t('settings.saveChanges')}
@@ -239,7 +239,7 @@ export default function SettingsPage() {
             
             {/* Display Settings */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3">
+              <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -292,13 +292,13 @@ export default function SettingsPage() {
                 </div>
                 {/* Posts per Page */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {t('settings.postsPerPage')}
                   </label>
                   <select
                     value={settings.postsPerPage}
                     onChange={(e) => updateSetting('postsPerPage', Number(e.target.value))}
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
                   >
                     <option value={10}>10 posts</option>
                     <option value={20}>20 posts</option>
@@ -309,13 +309,13 @@ export default function SettingsPage() {
 
                 {/* Default Sort */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {t('settings.defaultSortOrder')}
                   </label>
                   <select
                     value={settings.defaultSort}
                     onChange={(e) => updateSetting('defaultSort', e.target.value as 'id' | 'title' | 'author')}
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
                   >
                     <option value="id">{t('settings.sortById')}</option>
                     <option value="title">{t('settings.sortByTitle')}</option>
@@ -339,13 +339,14 @@ export default function SettingsPage() {
                       settings.compactView 
                         ? 'bg-blue-600' 
                         : 'bg-gray-200 dark:bg-gray-700'
-                    }`}
+                    } ${isRTL ? 'flex-row-reverse' : ''}`}
+                    dir="ltr"
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                         settings.compactView 
-                          ? 'translate-x-6'
-                          : 'translate-x-1'
+                          ? (isRTL ? '-translate-x-6' : 'translate-x-6')
+                          : (isRTL ? '-translate-x-1' : 'translate-x-1')
                       }`}
                     />
                   </button>
@@ -368,12 +369,13 @@ export default function SettingsPage() {
                         ? 'bg-blue-600' 
                         : 'bg-gray-200 dark:bg-gray-700'
                     }`}
+                    dir="ltr"
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                         settings.showAnimations 
-                          ? 'translate-x-6'
-                          : 'translate-x-1'
+                          ? (isRTL ? '-translate-x-6' : 'translate-x-6')
+                          : (isRTL ? '-translate-x-1' : 'translate-x-1')
                       }`}
                     />
                   </button>
@@ -383,7 +385,7 @@ export default function SettingsPage() {
 
             {/* Auto-Refresh Settings */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3">
+              <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
                 <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -410,12 +412,13 @@ export default function SettingsPage() {
                         ? 'bg-green-600' 
                         : 'bg-gray-200 dark:bg-gray-700'
                     }`}
+                    dir="ltr"
                   >
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                         settings.autoRefresh 
-                          ? 'translate-x-6'
-                          : 'translate-x-1'
+                          ? (isRTL ? '-translate-x-6' : 'translate-x-6')
+                          : (isRTL ? '-translate-x-1' : 'translate-x-1')
                       }`}
                     />
                   </button>
@@ -423,7 +426,7 @@ export default function SettingsPage() {
 
                 {/* Refresh Interval */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {t('settings.refreshInterval')}
                   </label>
                   <input
@@ -433,9 +436,9 @@ export default function SettingsPage() {
                     value={settings.refreshInterval}
                     onChange={(e) => updateSetting('refreshInterval', Number(e.target.value))}
                     disabled={!settings.autoRefresh}
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${isRTL ? 'text-right' : 'text-left'}`}
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className={`text-xs text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {t('settings.refreshIntervalDesc')}
                   </p>
                 </div>
@@ -444,7 +447,7 @@ export default function SettingsPage() {
 
             {/* Notification Settings */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3">
+              <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
                 <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM11 19l-7-7 7-7m0 14l7-7-7-7" />
@@ -469,12 +472,13 @@ export default function SettingsPage() {
                       ? 'bg-yellow-600' 
                       : 'bg-gray-200 dark:bg-gray-700'
                   }`}
+                  dir="ltr"
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                       settings.notifications 
-                        ? 'translate-x-6'
-                        : 'translate-x-1'
+                        ? (isRTL ? '-translate-x-6' : 'translate-x-6')
+                        : (isRTL ? '-translate-x-1' : 'translate-x-1')
                     }`}
                   />
                 </button>
@@ -483,7 +487,7 @@ export default function SettingsPage() {
 
             {/* Localization Settings */}
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3">
+              <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -495,13 +499,13 @@ export default function SettingsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Language */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {t('common.language')}
                   </label>
                   <select
                     value={locale}
                     onChange={(e) => updateSetting('language', e.target.value)}
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
                   >
                     <option value="en">English</option>
                     <option value="ar">العربية</option>
@@ -510,13 +514,13 @@ export default function SettingsPage() {
 
                 {/* Timezone */}
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
                     Timezone
                   </label>
                   <select
                     value={settings.timezone}
                     onChange={(e) => updateSetting('timezone', e.target.value)}
-                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
                   >
                     <option value="UTC">UTC</option>
                     <option value="America/New_York">Eastern Time</option>
