@@ -228,5 +228,49 @@
     "customReportTemplates": "• Custom report templates",
     "multipleRecipients": "• Multiple recipients",
     "backToDashboard": "Back to Dashboard"
+  },
+  "addPost": {
+    "title": "Add New Post",
+    "subtitle": "Create and publish new posts to the JSONPlaceholder API",
+    "createNewPost": "Create New Post",
+    "quickAddButton": "Quick Add Post",
+    "recentPostsTitle": "Recent Posts",
+    "loadPostsButton": "Load Posts",
+    "loadingText": "Loading...",
+    "noPostsYet": "No Posts Yet",
+    "noPostsDesc": "Create your first post or load existing posts to see them here.",
+    "clickToView": "Click to view",
+    "newLabel": "✨ New",
+    "user": "User",
+    "backToPosts": "Back to Posts",
+    "backToDashboard": "Back to Dashboard",
+    "fields": {
+      "title": "Post Title",
+      "content": "Post Content",
+      "author": "Author"
+    },
+    "placeholders": {
+      "title": "Enter your post title...",
+      "content": "Write your post content here..."
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMinLength": "Title must be at least 3 characters long",
+      "titleMaxLength": "Title must be less than 100 characters",
+      "bodyRequired": "Body is required",
+      "bodyMinLength": "Body must be at least 10 characters long",
+      "bodyMaxLength": "Body must be less than 500 characters",
+      "userIdRange": "Please select a valid user (1-10)"
+    },
+    "errorMessages": {
+      "createFailed": "Failed to create post"
+    },
+    "charactersLabel": "characters",
+    "resetButton": "Reset Form",
+    "createButton": "Create Post",
+    "creatingButton": "Creating Post...",
+    "successMessage": "Post created successfully! ✨",
+    "errorMessage": "Failed to create post. Please try again.",
+    "cancelButton": "Cancel"
   }
 }

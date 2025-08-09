@@ -228,5 +228,49 @@
     "customReportTemplates": "• قوالب التقارير المخصصة",
     "multipleRecipients": "• مستلمون متعددون",
     "backToDashboard": "العودة إلى لوحة التحكم"
+  },
+  "addPost": {
+    "title": "إضافة منشور جديد",
+    "subtitle": "إنشاء ونشر منشورات جديدة إلى واجهة برمجة التطبيقات",
+    "createNewPost": "إنشاء منشور جديد",
+    "quickAddButton": "إضافة سريعة",
+    "recentPostsTitle": "المنشورات الحديثة",
+    "loadPostsButton": "تحميل المنشورات",
+    "loadingText": "جاري التحميل...",
+    "noPostsYet": "لا توجد منشورات بعد",
+    "noPostsDesc": "أنشئ منشورك الأول أو قم بتحميل المنشورات الموجودة لرؤيتها هنا.",
+    "clickToView": "انقر للعرض",
+    "newLabel": "✨ جديد",
+    "user": "المستخدم",
+    "backToPosts": "العودة إلى المنشورات",
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "fields": {
+      "title": "عنوان المنشور",
+      "content": "محتوى المنشور",
+      "author": "المؤلف"
+    },
+    "placeholders": {
+      "title": "أدخل عنوان منشورك...",
+      "content": "اكتب محتوى منشورك هنا..."
+    },
+    "validation": {
+      "titleRequired": "العنوان مطلوب",
+      "titleMinLength": "يجب أن يكون العنوان 3 أحرف على الأقل",
+      "titleMaxLength": "يجب أن يكون العنوان أقل من 100 حرف",
+      "bodyRequired": "المحتوى مطلوب",
+      "bodyMinLength": "يجب أن يكون المحتوى 10 أحرف على الأقل",
+      "bodyMaxLength": "يجب أن يكون المحتوى أقل من 500 حرف",
+      "userIdRange": "يرجى اختيار مستخدم صالح (1-10)"
+    },
+    "errorMessages": {
+      "createFailed": "فشل في إنشاء المنشور"
+    },
+    "charactersLabel": "أحرف",
+    "resetButton": "إعادة تعيين النموذج",
+    "createButton": "إنشاء المنشور",
+    "creatingButton": "جاري إنشاء المنشور...",
+    "successMessage": "تم إنشاء المنشور بنجاح! ✨",
+    "errorMessage": "فشل في إنشاء المنشور. يرجى المحاولة مرة أخرى.",
+    "cancelButton": "إلغاء"
   }
 }
