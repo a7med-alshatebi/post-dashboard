@@ -391,14 +391,21 @@ export default function PostsPage() {
                         <button
                           onClick={() => deletePost(post.id)}
                           disabled={deletingIds.has(post.id)}
-                          className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center p-2 border border-transparent rounded-lg text-red-600 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50"
+                          className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center px-3 py-2 gap-2 border border-transparent rounded-xl text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md"
+                          title={t('posts.deletePost')}
                         >
                           {deletingIds.has(post.id) ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-2 border-red-300 border-t-red-600"></div>
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-red-300 border-t-red-600"></div>
+                              <span className="hidden sm:inline">{t('common.loading')}</span>
+                            </>
                           ) : (
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                            </svg>
+                            <>
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                              </svg>
+                              <span className="hidden sm:inline">{t('common.delete')}</span>
+                            </>
                           )}
                         </button>
                       </div>
