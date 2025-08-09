@@ -555,41 +555,22 @@ export default function UserPage({ params }: UserPageProps) {
                 {/* Pagination */}
                 {totalPages > 1 && (
                   <div className={`px-4 sm:px-6 lg:px-8 py-4 border-t border-gray-200 dark:border-gray-700 ${isRTL ? 'font-arabic' : ''}`}>
-                    <div className="flex items-center justify-center">
-                      <div className={`flex justify-center sm:hidden w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <nav className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {t('userProfile.pagination.previous')}
-                          </button>
-                          
-                          <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                              <button
-                                key={page}
-                                onClick={() => handlePageChange(page)}
-                                className={`w-8 h-8 text-sm font-medium rounded ${
-                                  page === currentPage
-                                    ? 'bg-blue-500 text-white'
-                                    : 'text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-                                }`}
-                              >
-                                {page}
-                              </button>
-                            ))}
-                          </div>
-
-                          <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {t('userProfile.pagination.next')}
-                          </button>
-                        </nav>
+                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex-1 flex justify-between sm:hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <button
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {t('userProfile.pagination.previous')}
+                        </button>
+                        <button
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {t('userProfile.pagination.next')}
+                        </button>
                       </div>
                       <div className={`hidden sm:flex-1 sm:flex sm:items-center sm:justify-center sm:flex-col sm:gap-4 ${isRTL ? 'sm:flex-col-reverse' : ''}`}>
                         <div>
