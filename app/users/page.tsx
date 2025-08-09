@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
 import { useToast } from '../../components/toast';
+import { useI18n } from '../../contexts/I18nContext';
 
 interface User {
   id: number;
@@ -38,6 +39,7 @@ interface Post {
 }
 
 export default function UsersPage() {
+  const { t, isRTL } = useI18n();
   const [users, setUsers] = useState<User[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,13 +72,13 @@ export default function UsersPage() {
       console.error('Error fetching data:', error);
       addToast({
         type: 'error',
-        title: 'Failed to load data',
-        message: 'Please check your connection and try again.'
+        title: t('users.loadDataFailed'),
+        message: t('users.checkConnection')
       });
     } finally {
       setLoading(false);
     }
-  }, [addToast]);
+  }, [addToast, t]);
 
   useEffect(() => {
     fetchUsersAndPosts();
@@ -112,11 +114,11 @@ export default function UsersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+      <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
         {/* Header */}
         <Header 
-          title="Users Directory"
-          subtitle="Browse and manage user profiles and their contributions"
+          title={t('users.title')}
+          subtitle={t('users.subtitle')}
           showStats={true}
           stats={{
             users: 0,
@@ -210,11 +212,11 @@ export default function UsersPage() {
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
-        title="Users Directory"
-        subtitle="Browse and manage user profiles and their contributions"
+        title={t('users.title')}
+        subtitle={t('users.subtitle')}
         showStats={true}
         stats={{
           users: users.length,
@@ -229,40 +231,41 @@ export default function UsersPage() {
           {/* Search and Filter Controls */}
           <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
             <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
+              <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-500 rounded-full"></span>
-                  <span className="truncate">All Users ({filteredUsers.length})</span>
+                  <span className="truncate">{t('users.allUsers')} ({filteredUsers.length})</span>
                   {totalPages > 1 && (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Page {currentPage} of {totalPages}
+                      {t('common.page')} {currentPage} {t('common.of')} {totalPages}
                     </span>
                   )}
                 </h2>
-                <div className="hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                <div className={`hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  Live Data
+                  {t('users.liveData')}
                 </div>
               </div>
 
               {/* Search Bar */}
               <div className="flex-1 relative max-w-md">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
                   <svg className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <input
                   type="text"
-                  placeholder="Search users by name, username, email, or company..."
+                  placeholder={t('users.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="block w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 text-sm"
+                  className={`block w-full ${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 text-sm ${isRTL ? 'text-right' : 'text-left'}`}
+                  dir={isRTL ? 'rtl' : 'ltr'}
                 />
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm('')}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300`}
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -288,22 +291,22 @@ export default function UsersPage() {
           {/* Users Grid */}
           <div className="p-4 sm:p-6 lg:p-8">
             {currentUsers.length === 0 ? (
-              <div className="text-center py-12">
+              <div className={`text-center py-12 ${isRTL ? 'font-arabic' : ''}`}>
                 <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">No Users Found</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('users.noUsersFound')}</h3>
                 <p className="text-gray-500 dark:text-gray-400">
-                  {searchTerm ? 'No users match your search criteria.' : 'No users available.'}
+                  {searchTerm ? t('users.noUsersMatchSearch') : t('users.noUsersAvailable')}
                 </p>
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm('')}
                     className="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
                   >
-                    Clear search
+                    {t('users.clearSearch')}
                   </button>
                 )}
               </div>
@@ -332,31 +335,31 @@ export default function UsersPage() {
                     </div>
 
                     {/* User Stats */}
-                    <div className="space-y-3 mb-4">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600 dark:text-gray-400">Posts</span>
+                    <div className={`space-y-3 mb-4 ${isRTL ? 'font-arabic' : ''}`}>
+                      <div className={`flex items-center justify-between text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className="text-gray-600 dark:text-gray-400">{t('users.posts')}</span>
                         <span className="font-medium text-gray-900 dark:text-white bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
                           {getUserPostCount(user.id)}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                      <div className={`text-sm text-gray-600 dark:text-gray-400 truncate ${isRTL ? 'text-right' : ''}`}>
                         📧 {user.email}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                      <div className={`text-sm text-gray-600 dark:text-gray-400 truncate ${isRTL ? 'text-right' : ''}`}>
                         🏢 {user.company.name}
                       </div>
                     </div>
 
                     {/* User Location */}
-                    <div className="text-xs text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-600 pt-3">
+                    <div className={`text-xs text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-600 pt-3 ${isRTL ? 'text-right font-arabic' : ''}`}>
                       📍 {user.address.city}, {user.address.zipcode}
                     </div>
 
                     {/* Hover indicator */}
-                    <div className="mt-4 flex items-center text-green-600 dark:text-green-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                      View Profile
-                      <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <div className={`mt-4 flex items-center text-green-600 dark:text-green-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      {t('users.viewProfile')}
+                      <svg className={`w-4 h-4 ${isRTL ? 'mr-1 transform group-hover:-translate-x-1' : 'ml-1 transform group-hover:translate-x-1'} transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
                       </svg>
                     </div>
                   </Link>
@@ -366,46 +369,46 @@ export default function UsersPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="mt-8 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
-                <div className="flex-1 flex justify-between sm:hidden">
+              <div className={`mt-8 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex-1 flex justify-between sm:hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                     className="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Previous
+                    {t('users.pagination.previous')}
                   </button>
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Next
+                    {t('users.pagination.next')}
                   </button>
                 </div>
-                <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div className={`hidden sm:flex-1 sm:flex sm:items-center sm:justify-between ${isRTL ? 'sm:flex-row-reverse font-arabic' : ''}`}>
                   <div>
                     <p className="text-sm text-gray-700 dark:text-gray-300">
-                      Showing{' '}
+                      {t('users.pagination.showing')}{' '}
                       <span className="font-medium">{indexOfFirstUser + 1}</span>
-                      {' '}to{' '}
+                      {' '}{t('users.pagination.to')}{' '}
                       <span className="font-medium">
                         {Math.min(indexOfLastUser, filteredUsers.length)}
                       </span>
-                      {' '}of{' '}
+                      {' '}{t('users.pagination.of')}{' '}
                       <span className="font-medium">{filteredUsers.length}</span>
-                      {' '}users
+                      {' '}{t('users.pagination.users')}
                     </p>
                   </div>
                   <div>
-                    <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                    <nav className={`relative z-0 inline-flex rounded-md shadow-sm ${isRTL ? 'space-x-reverse -space-x-px' : '-space-x-px'}`}>
                       <button
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`relative inline-flex items-center px-2 py-2 ${isRTL ? 'rounded-r-md' : 'rounded-l-md'} border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed`}
                       >
                         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <path fillRule="evenodd" d={isRTL ? "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" : "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"} clipRule="evenodd" />
                         </svg>
                       </button>
                       
@@ -426,10 +429,10 @@ export default function UsersPage() {
                       <button
                         onClick={() => handlePageChange(currentPage + 1)}
                         disabled={currentPage === totalPages}
-                        className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`relative inline-flex items-center px-2 py-2 ${isRTL ? 'rounded-l-md' : 'rounded-r-md'} border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed`}
                       >
                         <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          <path fillRule="evenodd" d={isRTL ? "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" : "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"} clipRule="evenodd" />
                         </svg>
                       </button>
                     </nav>

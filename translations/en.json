@@ -272,5 +272,101 @@
     "successMessage": "Post created successfully! ✨",
     "errorMessage": "Failed to create post. Please try again.",
     "cancelButton": "Cancel"
+  },
+  "users": {
+    "title": "Users Directory",
+    "subtitle": "Browse and manage user profiles and their contributions",
+    "allUsers": "All Users",
+    "pageOf": "Page {current} of {total}",
+    "liveData": "Live Data",
+    "searchPlaceholder": "Search users by name, username, email, or company...",
+    "searchLabel": "Search",
+    "searchResults": "{count} of {total} users",
+    "clearSearch": "Clear search",
+    "noUsersFound": "No Users Found",
+    "noUsersAvailable": "No users available.",
+    "noUsersMatchSearch": "No users match your search criteria.",
+    "posts": "Posts",
+    "email": "Email",
+    "company": "Company",
+    "location": "Location",
+    "viewProfile": "View Profile",
+    "loadDataFailed": "Failed to load data",
+    "checkConnection": "Please check your connection and try again.",
+    "pagination": {
+      "showing": "Showing",
+      "to": "to", 
+      "of": "of",
+      "users": "users",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "userProfile": {
+    "loading": "Loading User",
+    "loadingMessage": "Fetching user data and posts...",
+    "userNotFound": "User Not Found",
+    "userNotFoundSubtitle": "The requested user could not be found",
+    "errorMessage": "The user you're looking for might have been removed or doesn't exist.",
+    "backToDashboard": "Back to Dashboard",
+    "breadcrumbDashboard": "Dashboard",
+    "breadcrumbUsers": "Users",
+    "userIdPrefix": "User #",
+    "email": "Email",
+    "phone": "Phone", 
+    "website": "Website",
+    "company": "Company",
+    "postsBy": "Posts by",
+    "postsCount": "posts",
+    "pageOf": "Page {current} of {total}",
+    "noPostsTitle": "No Posts Yet",
+    "noPostsMessage": "This user hasn't created any posts yet.",
+    "tableHeaders": {
+      "id": "ID",
+      "title": "Title",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Edit",
+      "share": "Share", 
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "postCharacters": "characters",
+    "postId": "Post ID:",
+    "pagination": {
+      "showing": "Showing",
+      "to": "to",
+      "of": "of", 
+      "posts": "posts",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "mobileView": {
+      "previous": "Previous",
+      "next": "Next",
+      "pageInfo": "Page {current} of {total}"
+    },
+    "backToUsers": "Back to Users",
+    "of": "of",
+    "noPostsYet": "No Posts Yet",
+    "confirmDialog": {
+      "deleteTitle": "Delete Post",
+      "deleteMessage": "Are you sure you want to delete post",
+      "cannotUndone": "This action cannot be undone.",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    },
+    "toast": {
+      "failedToLoad": "Failed to load user data",
+      "postDeleted": "Post deleted",
+      "postDeletedMessage": "Post has been successfully deleted",
+      "deleteFailed": "Delete failed",
+      "deleteFailedMessage": "Failed to delete the post. Please try again.",
+      "postUpdated": "Post updated",
+      "postUpdatedMessage": "Post has been successfully updated",
+      "updateFailed": "Update failed",
+      "updateFailedMessage": "Failed to update the post. Please try again."
+    }
   }
 }

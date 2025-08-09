@@ -272,5 +272,101 @@
     "successMessage": "تم إنشاء المنشور بنجاح! ✨",
     "errorMessage": "فشل في إنشاء المنشور. يرجى المحاولة مرة أخرى.",
     "cancelButton": "إلغاء"
+  },
+  "users": {
+    "title": "دليل المستخدمين",
+    "subtitle": "تصفح وإدارة ملفات المستخدمين ومساهماتهم",
+    "allUsers": "جميع المستخدمين",
+    "pageOf": "صفحة {current} من {total}",
+    "liveData": "بيانات مباشرة",
+    "searchPlaceholder": "البحث في المستخدمين بالاسم أو اسم المستخدم أو البريد الإلكتروني أو الشركة...",
+    "searchLabel": "البحث",
+    "searchResults": "{count} من {total} مستخدم",
+    "clearSearch": "مسح البحث",
+    "noUsersFound": "لم يتم العثور على مستخدمين",
+    "noUsersAvailable": "لا يوجد مستخدمون متاحون.",
+    "noUsersMatchSearch": "لا يوجد مستخدمون يطابقون معايير البحث الخاصة بك.",
+    "posts": "المنشورات",
+    "email": "البريد الإلكتروني",
+    "company": "الشركة",
+    "location": "الموقع",
+    "viewProfile": "عرض الملف الشخصي",
+    "loadDataFailed": "فشل في تحميل البيانات",
+    "checkConnection": "يرجى فحص الاتصال والمحاولة مرة أخرى.",
+    "pagination": {
+      "showing": "عرض",
+      "to": "إلى",
+      "of": "من",
+      "users": "مستخدم",
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  },
+  "userProfile": {
+    "loading": "تحميل بيانات المستخدم",
+    "loadingMessage": "جاري تحميل بيانات المستخدم والمنشورات...",
+    "userNotFound": "المستخدم غير موجود",
+    "userNotFoundSubtitle": "لم يتم العثور على المستخدم المطلوب",
+    "errorMessage": "المستخدم الذي تبحث عنه قد يكون محذوفاً أو غير موجود.",
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "breadcrumbDashboard": "لوحة التحكم",
+    "breadcrumbUsers": "المستخدمون",
+    "userIdPrefix": "المستخدم رقم #",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "website": "الموقع الإلكتروني",
+    "company": "الشركة",
+    "postsBy": "منشورات",
+    "postsCount": "منشور",
+    "pageOf": "صفحة {current} من {total}",
+    "noPostsTitle": "لا توجد منشورات بعد",
+    "noPostsMessage": "لم ينشئ هذا المستخدم أي منشورات حتى الآن.",
+    "tableHeaders": {
+      "id": "المعرف",
+      "title": "العنوان",
+      "actions": "الإجراءات"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "share": "مشاركة",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "postCharacters": "حرف",
+    "postId": "معرف المنشور:",
+    "pagination": {
+      "showing": "عرض",
+      "to": "إلى",
+      "of": "من",
+      "posts": "منشور",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "mobileView": {
+      "previous": "السابق",
+      "next": "التالي",
+      "pageInfo": "صفحة {current} من {total}"
+    },
+    "backToUsers": "العودة إلى المستخدمين",
+    "of": "من",
+    "noPostsYet": "لا توجد منشورات بعد",
+    "confirmDialog": {
+      "deleteTitle": "حذف المنشور",
+      "deleteMessage": "هل أنت متأكد من حذف المنشور",
+      "cannotUndone": "لا يمكن التراجع عن هذا الإجراء.",
+      "delete": "حذف",
+      "cancel": "إلغاء"
+    },
+    "toast": {
+      "failedToLoad": "فشل في تحميل بيانات المستخدم",
+      "postDeleted": "تم حذف المنشور",
+      "postDeletedMessage": "تم حذف المنشور بنجاح",
+      "deleteFailed": "فشل الحذف",
+      "deleteFailedMessage": "فشل في حذف المنشور. يرجى المحاولة مرة أخرى.",
+      "postUpdated": "تم تحديث المنشور",
+      "postUpdatedMessage": "تم تحديث المنشور بنجاح",
+      "updateFailed": "فشل التحديث",
+      "updateFailedMessage": "فشل في تحديث المنشور. يرجى المحاولة مرة أخرى."
+    }
   }
 }
