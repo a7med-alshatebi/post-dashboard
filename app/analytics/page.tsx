@@ -187,15 +187,15 @@ export default function AnalyticsPage() {
               {/* Engagement Tracking */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-green-500 to-teal-600 px-6 py-4">
-                  <h3 className={`text-xl font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <h3 className={`text-xl font-bold text-white flex items-center justify-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <svg className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                     {t('analytics.engagementTracking')}
                   </h3>
                 </div>
-                <div className="p-6">
-                  <div className="grid md:grid-cols-3 gap-6">
+                <div className="p-6 flex justify-center">
+                  <div className="grid md:grid-cols-3 gap-6 max-w-4xl w-full">
                     <div className="text-center">
                       <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
