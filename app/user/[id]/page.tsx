@@ -364,11 +364,11 @@ export default function UserPage({ params }: UserPageProps) {
         {/* User Profile Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
           <div className="px-6 sm:px-8 lg:px-12 py-6 sm:py-8 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
-            <div className="flex items-start gap-6">
+            <div className={`flex items-start gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
                 {user.name.charAt(0)}
               </div>
-              <div className="flex-1">
+              <div className={`flex-1 ${isRTL ? 'text-right font-arabic' : ''}`}>
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   {user.name}
                 </h1>
@@ -376,14 +376,14 @@ export default function UserPage({ params }: UserPageProps) {
                   @{user.username}
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
+                  <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     <span className="text-gray-600 dark:text-gray-300">{user.email}</span>
                   </div>
                   {user.phone && (
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
@@ -391,7 +391,7 @@ export default function UserPage({ params }: UserPageProps) {
                     </div>
                   )}
                   {user.website && (
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
                       </svg>
@@ -406,7 +406,7 @@ export default function UserPage({ params }: UserPageProps) {
                     </div>
                   )}
                   {user.company && (
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
@@ -501,7 +501,7 @@ export default function UserPage({ params }: UserPageProps) {
                                 {post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title}
                               </h3>
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                {post.title.length} characters
+                                {post.title.length} {t('userProfile.postCharacters')}
                               </p>
                             </div>
                           </td>
@@ -572,9 +572,9 @@ export default function UserPage({ params }: UserPageProps) {
                           {t('userProfile.pagination.next')}
                         </button>
                       </div>
-                      <div className={`hidden sm:flex-1 sm:flex sm:items-center sm:justify-between ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                      <div className={`hidden sm:flex-1 sm:flex sm:items-center sm:justify-center sm:flex-col sm:gap-4 ${isRTL ? 'sm:flex-col-reverse' : ''}`}>
                         <div>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
+                          <p className="text-sm text-gray-700 dark:text-gray-300 text-center">
                             {t('userProfile.pagination.showing')}{' '}
                             <span className="font-medium">{indexOfFirstPost + 1}</span>
                             {' '}{t('userProfile.pagination.to')}{' '}
@@ -638,55 +638,58 @@ export default function UserPage({ params }: UserPageProps) {
                     style={{ animationDelay: `${index * 50}ms` }}
                     onClick={() => router.push(`/post/${post.id}`)}
                   >
-                    <div className="flex justify-between items-start mb-3 sm:mb-4">
-                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                    <div className={`flex justify-between items-start mb-3 sm:mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 sm:gap-3 min-w-0 flex-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg sm:rounded-xl flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">
                           #{post.id}
                         </div>
                         <div className="min-w-0">
-                          <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full whitespace-nowrap">
-                            Post ID: {post.id}
+                          <span className={`text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-full whitespace-nowrap ${isRTL ? 'font-arabic' : ''}`}>
+                            {t('userProfile.postId')} {post.id}
                           </span>
                         </div>
                       </div>
-                      <div className="flex gap-1.5 sm:gap-2" onClick={(e) => e.stopPropagation()}>
+                      <div className={`flex gap-1.5 sm:gap-2 ${isRTL ? 'flex-row-reverse' : ''}`} onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => handleEditPost(post)}
                           className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm flex-shrink-0"
-                          title="Edit Post"
+                          title={t('userProfile.actions.edit')}
                         >
-                          <svg className="w-3 h-3 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-3 h-3 ${isRTL ? 'ml-1' : 'sm:mr-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
-                          <span className="hidden sm:inline">Edit</span>
+                          <span className="hidden sm:inline">{t('userProfile.actions.edit')}</span>
                         </button>
                         <button
                           onClick={() => handleSharePost(post)}
                           className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm flex-shrink-0"
-                          title="Share Post"
+                          title={t('userProfile.actions.share')}
                         >
-                          <svg className="w-3 h-3 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-3 h-3 ${isRTL ? 'ml-1' : 'sm:mr-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                           </svg>
-                          <span className="hidden sm:inline">Share</span>
+                          <span className="hidden sm:inline">{t('userProfile.actions.share')}</span>
                         </button>
                         <button
                           onClick={() => deletePost(post.id)}
                           disabled={deletingIds.has(post.id)}
                           className="min-touch-target group-hover:scale-110 transition-transform inline-flex items-center px-2 sm:px-3 py-1.5 sm:py-2 border border-transparent text-xs font-medium rounded-lg sm:rounded-xl text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm flex-shrink-0"
-                          title="Delete Post"
+                          title={t('userProfile.actions.delete')}
                         >
                           {deletingIds.has(post.id) ? (
-                            <div className="animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 sm:mr-1"></div>
+                            <div className={`animate-spin rounded-full h-3 w-3 border-2 border-red-300 border-t-red-600 ${isRTL ? 'ml-1' : 'sm:mr-1'}`}></div>
                           ) : (
-                            <svg className="w-3 h-3 sm:mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className={`w-3 h-3 ${isRTL ? 'ml-1' : 'sm:mr-1'}`} fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                             </svg>
                           )}
+                          <span className="hidden sm:inline">
+                            {deletingIds.has(post.id) ? t('userProfile.actions.deleting') : t('userProfile.actions.delete')}
+                          </span>
                         </button>
                       </div>
                     </div>
-                    <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2">
+                    <h3 className={`font-bold text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3 capitalize leading-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2 ${isRTL ? 'font-arabic text-right' : 'text-left'}`}>
                       {post.title}
                     </h3>
                   </div>

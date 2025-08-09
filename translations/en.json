@@ -332,8 +332,8 @@
       "delete": "Delete",
       "deleting": "Deleting..."
     },
-    "postCharacters": "characters",
     "postId": "Post ID:",
+    "postCharacters": "characters",
     "pagination": {
       "showing": "Showing",
       "to": "to",
