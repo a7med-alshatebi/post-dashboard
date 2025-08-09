@@ -278,13 +278,13 @@ export default function PostsPage() {
                 {/* New Post Button */}
                 <Link
                   href="/add-post"
-                  className={`min-touch-target inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap ${isRTL ? 'flex-row-reverse' : ''}`}
+                  className="min-touch-target inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap"
                 >
-                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2 order-2' : 'mr-2 order-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
-                  <span className="hidden sm:inline">{t('posts.createNew')}</span>
-                  <span className="sm:hidden">{t('posts.newPost')}</span>
+                  <span className={`hidden sm:inline ${isRTL ? 'order-1' : 'order-2'}`}>{t('posts.createNew')}</span>
+                  <span className={`sm:hidden ${isRTL ? 'order-1' : 'order-2'}`}>{t('posts.newPost')}</span>
                 </Link>
               </div>
 
@@ -616,12 +616,12 @@ export default function PostsPage() {
                   )}
                   <Link
                     href="/add-post"
-                    className={`min-touch-target inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl ${isRTL ? 'flex-row-reverse' : ''}`}
+                    className="min-touch-target inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl"
                   >
-                    <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-4 h-4 ${isRTL ? 'ml-2 order-2' : 'mr-2 order-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    {t('posts.createFirst')}
+                    <span className={isRTL ? 'order-1' : 'order-2'}>{t('posts.createFirst')}</span>
                   </Link>
                 </div>
               </div>
