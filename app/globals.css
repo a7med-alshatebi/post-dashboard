@@ -44,6 +44,34 @@ html {
   touch-action: manipulation;
 }
 
+/* Immediate RTL support - prevents flash */
+html.rtl {
+  direction: rtl;
+}
+
+html.ltr {
+  direction: ltr;
+}
+
+/* Prevent layout shift during hydration */
+html.rtl * {
+  text-align: inherit;
+}
+
+html.ltr * {
+  text-align: inherit;
+}
+
+/* Smooth transitions for direction changes */
+* {
+  transition: none;
+}
+
+html.rtl *,
+html.ltr * {
+  transition: none;
+}
+
 /* Improve mobile tap highlights */
 * {
   -webkit-tap-highlight-color: transparent;

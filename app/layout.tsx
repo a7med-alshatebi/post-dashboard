@@ -35,11 +35,19 @@ export default function RootLayout({
               (function() {
                 try {
                   const savedLocale = localStorage.getItem('locale') || 'en';
+                  const isRTL = savedLocale === 'ar';
+                  
+                  // Set document attributes immediately
                   document.documentElement.lang = savedLocale;
-                  document.documentElement.dir = savedLocale === 'ar' ? 'rtl' : 'ltr';
+                  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+                  
+                  // Add class for immediate styling
+                  document.documentElement.className = document.documentElement.className.replace(/\\b(rtl|ltr)\\b/g, '');
+                  document.documentElement.classList.add(isRTL ? 'rtl' : 'ltr');
                 } catch (e) {
                   document.documentElement.lang = 'en';
                   document.documentElement.dir = 'ltr';
+                  document.documentElement.classList.add('ltr');
                 }
               })();
             `,

@@ -31,7 +31,20 @@ interface I18nProviderProps {
 }
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
-  const [locale, setLocaleState] = useState<string>('en');
+  // Initialize with saved locale to prevent flash
+  const getInitialLocale = (): string => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('locale');
+        return saved && saved in LOCALES ? saved : 'en';
+      } catch {
+        return 'en';
+      }
+    }
+    return 'en';
+  };
+
+  const [locale, setLocaleState] = useState<string>(getInitialLocale);
   const [translations, setTranslations] = useState<Translations>({});
 
   // Load translations when locale changes
@@ -57,14 +70,21 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     loadTranslations();
   }, [locale]);
 
-  // Load saved locale from localStorage
+  // Load saved locale from localStorage (sync with pre-hydration)
   useEffect(() => {
-    const savedLocale = localStorage.getItem('locale');
-    if (savedLocale && savedLocale in LOCALES) {
+    const savedLocale = getInitialLocale();
+    if (savedLocale !== locale) {
       setLocaleState(savedLocale);
-      // Immediately set the document direction for the saved locale
+    }
+    
+    // Ensure DOM attributes are set (should already be done by pre-hydration script)
+    if (typeof document !== 'undefined') {
       document.documentElement.lang = savedLocale;
       document.documentElement.dir = savedLocale === 'ar' ? 'rtl' : 'ltr';
+      
+      // Update classes
+      document.documentElement.className = document.documentElement.className.replace(/\b(rtl|ltr)\b/g, '');
+      document.documentElement.classList.add(savedLocale === 'ar' ? 'rtl' : 'ltr');
     }
   }, []);
 
@@ -79,9 +99,14 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
       setLocaleState(newLocale);
       localStorage.setItem('locale', newLocale);
       
-      // Update HTML attributes immediately
+      // Update HTML attributes and classes immediately
+      const isRTL = newLocale === 'ar';
       document.documentElement.lang = newLocale;
-      document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+      
+      // Update classes for immediate styling
+      document.documentElement.className = document.documentElement.className.replace(/\b(rtl|ltr)\b/g, '');
+      document.documentElement.classList.add(isRTL ? 'rtl' : 'ltr');
     }
   };
 
