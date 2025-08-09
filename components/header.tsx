@@ -297,12 +297,12 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
 
         {/* Header Content */}
         <div className="py-6 sm:py-8 lg:py-12">
-          <div className="text-center" dir="ltr">
-            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 tracking-tight leading-tight">
+          <div className="text-center flex flex-col items-center justify-center" dir="ltr" style={{ textAlign: 'center' }}>
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 tracking-tight leading-tight text-center" style={{ textAlign: 'center' }}>
               {title || 'Posts Dashboard'}
             </h1>
             {subtitle && (
-              <p className="text-sm sm:text-lg lg:text-xl text-blue-100 max-w-2xl mx-auto px-2">
+              <p className="text-sm sm:text-lg lg:text-xl text-blue-100 max-w-2xl mx-auto px-2 text-center" style={{ textAlign: 'center' }}>
                 {subtitle}
               </p>
             )}
