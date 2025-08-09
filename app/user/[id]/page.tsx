@@ -555,7 +555,7 @@ export default function UserPage({ params }: UserPageProps) {
                 {/* Pagination */}
                 {totalPages > 1 && (
                   <div className={`px-4 sm:px-6 lg:px-8 py-4 border-t border-gray-200 dark:border-gray-700 ${isRTL ? 'font-arabic' : ''}`}>
-                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center justify-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <div className={`flex-1 flex justify-between sm:hidden ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <button
                           onClick={() => handlePageChange(currentPage - 1)}
