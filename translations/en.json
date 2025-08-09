@@ -100,6 +100,26 @@
     "noPostsFoundTitle": "No Posts Found",
     "noPostsFoundDesc": "No posts match your current filters. Try adjusting your search criteria or clearing the filters."
   },
+  "postDetail": {
+    "title": "Post Details",
+    "loadingTitle": "Loading Post...",
+    "loadingSubtitle": "Fetching post details from JSONPlaceholder API",
+    "notFoundTitle": "Post Not Found",
+    "notFoundSubtitle": "The requested post could not be found",
+    "postNotFound": "The post you're looking for might have been removed or doesn't exist.",
+    "goBack": "Go Back",
+    "backToPosts": "Back to Posts",
+    "backToDashboard": "Back to Dashboard",
+    "comments": "Comments",
+    "noCommentsTitle": "No Comments Yet",
+    "noCommentsDesc": "Be the first to comment on this post.",
+    "commentsPerPage": "per page for Post",
+    "postBy": "Post by",
+    "readTime": "Read Time",
+    "wordCount": "Word Count",
+    "publishedOn": "Published on",
+    "lastUpdated": "Last updated"
+  },
   "settings": {
     "title": "Settings",
     "subtitle": "Customize your dashboard experience and preferences",

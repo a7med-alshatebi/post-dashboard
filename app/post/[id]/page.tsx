@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Header } from '../../../components/header';
 import { BackToTop } from '../../../components/back-to-top';
 import { ShareEmailModal } from '../../../components/share-email-modal';
+import { useI18n } from '../../../contexts/I18nContext';
 
 interface Post {
   id: number;
@@ -46,6 +47,7 @@ interface PostPageProps {
 
 export default function PostPage({ params }: PostPageProps) {
   const router = useRouter();
+  const { t, isRTL } = useI18n();
   const [post, setPost] = useState<Post | null>(null);
   const [author, setAuthor] = useState<User | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -168,10 +170,10 @@ export default function PostPage({ params }: PostPageProps) {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+      <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
         <Header 
-          title="Loading Post..."
-          subtitle="Fetching post details from JSONPlaceholder API"
+          title={t('postDetail.loadingTitle')}
+          subtitle={t('postDetail.loadingSubtitle')}
           showStats={false}
         />
         
@@ -199,10 +201,10 @@ export default function PostPage({ params }: PostPageProps) {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+      <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
         <Header 
-          title="Post Not Found"
-          subtitle="The requested post could not be found"
+          title={t('postDetail.notFoundTitle')}
+          subtitle={t('postDetail.notFoundSubtitle')}
           showStats={false}
         />
         
@@ -220,7 +222,7 @@ export default function PostPage({ params }: PostPageProps) {
               </h2>
               
               <p className="text-gray-600 dark:text-gray-300 mb-8">
-                The post you&apos;re looking for might have been removed or doesn&apos;t exist.
+                {t('postDetail.postNotFound')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -228,30 +230,30 @@ export default function PostPage({ params }: PostPageProps) {
                   onClick={() => router.back()}
                   className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  Go Back
+                  {t('postDetail.goBack')}
                 </button>
                 
                 <Link
                   href="/posts"
                   className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
-                  Back to Posts
+                  {t('postDetail.backToPosts')}
                 </Link>
                 
                 <Link
                   href="/"
                   className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  Back to Dashboard
+                  {t('postDetail.backToDashboard')}
                 </Link>
               </div>
             </div>
@@ -264,41 +266,41 @@ export default function PostPage({ params }: PostPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
-        title={post?.title || 'Post Details'}
-        subtitle={`Post #${postId} by ${author?.name || 'Unknown Author'}`}
+        title={post?.title || t('postDetail.title')}
+        subtitle={`${t('posts.title')} #${postId} ${t('postDetail.postBy')} ${author?.name || 'Unknown Author'}`}
         showStats={true}
         stats={{
           postId: Number(postId),
           comments: comments.length,
-          author: author?.name || 'Loading...'
+          author: author?.name || t('common.loading')
         }}
       />
 
       {/* Navigation Breadcrumb */}
       <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-2 -mt-3 relative z-10">
-        <nav className="flex items-center space-x-2 text-sm">
+        <nav className={`flex items-center space-x-2 text-sm ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
           <Link 
             href="/" 
             className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
           >
-            Dashboard
+            {t('navigation.dashboard')}
           </Link>
           <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l7-7-7-7" : "M9 5l7 7-7 7"} />
           </svg>
           <Link 
             href="/posts" 
             className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
           >
-            Posts
+            {t('navigation.posts')}
           </Link>
           <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l7-7-7-7" : "M9 5l7 7-7 7"} />
           </svg>
-          <span className="text-gray-500 dark:text-gray-400">Post #{postId}</span>
+          <span className="text-gray-500 dark:text-gray-400">{t('posts.title')} #{postId}</span>
         </nav>
       </div>
 
@@ -348,24 +350,24 @@ export default function PostPage({ params }: PostPageProps) {
                 )}
               </div>
               
-              <div className="flex gap-2 ml-4">
+              <div className={`flex gap-2 ${isRTL ? 'ml-auto mr-4' : 'ml-4'}`}>
                 <button
                   onClick={handleSharePost}
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-xl text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 transition-all duration-200 shadow-sm hover:shadow-md"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  Share
+                  {t('posts.share')}
                 </button>
                 <button
                   onClick={() => router.back()}
                   className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  Back
+                  {t('postDetail.goBack')}
                 </button>
               </div>
             </div>
@@ -391,11 +393,11 @@ export default function PostPage({ params }: PostPageProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </div>
-                Comments ({comments.length})
+                {t('postDetail.comments')} ({comments.length})
               </h2>
               {totalPages > 1 && (
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Page {currentPage} of {totalPages}
+                  {t('common.page')} {currentPage} {t('common.of')} {totalPages}
                 </span>
               )}
             </div>
@@ -427,9 +429,9 @@ export default function PostPage({ params }: PostPageProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">No Comments Yet</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('postDetail.noCommentsTitle')}</h3>
                 <p className="text-gray-500 dark:text-gray-400">
-                  Be the first to comment on this post.
+                  {t('postDetail.noCommentsDesc')}
                 </p>
               </div>
             ) : (
@@ -475,13 +477,13 @@ export default function PostPage({ params }: PostPageProps) {
                 <div className="flex flex-col gap-2 sm:hidden">
                   <div className="text-center">
                     <p className="text-xs text-gray-600 dark:text-gray-300">
-                      Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                      {t('common.page')} <span className="font-medium">{currentPage}</span> {t('common.of')} <span className="font-medium">{totalPages}</span>
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      ({indexOfFirstComment + 1}-{Math.min(indexOfLastComment, comments.length)} of {comments.length} comments)
+                      ({indexOfFirstComment + 1}-{Math.min(indexOfLastComment, comments.length)} {t('common.of')} {comments.length})
                     </p>
                     <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">
-                      {commentsPerPage} per page for Post #{postId}
+                      {commentsPerPage} {t('postDetail.commentsPerPage')} #{postId}
                     </p>
                   </div>
                   <div className="flex justify-center items-center gap-2">
@@ -543,17 +545,17 @@ export default function PostPage({ params }: PostPageProps) {
                 <div className="hidden sm:flex sm:items-center sm:justify-between">
                   <div>
                     <p className="text-sm text-gray-700 dark:text-gray-300">
-                      Showing{' '}
+                      {t('posts.showing')}{' '}
                       <span className="font-medium">{indexOfFirstComment + 1}</span>
-                      {' '}to{' '}
+                      {' '}{t('common.to')}{' '}
                       <span className="font-medium">
                         {Math.min(indexOfLastComment, comments.length)}
                       </span>
-                      {' '}of{' '}
+                      {' '}{t('common.of')}{' '}
                       <span className="font-medium">{comments.length}</span>
-                      {' '}comments
+                      {' '}{t('postDetail.comments').toLowerCase()}
                       <span className="text-blue-600 dark:text-blue-400 ml-2">
-                        ({commentsPerPage} per page for Post #{postId})
+                        ({commentsPerPage} {t('postDetail.commentsPerPage')} #{postId})
                       </span>
                     </p>
                   </div>
@@ -620,19 +622,19 @@ export default function PostPage({ params }: PostPageProps) {
               href="/posts"
               className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              Back to Posts
+              {t('postDetail.backToPosts')}
             </Link>
             <Link
               href="/"
               className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              Back to Dashboard
+              {t('postDetail.backToDashboard')}
             </Link>
           </div>
         </div>
