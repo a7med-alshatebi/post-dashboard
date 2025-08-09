@@ -5,8 +5,10 @@ import { useState, useEffect } from 'react';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
 import { AnalyticsSkeleton } from '../../components/analytics-skeleton';
+import { useI18n } from '../../contexts/I18nContext';
 
 export default function AnalyticsPage() {
+  const { t, isRTL } = useI18n();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +24,10 @@ export default function AnalyticsPage() {
     return <AnalyticsSkeleton />;
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <Header 
-        title="Analytics Dashboard"
-        subtitle="Insights and metrics for your content and user engagement"
+        title={t('analytics.title')}
+        subtitle={t('analytics.subtitle')}
         showStats={true}
         stats={{
           posts: 100,
@@ -36,17 +38,17 @@ export default function AnalyticsPage() {
 
       {/* Navigation Breadcrumb */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-2 -mt-3 relative z-10">
-        <nav className="flex items-center space-x-2 text-sm">
+        <nav className={`flex items-center space-x-2 text-sm ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
           <Link 
             href="/" 
             className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
           >
-            Dashboard
+            {t('navigation.dashboard')}
           </Link>
           <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l7-7-7-7" : "M9 5l7 7-7 7"} />
           </svg>
-          <span className="text-gray-500 dark:text-gray-400">Analytics</span>
+          <span className="text-gray-500 dark:text-gray-400">{t('navigation.analytics')}</span>
         </nav>
       </div>
       
@@ -63,11 +65,11 @@ export default function AnalyticsPage() {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">2,543</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Total Page Views</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.totalPageViews')}</p>
               </div>
-              <div className="text-right">
+              <div className={`text-${isRTL ? 'left' : 'right'}`}>
                 <span className="text-green-500 text-sm font-medium">+12.5%</span>
-                <p className="text-xs text-gray-500">vs last month</p>
+                <p className="text-xs text-gray-500">{t('analytics.vsLastMonth')}</p>
               </div>
             </div>
           </div>
@@ -81,11 +83,11 @@ export default function AnalyticsPage() {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">1,247</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Active Users</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.activeUsers')}</p>
               </div>
-              <div className="text-right">
+              <div className={`text-${isRTL ? 'left' : 'right'}`}>
                 <span className="text-green-500 text-sm font-medium">+8.3%</span>
-                <p className="text-xs text-gray-500">vs last month</p>
+                <p className="text-xs text-gray-500">{t('analytics.vsLastMonth')}</p>
               </div>
             </div>
           </div>
@@ -99,11 +101,11 @@ export default function AnalyticsPage() {
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white">87.2%</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Engagement Rate</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.engagementRate')}</p>
               </div>
-              <div className="text-right">
+              <div className={`text-${isRTL ? 'left' : 'right'}`}>
                 <span className="text-green-500 text-sm font-medium">+2.1%</span>
-                <p className="text-xs text-gray-500">vs last month</p>
+                <p className="text-xs text-gray-500">{t('analytics.vsLastMonth')}</p>
               </div>
             </div>
           </div>
@@ -119,11 +121,10 @@ export default function AnalyticsPage() {
                 </svg>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                Analytics Dashboard
+                {t('analytics.title')}
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-                Comprehensive analytics and reporting tools to understand your content performance, 
-                user behavior, and platform engagement metrics.
+                {t('analytics.description')}
               </p>
             </div>
           </div>
@@ -135,47 +136,47 @@ export default function AnalyticsPage() {
               {/* Post View Analytics */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <h3 className={`text-xl font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <svg className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-                    Post View Analytics
+                    {t('analytics.postViewAnalytics')}
                   </h3>
                 </div>
                 <div className="p-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">View Metrics</h4>
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('analytics.viewMetrics')}</h4>
                       <div className="space-y-4">
                         <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                          <span className="text-gray-700 dark:text-gray-300">Total Post Views</span>
+                          <span className="text-gray-700 dark:text-gray-300">{t('analytics.totalPostViews')}</span>
                           <span className="font-bold text-blue-600 dark:text-blue-400">45,328</span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                          <span className="text-gray-700 dark:text-gray-300">Unique Views</span>
+                          <span className="text-gray-700 dark:text-gray-300">{t('analytics.uniqueViews')}</span>
                           <span className="font-bold text-blue-600 dark:text-blue-400">38,291</span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                          <span className="text-gray-700 dark:text-gray-300">Average Time on Post</span>
+                          <span className="text-gray-700 dark:text-gray-300">{t('analytics.averageTimeOnPost')}</span>
                           <span className="font-bold text-blue-600 dark:text-blue-400">2m 34s</span>
                         </div>
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Top Performing Posts</h4>
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{t('analytics.topPerformingPosts')}</h4>
                       <div className="space-y-3">
                         <div className="p-3 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg border border-green-200 dark:border-green-700">
-                          <p className="font-medium text-gray-900 dark:text-white text-sm">Getting Started with React</p>
-                          <p className="text-green-600 dark:text-green-400 text-xs">12,457 views</p>
+                          <p className="font-medium text-gray-900 dark:text-white text-sm">{t('analytics.gettingStartedReact')}</p>
+                          <p className="text-green-600 dark:text-green-400 text-xs">12,457 {t('analytics.views')}</p>
                         </div>
                         <div className="p-3 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg border border-blue-200 dark:border-blue-700">
-                          <p className="font-medium text-gray-900 dark:text-white text-sm">Advanced JavaScript Concepts</p>
-                          <p className="text-blue-600 dark:text-blue-400 text-xs">9,823 views</p>
+                          <p className="font-medium text-gray-900 dark:text-white text-sm">{t('analytics.advancedJavaScript')}</p>
+                          <p className="text-blue-600 dark:text-blue-400 text-xs">9,823 {t('analytics.views')}</p>
                         </div>
                         <div className="p-3 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg border border-purple-200 dark:border-purple-700">
-                          <p className="font-medium text-gray-900 dark:text-white text-sm">CSS Grid Layout Guide</p>
-                          <p className="text-purple-600 dark:text-purple-400 text-xs">8,394 views</p>
+                          <p className="font-medium text-gray-900 dark:text-white text-sm">{t('analytics.cssGridGuide')}</p>
+                          <p className="text-purple-600 dark:text-purple-400 text-xs">8,394 {t('analytics.views')}</p>
                         </div>
                       </div>
                     </div>
@@ -186,11 +187,11 @@ export default function AnalyticsPage() {
               {/* Engagement Tracking */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-green-500 to-teal-600 px-6 py-4">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <h3 className={`text-xl font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <svg className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
-                    Engagement Tracking
+                    {t('analytics.engagementTracking')}
                   </h3>
                 </div>
                 <div className="p-6">
@@ -202,8 +203,8 @@ export default function AnalyticsPage() {
                         </svg>
                       </div>
                       <h4 className="text-2xl font-bold text-gray-900 dark:text-white">1,247</h4>
-                      <p className="text-gray-600 dark:text-gray-300">Total Likes</p>
-                      <p className="text-green-500 text-sm">+15.3% this week</p>
+                      <p className="text-gray-600 dark:text-gray-300">{t('analytics.totalLikes')}</p>
+                      <p className="text-green-500 text-sm">+15.3% {t('analytics.thisWeek')}</p>
                     </div>
                     <div className="text-center">
                       <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -212,8 +213,8 @@ export default function AnalyticsPage() {
                         </svg>
                       </div>
                       <h4 className="text-2xl font-bold text-gray-900 dark:text-white">832</h4>
-                      <p className="text-gray-600 dark:text-gray-300">Comments</p>
-                      <p className="text-green-500 text-sm">+8.7% this week</p>
+                      <p className="text-gray-600 dark:text-gray-300">{t('analytics.comments')}</p>
+                      <p className="text-green-500 text-sm">+8.7% {t('analytics.thisWeek')}</p>
                     </div>
                     <div className="text-center">
                       <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -222,8 +223,8 @@ export default function AnalyticsPage() {
                         </svg>
                       </div>
                       <h4 className="text-2xl font-bold text-gray-900 dark:text-white">456</h4>
-                      <p className="text-gray-600 dark:text-gray-300">Shares</p>
-                      <p className="text-green-500 text-sm">+12.1% this week</p>
+                      <p className="text-gray-600 dark:text-gray-300">{t('analytics.shares')}</p>
+                      <p className="text-green-500 text-sm">+12.1% {t('analytics.thisWeek')}</p>
                     </div>
                   </div>
                 </div>
@@ -232,21 +233,21 @@ export default function AnalyticsPage() {
               {/* Performance Insights */}
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-orange-500 to-red-500 px-6 py-4">
-                  <h3 className="text-xl font-bold text-white flex items-center">
-                    <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <h3 className={`text-xl font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <svg className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
-                    Performance Insights
+                    {t('analytics.performanceInsights')}
                   </h3>
                 </div>
                 <div className="p-6">
                   <div className="grid lg:grid-cols-2 gap-8">
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Key Performance Indicators</h4>
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('analytics.keyPerformanceIndicators')}</h4>
                       <div className="space-y-4">
                         <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-gray-700 dark:text-gray-300">Bounce Rate</span>
+                            <span className="text-gray-700 dark:text-gray-300">{t('analytics.bounceRate')}</span>
                             <span className="text-green-600 dark:text-green-400 font-medium">23.4%</span>
                           </div>
                           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -255,7 +256,7 @@ export default function AnalyticsPage() {
                         </div>
                         <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-gray-700 dark:text-gray-300">Page Load Speed</span>
+                            <span className="text-gray-700 dark:text-gray-300">{t('analytics.pageLoadSpeed')}</span>
                             <span className="text-blue-600 dark:text-blue-400 font-medium">1.2s</span>
                           </div>
                           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -264,7 +265,7 @@ export default function AnalyticsPage() {
                         </div>
                         <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-gray-700 dark:text-gray-300">Conversion Rate</span>
+                            <span className="text-gray-700 dark:text-gray-300">{t('analytics.conversionRate')}</span>
                             <span className="text-purple-600 dark:text-purple-400 font-medium">4.7%</span>
                           </div>
                           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -274,25 +275,25 @@ export default function AnalyticsPage() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Performance Trends</h4>
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('analytics.performanceTrends')}</h4>
                       <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-600">
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-300">This Month</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.thisMonth')}</span>
                             <div className="flex items-center space-x-2">
                               <span className="text-green-500 text-sm">↗ +12.5%</span>
                               <span className="text-lg font-bold text-gray-900 dark:text-white">94.2%</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-300">Last Month</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.lastMonth')}</span>
                             <div className="flex items-center space-x-2">
                               <span className="text-green-500 text-sm">↗ +8.3%</span>
                               <span className="text-lg font-bold text-gray-900 dark:text-white">83.7%</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-300">3 Months Ago</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.monthsAgo')}</span>
                             <div className="flex items-center space-x-2">
                               <span className="text-red-500 text-sm">↘ -2.1%</span>
                               <span className="text-lg font-bold text-gray-900 dark:text-white">77.3%</span>
@@ -311,44 +312,44 @@ export default function AnalyticsPage() {
                 {/* User Journey Mapping */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                   <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
-                    <h3 className="text-xl font-bold text-white flex items-center">
-                      <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className={`text-xl font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <svg className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                       </svg>
-                      User Journey Mapping
+                      {t('analytics.userJourneyMapping')}
                     </h3>
                   </div>
                   <div className="p-6">
                     <div className="space-y-4">
-                      <div className="flex items-center space-x-4">
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
                         <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">Landing Page</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-300">45% entry point</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{t('analytics.landingPage')}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">45% {t('analytics.entryPoint')}</p>
                         </div>
                       </div>
-                      <div className="ml-4 border-l-2 border-gray-300 dark:border-gray-600 h-6"></div>
-                      <div className="flex items-center space-x-4">
+                      <div className={`${isRTL ? 'mr-4 border-r-2' : 'ml-4 border-l-2'} border-gray-300 dark:border-gray-600 h-6`}></div>
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
                         <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">Post Browse</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-300">78% continue here</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{t('analytics.postBrowse')}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">78% {t('analytics.continueHere')}</p>
                         </div>
                       </div>
-                      <div className="ml-4 border-l-2 border-gray-300 dark:border-gray-600 h-6"></div>
-                      <div className="flex items-center space-x-4">
+                      <div className={`${isRTL ? 'mr-4 border-r-2' : 'ml-4 border-l-2'} border-gray-300 dark:border-gray-600 h-6`}></div>
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
                         <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">Post Detail</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-300">62% engage here</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{t('analytics.postDetail')}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">62% {t('analytics.engageHere')}</p>
                         </div>
                       </div>
-                      <div className="ml-4 border-l-2 border-gray-300 dark:border-gray-600 h-6"></div>
-                      <div className="flex items-center space-x-4">
+                      <div className={`${isRTL ? 'mr-4 border-r-2' : 'ml-4 border-l-2'} border-gray-300 dark:border-gray-600 h-6`}></div>
+                      <div className={`flex items-center space-x-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
                         <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-sm">4</div>
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">User Profile</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-300">34% visit profile</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{t('analytics.userProfile')}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">34% {t('analytics.visitProfile')}</p>
                         </div>
                       </div>
                     </div>
@@ -361,25 +362,25 @@ export default function AnalyticsPage() {
                   {/* Click-through Analysis */}
                   <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                     <div className="bg-gradient-to-r from-pink-500 to-rose-500 px-6 py-4">
-                      <h3 className="text-lg font-bold text-white flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <h3 className={`text-lg font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                         </svg>
-                        Click-through Analysis
+                        {t('analytics.clickThroughAnalysis')}
                       </h3>
                     </div>
                     <div className="p-4">
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">CTA Buttons</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{t('analytics.ctaButtons')}</span>
                           <span className="text-pink-600 dark:text-pink-400 font-medium">8.4%</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Navigation Links</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{t('analytics.navigationLinks')}</span>
                           <span className="text-pink-600 dark:text-pink-400 font-medium">12.7%</span>
                         </div>
                         <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-700 dark:text-gray-300">External Links</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{t('analytics.externalLinks')}</span>
                           <span className="text-pink-600 dark:text-pink-400 font-medium">3.2%</span>
                         </div>
                       </div>
@@ -389,28 +390,28 @@ export default function AnalyticsPage() {
                   {/* Session Duration */}
                   <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                     <div className="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-4">
-                      <h3 className="text-lg font-bold text-white flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <h3 className={`text-lg font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Session Duration
+                        {t('analytics.sessionDuration')}
                       </h3>
                     </div>
                     <div className="p-4">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-gray-900 dark:text-white">4m 32s</div>
-                        <div className="text-sm text-gray-600 dark:text-gray-300 mb-3">Average Session</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300 mb-3">{t('analytics.averageSession')}</div>
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">&lt; 1 min</span>
+                            <span className="text-gray-600 dark:text-gray-400">{t('analytics.lessThanOneMin')}</span>
                             <span className="text-gray-600 dark:text-gray-400">23%</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">1-3 min</span>
+                            <span className="text-gray-600 dark:text-gray-400">{t('analytics.oneToThreeMin')}</span>
                             <span className="text-gray-600 dark:text-gray-400">34%</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-600 dark:text-gray-400">3+ min</span>
+                            <span className="text-gray-600 dark:text-gray-400">{t('analytics.moreThanThreeMin')}</span>
                             <span className="text-gray-600 dark:text-gray-400">43%</span>
                           </div>
                         </div>
@@ -427,11 +428,11 @@ export default function AnalyticsPage() {
                 {/* Custom Dashboards */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                   <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-6 py-4">
-                    <h3 className="text-lg font-bold text-white flex items-center">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className={`text-lg font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                       </svg>
-                      Custom Dashboards
+                      {t('analytics.customDashboards')}
                     </h3>
                   </div>
                   <div className="p-6">
@@ -442,14 +443,14 @@ export default function AnalyticsPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                           </svg>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Create personalized dashboards with drag-and-drop widgets</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.customDashboardsDesc')}</p>
                       </div>
                       <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
                         <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                          <div>• Custom widget layouts</div>
-                          <div>• Real-time data updates</div>
-                          <div>• Multiple dashboard views</div>
-                          <div>• Shareable configurations</div>
+                          <div>{t('analytics.customWidgetLayouts')}</div>
+                          <div>{t('analytics.realtimeDataUpdates')}</div>
+                          <div>{t('analytics.multipleDashboardViews')}</div>
+                          <div>{t('analytics.shareableConfigurations')}</div>
                         </div>
                       </div>
                     </div>
@@ -459,11 +460,11 @@ export default function AnalyticsPage() {
                 {/* Data Export */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                   <div className="bg-gradient-to-r from-emerald-500 to-green-600 px-6 py-4">
-                    <h3 className="text-lg font-bold text-white flex items-center">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className={`text-lg font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      Data Export
+                      {t('analytics.dataExport')}
                     </h3>
                   </div>
                   <div className="p-6">
@@ -474,14 +475,14 @@ export default function AnalyticsPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Export analytics data in multiple formats</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.dataExportDesc')}</p>
                       </div>
                       <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
                         <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                          <div>• CSV spreadsheet format</div>
-                          <div>• PDF reports with charts</div>
-                          <div>• JSON data exports</div>
-                          <div>• Custom date ranges</div>
+                          <div>{t('analytics.csvSpreadsheet')}</div>
+                          <div>{t('analytics.pdfReports')}</div>
+                          <div>{t('analytics.jsonDataExports')}</div>
+                          <div>{t('analytics.customDateRanges')}</div>
                         </div>
                       </div>
                     </div>
@@ -491,11 +492,11 @@ export default function AnalyticsPage() {
                 {/* Scheduled Reports */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                   <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-4">
-                    <h3 className="text-lg font-bold text-white flex items-center">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className={`text-lg font-bold text-white flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      Scheduled Reports
+                      {t('analytics.scheduledReports')}
                     </h3>
                   </div>
                   <div className="p-6">
@@ -506,14 +507,14 @@ export default function AnalyticsPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Automated reports delivered to your inbox</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{t('analytics.scheduledReportsDesc')}</p>
                       </div>
                       <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
                         <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-                          <div>• Daily, weekly, monthly</div>
-                          <div>• Email delivery options</div>
-                          <div>• Custom report templates</div>
-                          <div>• Multiple recipients</div>
+                          <div>{t('analytics.dailyWeeklyMonthly')}</div>
+                          <div>{t('analytics.emailDeliveryOptions')}</div>
+                          <div>{t('analytics.customReportTemplates')}</div>
+                          <div>{t('analytics.multipleRecipients')}</div>
                         </div>
                       </div>
                     </div>
@@ -533,10 +534,10 @@ export default function AnalyticsPage() {
               href="/"
               className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              Back to Dashboard
+              {t('analytics.backToDashboard')}
             </Link>
           </div>
         </div>
