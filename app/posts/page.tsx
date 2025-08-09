@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
+import { useI18n } from '../../contexts/I18nContext';
 
 interface Post {
   id: number;
@@ -20,6 +21,7 @@ interface User {
 }
 
 export default function PostsPage() {
+  const { t, isRTL } = useI18n();
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -133,11 +135,11 @@ export default function PostsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+      <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
         {/* Header */}
         <Header 
-          title="Posts Management"
-          subtitle="Create, edit, and manage all your posts in one place"
+          title={t('posts.title')}
+          subtitle={t('posts.subtitle')}
           showStats={true}
           stats={{
             posts: 0,
@@ -242,11 +244,11 @@ export default function PostsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
-        title="Posts Management"
-        subtitle="Create, edit, and manage all your posts in one place"
+        title={t('posts.title')}
+        subtitle={t('posts.subtitle')}
         showStats={true}
         stats={{
           posts: posts.length,
@@ -262,13 +264,13 @@ export default function PostsPage() {
           {/* Posts Header with Controls */}
           <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3">
+              <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
-                  <span className="truncate">All Posts ({filteredAndSortedPosts.length})</span>
+                  <span className="truncate">{t('posts.allPosts')} ({filteredAndSortedPosts.length})</span>
                   {totalPages > 1 && (
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Page {currentPage} of {totalPages}
+                      {t('common.page')} {currentPage} {t('common.of')} {totalPages}
                     </span>
                   )}
                 </h2>
@@ -276,31 +278,31 @@ export default function PostsPage() {
                 {/* New Post Button */}
                 <Link
                   href="/add-post"
-                  className="min-touch-target inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap"
+                  className={`min-touch-target inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl whitespace-nowrap ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
-                  <span className="hidden sm:inline">Create New Post</span>
-                  <span className="sm:hidden">New Post</span>
+                  <span className="hidden sm:inline">{t('posts.createNew')}</span>
+                  <span className="sm:hidden">{t('posts.newPost')}</span>
                 </Link>
               </div>
 
               {/* Filter and Sort Controls */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {/* Search Bar */}
-                <div className="lg:col-span-2 relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className={`lg:col-span-2 relative ${isRTL ? 'direction-rtl' : ''}`}>
+                  <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
                     <svg className="h-4 w-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </div>
                   <input
                     type="text"
-                    placeholder="Search posts by title or content..."
+                    placeholder={t('posts.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm"
+                    className={`block w-full ${isRTL ? 'pr-10 pl-3 text-right' : 'pl-10 pr-3 text-left'} py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm`}
                   />
                 </div>
 
@@ -309,9 +311,9 @@ export default function PostsPage() {
                   <select
                     value={selectedUserId || ''}
                     onChange={(e) => setSelectedUserId(e.target.value ? Number(e.target.value) : null)}
-                    className="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer"
+                    className={`block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer ${isRTL ? 'text-right' : 'text-left'}`}
                   >
-                    <option value="">All Authors</option>
+                    <option value="">{t('posts.allAuthors')}</option>
                     {users.map(user => (
                       <option key={user.id} value={user.id}>
                         {user.name}
@@ -325,32 +327,32 @@ export default function PostsPage() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as 'id' | 'title' | 'author')}
-                    className="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer"
+                    className={`block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer ${isRTL ? 'text-right' : 'text-left'}`}
                   >
-                    <option value="id">Sort by ID</option>
-                    <option value="title">Sort by Title</option>
-                    <option value="author">Sort by Author</option>
+                    <option value="id">{t('posts.sortById')}</option>
+                    <option value="title">{t('posts.sortByTitle')}</option>
+                    <option value="author">{t('posts.sortByAuthor')}</option>
                   </select>
                 </div>
               </div>
 
               {/* Clear Filters */}
               {hasActiveFilters && (
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-wrap gap-2 text-xs">
+                <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex flex-wrap gap-2 text-xs ${isRTL ? 'flex-row-reverse' : ''}`}>
                     {searchTerm && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-blue-800 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300">
-                        Search: &ldquo;{searchTerm}&rdquo;
+                        {t('posts.search')}: &ldquo;{searchTerm}&rdquo;
                       </span>
                     )}
                     {selectedUserId && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-purple-800 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-300">
-                        Author: {getUserName(selectedUserId)}
+                        {t('posts.author')}: {getUserName(selectedUserId)}
                       </span>
                     )}
                     {sortBy !== 'id' && (
                       <span className="inline-flex items-center px-2.5 py-1 rounded-full text-green-800 bg-green-100 dark:bg-green-900/30 dark:text-green-300">
-                        Sorted by: {sortBy}
+                        {t('posts.sortedBy')}: {sortBy}
                       </span>
                     )}
                   </div>
@@ -358,7 +360,7 @@ export default function PostsPage() {
                     onClick={clearFilters}
                     className="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
                   >
-                    Clear all filters
+                    {t('posts.clearFilters')}
                   </button>
                 </div>
               )}
@@ -458,12 +460,12 @@ export default function PostsPage() {
                     <div className="flex flex-col gap-3 sm:gap-4">
                       {/* Mobile pagination */}
                       <div className="flex flex-col gap-2 sm:hidden">
-                        <div className="text-center">
-                          <p className="text-xs text-gray-600 dark:text-gray-300">
-                            Page <span className="font-medium">{currentPage}</span> of <span className="font-medium">{totalPages}</span>
+                        <div className={`text-center ${isRTL ? 'text-right' : 'text-left'}`}>
+                          <p className={`text-xs text-gray-600 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
+                            {t('common.page')} <span className="font-medium">{currentPage}</span> {t('common.of')} <span className="font-medium">{totalPages}</span>
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            ({indexOfFirstPost + 1}-{Math.min(indexOfLastPost, filteredAndSortedPosts.length)} of {filteredAndSortedPosts.length})
+                          <p className={`text-xs text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right' : 'text-left'}`}>
+                            ({indexOfFirstPost + 1}-{Math.min(indexOfLastPost, filteredAndSortedPosts.length)} {t('common.of')} {filteredAndSortedPosts.length})
                           </p>
                         </div>
                         <div className="flex justify-center items-center gap-2">
@@ -520,18 +522,18 @@ export default function PostsPage() {
                       </div>
                       
                       {/* Desktop pagination */}
-                      <div className="hidden sm:flex sm:items-center sm:justify-between">
-                        <div>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">
-                            Showing{' '}
+                      <div className={`hidden sm:flex sm:items-center sm:justify-between ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                        <div className={isRTL ? 'text-right' : 'text-left'}>
+                          <p className={`text-sm text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
+                            {t('posts.showing')}{' '}
                             <span className="font-medium">{indexOfFirstPost + 1}</span>
-                            {' '}to{' '}
+                            {' '}{t('common.to')}{' '}
                             <span className="font-medium">
                               {Math.min(indexOfLastPost, filteredAndSortedPosts.length)}
                             </span>
-                            {' '}of{' '}
+                            {' '}{t('common.of')}{' '}
                             <span className="font-medium">{filteredAndSortedPosts.length}</span>
-                            {' '}results
+                            {' '}{t('common.results')}
                           </p>
                         </div>
                         <div>
@@ -597,9 +599,9 @@ export default function PostsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">No Posts Found</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{t('posts.noPostsFound')}</h3>
                 <p className="text-gray-500 dark:text-gray-400 mb-6">
-                  {hasActiveFilters ? 'No posts match your current filters.' : 'No posts available.'}
+                  {hasActiveFilters ? t('posts.noPostsMatchFilters') : t('posts.noPostsAvailable')}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   {hasActiveFilters && (
@@ -607,17 +609,17 @@ export default function PostsPage() {
                       onClick={clearFilters}
                       className="min-touch-target inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-xl text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
                     >
-                      Clear Filters
+                      {t('posts.clearFilters')}
                     </button>
                   )}
                   <Link
                     href="/add-post"
-                    className="min-touch-target inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className={`min-touch-target inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 shadow-lg hover:shadow-xl ${isRTL ? 'flex-row-reverse' : ''}`}
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    Create Your First Post
+                    {t('posts.createFirst')}
                   </Link>
                 </div>
               </div>
