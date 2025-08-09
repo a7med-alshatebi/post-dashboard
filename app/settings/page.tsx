@@ -344,8 +344,8 @@ export default function SettingsPage() {
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                         settings.compactView 
-                          ? isRTL ? 'translate-x-1' : 'translate-x-6'
-                          : isRTL ? 'translate-x-6' : 'translate-x-1'
+                          ? 'translate-x-6'
+                          : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -372,8 +372,8 @@ export default function SettingsPage() {
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                         settings.showAnimations 
-                          ? isRTL ? 'translate-x-1' : 'translate-x-6'
-                          : isRTL ? 'translate-x-6' : 'translate-x-1'
+                          ? 'translate-x-6'
+                          : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -414,8 +414,8 @@ export default function SettingsPage() {
                     <span
                       className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                         settings.autoRefresh 
-                          ? isRTL ? 'translate-x-1' : 'translate-x-6'
-                          : isRTL ? 'translate-x-6' : 'translate-x-1'
+                          ? 'translate-x-6'
+                          : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -473,8 +473,8 @@ export default function SettingsPage() {
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
                       settings.notifications 
-                        ? isRTL ? 'translate-x-1' : 'translate-x-6'
-                        : isRTL ? 'translate-x-6' : 'translate-x-1'
+                        ? 'translate-x-6'
+                        : 'translate-x-1'
                     }`}
                   />
                 </button>

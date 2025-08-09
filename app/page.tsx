@@ -323,7 +323,7 @@ export default function PostDashboard() {
                   <select
                     value={selectedUserId || ''}
                     onChange={(e) => setSelectedUserId(e.target.value ? Number(e.target.value) : null)}
-                    className="block w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer"
+                    className={`block w-full ${isRTL ? 'pr-8 pl-3' : 'pl-3 pr-8'} py-2.5 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm appearance-none cursor-pointer ${isRTL ? 'text-right' : 'text-left'}`}
                   >
                     <option value="">{t('posts.filterByAuthor')}</option>
                     {users.map(user => (
@@ -332,7 +332,7 @@ export default function PostDashboard() {
                       </option>
                     ))}
                   </select>
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
                     <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
