@@ -401,44 +401,44 @@ export default function PostDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-1">
                     <button
                       onClick={() => handleEditPost(post)}
-                      className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-9 h-9 sm:px-3 sm:py-2 sm:w-auto sm:h-auto border border-transparent text-xs font-medium rounded-lg text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm hover:shadow-md flex-shrink-0"
+                      className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:px-3 md:py-2 md:w-auto md:h-auto border border-transparent text-xs font-medium rounded-lg text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm hover:shadow-md flex-shrink-0"
                       title={t('posts.editPost')}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
-                      <span className={`hidden sm:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.edit')}</span>
+                      <span className={`hidden md:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.edit')}</span>
                     </button>
                     <button
                       onClick={() => handleSharePost(post)}
-                      className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-9 h-9 sm:px-3 sm:py-2 sm:w-auto sm:h-auto border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm hover:shadow-md flex-shrink-0"
+                      className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:px-3 md:py-2 md:w-auto md:h-auto border border-transparent text-xs font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm hover:shadow-md flex-shrink-0"
                       title={t('posts.share')}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      <span className={`hidden sm:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('posts.share')}</span>
+                      <span className={`hidden md:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('posts.share')}</span>
                     </button>
                     <button
                       onClick={() => deletePost(post.id)}
                       disabled={deletingIds.has(post.id)}
-                      className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-9 h-9 sm:px-3 sm:py-2 sm:w-auto sm:h-auto border border-transparent text-xs font-medium rounded-lg text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md flex-shrink-0"
+                      className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:px-3 md:py-2 md:w-auto md:h-auto border border-transparent text-xs font-medium rounded-lg text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md flex-shrink-0"
                       title={t('posts.deletePost')}
                     >
                       {deletingIds.has(post.id) ? (
                         <>
-                          <div className="w-4 h-4 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
-                          <span className={`hidden sm:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.loading')}...</span>
+                          <div className="w-3.5 h-3.5 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
+                          <span className={`hidden md:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.loading')}...</span>
                         </>
                       ) : (
                         <>
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                           </svg>
-                          <span className={`hidden sm:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.delete')}</span>
+                          <span className={`hidden md:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.delete')}</span>
                         </>
                       )}
                     </button>
@@ -565,41 +565,41 @@ export default function PostDashboard() {
                         </div>
                       </td>
                       <td className="px-4 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
-                        <div className="flex gap-1.5">
+                        <div className="flex gap-1">
                           <button
                             onClick={() => handleEditPost(post)}
-                            className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-9 h-9 lg:px-3 lg:py-2 lg:w-auto lg:h-auto border border-transparent text-sm font-medium rounded-lg text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm hover:shadow-md"
+                            className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-8 h-8 lg:w-9 lg:h-9 xl:px-3 xl:py-2 xl:w-auto xl:h-auto border border-transparent text-sm font-medium rounded-lg text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm hover:shadow-md"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
-                            <span className={`hidden lg:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.edit')}</span>
+                            <span className={`hidden xl:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.edit')}</span>
                           </button>
                           <button
                             onClick={() => handleSharePost(post)}
-                            className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-9 h-9 lg:px-3 lg:py-2 lg:w-auto lg:h-auto border border-transparent text-sm font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm hover:shadow-md"
+                            className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-8 h-8 lg:w-9 lg:h-9 xl:px-3 xl:py-2 xl:w-auto xl:h-auto border border-transparent text-sm font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 shadow-sm hover:shadow-md"
                           >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <span className={`hidden lg:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('posts.share')}</span>
+                            <span className={`hidden xl:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('posts.share')}</span>
                           </button>
                           <button
                             onClick={() => deletePost(post.id)}
                             disabled={deletingIds.has(post.id)}
-                            className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-9 h-9 lg:px-3 lg:py-2 lg:w-auto lg:h-auto border border-transparent text-sm font-medium rounded-lg text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md"
+                            className="min-touch-target group-hover:scale-105 transition-all duration-200 inline-flex items-center justify-center w-8 h-8 lg:w-9 lg:h-9 xl:px-3 xl:py-2 xl:w-auto xl:h-auto border border-transparent text-sm font-medium rounded-lg text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50 shadow-sm hover:shadow-md"
                           >
                             {deletingIds.has(post.id) ? (
                               <>
-                                <div className="w-4 h-4 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
-                                <span className={`hidden lg:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('posts.deleting')}</span>
+                                <div className="w-3.5 h-3.5 bg-red-400 dark:bg-red-500 rounded animate-pulse"></div>
+                                <span className={`hidden xl:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('posts.deleting')}</span>
                               </>
                             ) : (
                               <>
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                                 </svg>
-                                <span className={`hidden lg:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.delete')}</span>
+                                <span className={`hidden xl:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>{t('common.delete')}</span>
                               </>
                             )}
                           </button>
