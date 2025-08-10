@@ -123,26 +123,26 @@ export default function LoginPage() {
               <h3 className={`text-sm font-medium text-gray-900 dark:text-white mb-4 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
                 {t('login.features.title')}
               </h3>
-              <ul className={`space-y-2 text-sm text-gray-600 dark:text-gray-400 ${isRTL ? 'font-arabic text-right' : 'text-left'}`}>
-                <li className={`flex items-center ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+              <ul className={`w-full space-y-2 text-sm sm:text-base text-gray-600 dark:text-gray-400 ${isRTL ? 'font-arabic text-right' : 'text-left'}`}>
+                <li className={`flex ${isRTL ? 'flex-row-reverse justify-end items-end' : 'justify-start items-start'} items-center`}>
                   <svg className={`w-4 h-4 text-green-500 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>{t('login.features.managePosts')}</span>
                 </li>
-                <li className={`flex items-center ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+                <li className={`flex ${isRTL ? 'flex-row-reverse justify-end items-end' : 'justify-start items-start'} items-center`}>
                   <svg className={`w-4 h-4 text-green-500 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>{t('login.features.viewAnalytics')}</span>
                 </li>
-                <li className={`flex items-center ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+                <li className={`flex ${isRTL ? 'flex-row-reverse justify-end items-end' : 'justify-start items-start'} items-center`}>
                   <svg className={`w-4 h-4 text-green-500 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <span>{t('login.features.customizeSettings')}</span>
                 </li>
-                <li className={`flex items-center ${isRTL ? 'flex-row-reverse justify-end' : 'justify-start'}`}>
+                <li className={`flex ${isRTL ? 'flex-row-reverse justify-end items-end' : 'justify-start items-start'} items-center`}>
                   <svg className={`w-4 h-4 text-green-500 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
