@@ -1,3 +1,5 @@
+'use client';
+
 interface SkeletonProps {
   className?: string;
 }
@@ -66,7 +68,7 @@ export function ButtonSkeleton({ className = '' }: { className?: string }) {
 import { useI18n } from '../contexts/I18nContext';
 
 export function DashboardSkeleton() {
-  const { isRTL } = useI18n ? useI18n() : { isRTL: false };
+  const { isRTL } = useI18n();
   return (
     <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header skeleton */}
