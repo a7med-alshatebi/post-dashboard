@@ -48,6 +48,7 @@
     "addNew": "إضافة منشور جديد",
     "editPost": "تعديل المنشور",
     "deletePost": "حذف المنشور",
+    "updatePostDetails": "قم بتحديث تفاصيل المنشور أدناه.",
     "noPostsFound": "لم يتم العثور على منشورات",
     "postTitle": "عنوان المنشور",
     "postBody": "محتوى المنشور",
@@ -392,5 +393,23 @@
     "errors": {
       "signInFailed": "فشل في تسجيل الدخول مع جوجل"
     }
+  },
+  "shareModal": {
+    "title": "مشاركة المنشور عبر البريد الإلكتروني",
+    "postToShare": "المنشور للمشاركة:",
+    "byAuthor": "بواسطة {author}",
+    "unknownAuthor": "مؤلف غير معروف",
+    "recipientEmail": "البريد الإلكتروني للمستلم *",
+    "recipientEmailPlaceholder": "recipient@example.com",
+    "subject": "الموضوع *",
+    "subjectPlaceholder": "موضوع البريد الإلكتروني",
+    "subjectPrefix": "اطلع على هذا المنشور:",
+    "senderName": "اسمك (اختياري)",
+    "senderNamePlaceholder": "اسمك",
+    "sending": "جاري الإرسال...",
+    "sendEmail": "إرسال البريد الإلكتروني",
+    "emailSentSuccess": "تم إرسال البريد الإلكتروني بنجاح!",
+    "emailSendFailed": "فشل في إرسال البريد الإلكتروني",
+    "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى."
   }
 }

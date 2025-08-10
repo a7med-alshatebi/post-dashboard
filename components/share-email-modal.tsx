@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useI18n } from '../contexts/I18nContext';
 
 interface Post {
   id: number;
@@ -24,9 +25,10 @@ interface ShareEmailModalProps {
 }
 
 export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailModalProps) {
+  const { t, isRTL } = useI18n();
   const [formData, setFormData] = useState({
     to: '',
-    subject: `Check out this post: ${post.title}`,
+    subject: `${t('shareModal.subjectPrefix')} ${post.title}`,
     senderName: '',
     message: ''
   });
@@ -63,13 +65,13 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
       if (response.ok) {
         setStatus({
           type: 'success',
-          message: 'Email sent successfully!'
+          message: t('shareModal.emailSentSuccess')
         });
         // Reset form after successful send
         setTimeout(() => {
           setFormData({
             to: '',
-            subject: `Check out this post: ${post.title}`,
+            subject: `${t('shareModal.subjectPrefix')} ${post.title}`,
             senderName: '',
             message: ''
           });
@@ -79,13 +81,13 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
       } else {
         setStatus({
           type: 'error',
-          message: result.error || 'Failed to send email'
+          message: result.error || t('shareModal.emailSendFailed')
         });
       }
     } catch (error) {
       setStatus({
         type: 'error',
-        message: 'Network error. Please try again.'
+        message: t('shareModal.networkError')
       });
     } finally {
       setIsLoading(false);
@@ -100,18 +102,18 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <h2 className={`text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2 ${isRTL ? 'font-arabic' : ''}`}> 
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              Share Post via Email
+              {t('shareModal.title')}
             </h2>
             <button
               onClick={onClose}
@@ -126,7 +128,7 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
 
         {/* Post Preview */}
         <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Post to share:</div>
+          <div className={`text-sm text-gray-600 dark:text-gray-400 mb-2 ${isRTL ? 'font-arabic text-right' : ''}`}>{t('shareModal.postToShare')}</div>
           <div className="bg-white dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
             <div className="flex items-center gap-2 mb-2">
               <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded">
@@ -137,7 +139,7 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
               {post.title}
             </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400">
-              By {author || 'Unknown Author'}
+              {t('shareModal.byAuthor').replace('{author}', author || t('shareModal.unknownAuthor'))}
             </p>
           </div>
         </div>
@@ -146,48 +148,42 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
         <form onSubmit={handleSubmit} className="px-6 py-4 space-y-4">
           {/* Recipient Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Recipient Email *
-            </label>
+            <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isRTL ? 'text-right font-arabic' : ''}`}>{t('shareModal.recipientEmail')}</label>
             <input
               type="email"
               name="to"
               value={formData.to}
               onChange={handleInputChange}
               required
-              placeholder="recipient@example.com"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder={t('shareModal.recipientEmailPlaceholder')}
+              className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right font-arabic' : ''}`}
             />
           </div>
 
           {/* Subject */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Subject *
-            </label>
+            <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isRTL ? 'text-right font-arabic' : ''}`}>{t('shareModal.subject')}</label>
             <input
               type="text"
               name="subject"
               value={formData.subject}
               onChange={handleInputChange}
               required
-              placeholder="Email subject"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder={t('shareModal.subjectPlaceholder')}
+              className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right font-arabic' : ''}`}
             />
           </div>
 
           {/* Sender Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Your Name (optional)
-            </label>
+            <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 ${isRTL ? 'text-right font-arabic' : ''}`}>{t('shareModal.senderName')}</label>
             <input
               type="text"
               name="senderName"
               value={formData.senderName}
               onChange={handleInputChange}
-              placeholder="Your name"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              placeholder={t('shareModal.senderNamePlaceholder')}
+              className={`w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right font-arabic' : ''}`}
             />
           </div>
 
@@ -214,30 +210,30 @@ export function ShareEmailModal({ isOpen, onClose, post, author }: ShareEmailMod
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className={`flex gap-3 pt-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"
+              className={`flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200 ${isRTL ? 'font-arabic' : ''}`}
             >
-              Cancel
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
               disabled={isLoading || !formData.to || !formData.subject}
-              className="flex-1 px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+              className={`flex-1 px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl ${isRTL ? 'font-arabic' : ''}`}
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                  Sending...
+                  <div className={`animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent ${isRTL ? 'ml-2' : 'mr-2'}`}></div>
+                  {t('shareModal.sending')}
                 </div>
               ) : (
                 <div className="flex items-center justify-center">
                   <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
-                  Send Email
+                  {t('shareModal.sendEmail')}
                 </div>
               )}
             </button>

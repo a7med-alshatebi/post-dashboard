@@ -48,6 +48,7 @@
     "addNew": "Add New Post",
     "editPost": "Edit Post",
     "deletePost": "Delete Post",
+    "updatePostDetails": "Update the post details below.",
     "noPostsFound": "No Posts Found",
     "postTitle": "Post Title",
     "postBody": "Post Body",
@@ -392,5 +393,23 @@
     "errors": {
       "signInFailed": "Failed to sign in with Google"
     }
+  },
+  "shareModal": {
+    "title": "Share Post via Email",
+    "postToShare": "Post to share:",
+    "byAuthor": "By {author}",
+    "unknownAuthor": "Unknown Author",
+    "recipientEmail": "Recipient Email *",
+    "recipientEmailPlaceholder": "recipient@example.com",
+    "subject": "Subject *",
+    "subjectPlaceholder": "Email subject",
+    "subjectPrefix": "Check out this post:",
+    "senderName": "Your Name (optional)",
+    "senderNamePlaceholder": "Your name",
+    "sending": "Sending...",
+    "sendEmail": "Send Email",
+    "emailSentSuccess": "Email sent successfully!",
+    "emailSendFailed": "Failed to send email",
+    "networkError": "Network error. Please try again."
   }
 }
