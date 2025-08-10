@@ -697,40 +697,98 @@ export default function UserPage({ params }: UserPageProps) {
 
                 {/* Mobile Pagination */}
                 {totalPages > 1 && (
-                  <div className={`flex justify-center pt-4 ${isRTL ? 'font-arabic' : ''}`}>
-                    <nav className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <button
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {t('userProfile.pagination.previous')}
-                      </button>
-                      
-                      <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                          <button
-                            key={page}
-                            onClick={() => handlePageChange(page)}
-                            className={`w-8 h-8 text-sm font-medium rounded ${
-                              page === currentPage
-                                ? 'bg-blue-500 text-white'
-                                : 'text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        ))}
+                  <div className={`flex justify-center pt-6 px-2 ${isRTL ? 'font-arabic' : ''}`}>
+                    <div className={`flex flex-col items-center gap-3 w-full max-w-sm ${isRTL ? 'flex-col-reverse' : ''}`}>
+                      {/* Page info */}
+                      <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                        {t('userProfile.pagination.page')} {currentPage} {t('userProfile.pagination.of')} {totalPages}
                       </div>
+                      
+                      {/* Navigation controls */}
+                      <nav className={`flex items-center justify-center gap-2 w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <button
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="flex-shrink-0 w-10 h-10 flex items-center justify-center text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                          title={t('userProfile.pagination.previous')}
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
+                          </svg>
+                        </button>
+                        
+                        <div className={`flex items-center justify-center gap-1.5 flex-1 overflow-x-auto max-w-[240px] px-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          {(() => {
+                            const pages = [];
+                            const showEllipsis = totalPages > 5; // Reduced for mobile
+                            
+                            if (!showEllipsis) {
+                              // Show all pages if 5 or fewer
+                              for (let i = 1; i <= totalPages; i++) {
+                                pages.push(i);
+                              }
+                            } else {
+                              // Show smart pagination with ellipsis for mobile
+                              if (currentPage <= 3) {
+                                // Near beginning: 1 2 3 ... last
+                                pages.push(1, 2, 3);
+                                if (totalPages > 4) pages.push('ellipsis1');
+                                if (totalPages > 3) pages.push(totalPages);
+                              } else if (currentPage >= totalPages - 2) {
+                                // Near end: 1 ... last-2 last-1 last
+                                pages.push(1);
+                                if (totalPages > 4) pages.push('ellipsis1');
+                                for (let i = totalPages - 2; i <= totalPages; i++) {
+                                  pages.push(i);
+                                }
+                              } else {
+                                // In middle: 1 ... current ... last
+                                pages.push(1);
+                                pages.push('ellipsis1');
+                                pages.push(currentPage);
+                                pages.push('ellipsis2');
+                                pages.push(totalPages);
+                              }
+                            }
+                            
+                            return pages.map((page, index) => {
+                              if (typeof page === 'string') {
+                                return (
+                                  <span key={page} className="px-1 text-gray-400 dark:text-gray-500 text-sm flex-shrink-0">
+                                    ...
+                                  </span>
+                                );
+                              }
+                              
+                              return (
+                                <button
+                                  key={page}
+                                  onClick={() => handlePageChange(page)}
+                                  className={`w-8 h-8 text-sm font-medium rounded-lg flex-shrink-0 transition-all duration-200 ${
+                                    page === currentPage
+                                      ? 'bg-blue-500 text-white shadow-md scale-105'
+                                      : 'text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:scale-105 shadow-sm'
+                                  }`}
+                                >
+                                  {page}
+                                </button>
+                              );
+                            });
+                          })()}
+                        </div>
 
-                      <button
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {t('userProfile.pagination.next')}
-                      </button>
-                    </nav>
+                        <button
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="flex-shrink-0 w-10 h-10 flex items-center justify-center text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                          title={t('userProfile.pagination.next')}
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+                          </svg>
+                        </button>
+                      </nav>
+                    </div>
                   </div>
                 )}
               </div>

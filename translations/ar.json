@@ -368,5 +368,29 @@
       "updateFailed": "فشل التحديث",
       "updateFailedMessage": "فشل في تحديث المنشور. يرجى المحاولة مرة أخرى."
     }
+  },
+  "login": {
+    "title": "مرحباً بعودتك",
+    "subtitle": "سجل دخولك إلى حساب لوحة تحكم المنشورات JSON",
+    "signInWithGoogle": "المتابعة مع جوجل",
+    "signingIn": "جاري تسجيل الدخول...",
+    "continueAsGuest": "المتابعة كضيف",
+    "orContinue": "أو تابع كضيف",
+    "features": {
+      "title": "ما ستحصل عليه:",
+      "managePosts": "إدارة المنشورات والمحتوى",
+      "viewAnalytics": "عرض تحليلات المستخدمين",
+      "customizeSettings": "تخصيص إعدادات لوحة التحكم",
+      "exportData": "تصدير التقارير والبيانات"
+    },
+    "footer": {
+      "agreeTo": "بتسجيل الدخول، فإنك توافق على",
+      "termsOfService": "شروط الخدمة",
+      "and": "و",
+      "privacyPolicy": "سياسة الخصوصية"
+    },
+    "errors": {
+      "signInFailed": "فشل في تسجيل الدخول مع جوجل"
+    }
   }
 }

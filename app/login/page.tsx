@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
+import { useI18n } from '../../contexts/I18nContext';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signInWithGoogle } = useAuth();
+  const { t, isRTL } = useI18n();
   const router = useRouter();
 
   const handleGoogleSignIn = async () => {
@@ -19,7 +21,7 @@ export default function LoginPage() {
       router.push('/'); // Redirect to dashboard after successful login
     } catch (error: unknown) {
       console.error('Login error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Google';
+      const errorMessage = error instanceof Error ? error.message : t('login.errors.signInFailed');
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -35,10 +37,10 @@ export default function LoginPage() {
             <span className="text-2xl">📊</span>
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Welcome Back
+            {t('login.title')}
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Sign in to JSON Post Dashboard account
+            {t('login.subtitle')}
           </p>
         </div>
 
@@ -49,7 +51,7 @@ export default function LoginPage() {
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
                 <div className="flex items-center">
-                  <svg className="w-5 h-5 text-red-600 dark:text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 text-red-600 dark:text-red-400 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 16.5c-.77.833.192 2.5 1.732 2.5z" />
                   </svg>
                   <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
@@ -65,12 +67,12 @@ export default function LoginPage() {
             >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-gray-300 border-t-gray-600 mr-3"></div>
-                  Signing in...
+                  <div className={`animate-spin rounded-full h-5 w-5 border-2 border-gray-300 border-t-gray-600 ${isRTL ? 'ml-3' : 'mr-3'}`}></div>
+                  {t('login.signingIn')}
                 </>
               ) : (
                 <>
-                  <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
+                  <svg className={`w-5 h-5 ${isRTL ? 'ml-3' : 'mr-3'}`} viewBox="0 0 24 24">
                     <path
                       fill="#4285F4"
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -88,7 +90,7 @@ export default function LoginPage() {
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
-                  Continue with Google
+                  {t('login.signInWithGoogle')}
                 </>
               )}
             </button>
@@ -100,7 +102,7 @@ export default function LoginPage() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
-                  Or continue as guest
+                  {t('login.orContinue')}
                 </span>
               </div>
             </div>
@@ -110,41 +112,41 @@ export default function LoginPage() {
               href="/"
               className="w-full flex items-center justify-center px-6 py-3 border border-transparent rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              Continue as Guest
+              {t('login.continueAsGuest')}
             </Link>
 
             {/* Features List */}
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
-                What you&apos;ll get access to:
+                {t('login.features.title')}
               </h3>
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 <li className="flex items-center">
-                  <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Manage posts and content
+                  {t('login.features.managePosts')}
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  View user analytics
+                  {t('login.features.viewAnalytics')}
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Customize dashboard settings
+                  {t('login.features.customizeSettings')}
                 </li>
                 <li className="flex items-center">
-                  <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Export reports and data
+                  {t('login.features.exportData')}
                 </li>
               </ul>
             </div>
@@ -154,13 +156,13 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="text-center">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            By signing in, you agree to our{' '}
+            {t('login.footer.agreeTo')}{' '}
             <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
-              Terms of Service
+              {t('login.footer.termsOfService')}
             </a>{' '}
-            and{' '}
+            {t('login.footer.and')}{' '}
             <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
-              Privacy Policy
+              {t('login.footer.privacyPolicy')}
             </a>
           </p>
         </div>

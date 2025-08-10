@@ -474,9 +474,9 @@ export default function PostPage({ params }: PostPageProps) {
             <div className="px-6 sm:px-8 lg:px-12 py-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex flex-col gap-3">
                 {/* Mobile pagination */}
-                <div className="flex flex-col gap-2 sm:hidden">
-                  <div className="text-center">
-                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                <div className={`flex flex-col gap-4 sm:hidden ${isRTL ? 'font-arabic' : ''}`}>
+                  <div className="text-center space-y-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
                       {t('common.page')} <span className="font-medium">{currentPage}</span> {t('common.of')} <span className="font-medium">{totalPages}</span>
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -486,56 +486,87 @@ export default function PostPage({ params }: PostPageProps) {
                       {commentsPerPage} {t('postDetail.commentsPerPage')} #{postId}
                     </p>
                   </div>
-                  <div className="flex justify-center items-center gap-2">
+                  <div className={`flex justify-center items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm min-h-[40px]"
+                      className="flex items-center justify-center px-2 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm min-h-[40px] min-w-0 flex-shrink-0"
                       aria-label="Previous page"
                     >
                       <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                        <path fillRule="evenodd" d={isRTL ? "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" : "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"} clipRule="evenodd" />
                       </svg>
                     </button>
                     
-                    {/* Mobile page numbers - show max 3 pages for better fit */}
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(totalPages, 3) }, (_, i) => {
-                        let pageNumber;
-                        if (totalPages <= 3) {
-                          pageNumber = i + 1;
-                        } else if (currentPage <= 2) {
-                          pageNumber = i + 1;
-                        } else if (currentPage >= totalPages - 1) {
-                          pageNumber = totalPages - 2 + i;
+                    {/* Smart mobile page numbers with ellipsis */}
+                    <div className={`flex items-center gap-1 overflow-x-auto max-w-[240px] px-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      {(() => {
+                        const pages = [];
+                        const showEllipsis = totalPages > 7;
+                        
+                        if (!showEllipsis) {
+                          // Show all pages if 7 or fewer
+                          for (let i = 1; i <= totalPages; i++) {
+                            pages.push(i);
+                          }
                         } else {
-                          pageNumber = currentPage - 1 + i;
+                          // Show smart pagination with ellipsis
+                          if (currentPage <= 4) {
+                            // Near beginning: 1 2 3 4 5 ... last
+                            pages.push(1, 2, 3, 4, 5);
+                            if (totalPages > 6) pages.push('ellipsis1');
+                            pages.push(totalPages);
+                          } else if (currentPage >= totalPages - 3) {
+                            // Near end: 1 ... last-4 last-3 last-2 last-1 last
+                            pages.push(1);
+                            if (totalPages > 6) pages.push('ellipsis1');
+                            for (let i = totalPages - 4; i <= totalPages; i++) {
+                              pages.push(i);
+                            }
+                          } else {
+                            // In middle: 1 ... current-1 current current+1 ... last
+                            pages.push(1);
+                            pages.push('ellipsis1');
+                            pages.push(currentPage - 1, currentPage, currentPage + 1);
+                            pages.push('ellipsis2');
+                            pages.push(totalPages);
+                          }
                         }
                         
-                        return (
-                          <button
-                            key={pageNumber}
-                            onClick={() => handlePageChange(pageNumber)}
-                            className={`w-10 h-10 rounded-lg text-sm font-medium transition-all duration-200 ${
-                              pageNumber === currentPage
-                                ? 'bg-blue-500 text-white shadow-md'
-                                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            {pageNumber}
-                          </button>
-                        );
-                      })}
+                        return pages.map((page, index) => {
+                          if (typeof page === 'string') {
+                            return (
+                              <span key={page} className="px-1 text-gray-400 dark:text-gray-500 text-xs">
+                                ...
+                              </span>
+                            );
+                          }
+                          
+                          return (
+                            <button
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                              className={`w-8 h-8 rounded-lg text-xs font-medium flex-shrink-0 transition-all duration-200 ${
+                                page === currentPage
+                                  ? 'bg-blue-500 text-white shadow-md'
+                                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          );
+                        });
+                      })()}
                     </div>
                     
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="flex items-center justify-center px-3 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm min-h-[40px]"
+                      className="flex items-center justify-center px-2 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm min-h-[40px] min-w-0 flex-shrink-0"
                       aria-label="Next page"
                     >
                       <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        <path fillRule="evenodd" d={isRTL ? "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" : "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"} clipRule="evenodd" />
                       </svg>
                     </button>
                   </div>

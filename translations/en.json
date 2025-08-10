@@ -368,5 +368,29 @@
       "updateFailed": "Update failed",
       "updateFailedMessage": "Failed to update the post. Please try again."
     }
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to JSON Post Dashboard account",
+    "signInWithGoogle": "Continue with Google",
+    "signingIn": "Signing in...",
+    "continueAsGuest": "Continue as Guest",
+    "orContinue": "Or continue as guest",
+    "features": {
+      "title": "What you'll get access to:",
+      "managePosts": "Manage posts and content",
+      "viewAnalytics": "View user analytics",
+      "customizeSettings": "Customize dashboard settings",
+      "exportData": "Export reports and data"
+    },
+    "footer": {
+      "agreeTo": "By signing in, you agree to our",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "errors": {
+      "signInFailed": "Failed to sign in with Google"
+    }
   }
 }
