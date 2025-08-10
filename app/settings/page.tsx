@@ -324,10 +324,10 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('postsPerPage', Number(e.target.value))}
                     className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
                   >
-                    <option value={10}>10 posts</option>
-                    <option value={20}>20 posts</option>
-                    <option value={50}>50 posts</option>
-                    <option value={100}>100 posts</option>
+                    <option value={10}>10 {t('navigation.posts')}</option>
+                    <option value={20}>20 {t('navigation.posts')}</option>
+                    <option value={50}>50 {t('navigation.posts')}</option>
+                    <option value={100}>100 {t('navigation.posts')}</option>
                   </select>
                 </div>
 
