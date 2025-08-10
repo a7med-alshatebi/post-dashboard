@@ -320,7 +320,7 @@ export default function UserPage({ params }: UserPageProps) {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl dashboard-rtl' : 'ltr dashboard-ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
         title={`${user.name} (@${user.username})`}
@@ -362,8 +362,8 @@ export default function UserPage({ params }: UserPageProps) {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 -mt-3 sm:-mt-6 relative z-10 space-y-6">
         
         {/* User Profile Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
-          <div className="px-6 sm:px-8 lg:px-12 py-6 sm:py-8 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm ${isRTL ? 'dashboard-card-rtl' : 'dashboard-card-ltr'}`}>
+          <div className={`px-6 sm:px-8 lg:px-12 py-6 sm:py-8 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 ${isRTL ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}>
             <div className={`flex items-start gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl flex-shrink-0">
                 {user.name.charAt(0)}
@@ -420,8 +420,8 @@ export default function UserPage({ params }: UserPageProps) {
         </div>
 
         {/* Posts Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
-          <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm ${isRTL ? 'dashboard-card-rtl' : 'dashboard-card-ltr'}`}>
+          <div className={`px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700 ${isRTL ? 'bg-gradient-to-l' : 'bg-gradient-to-r'}`}>
             <div className="flex items-center justify-between">
               <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}>
                 <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
@@ -486,7 +486,7 @@ export default function UserPage({ params }: UserPageProps) {
                           onClick={() => router.push(`/post/${post.id}`)}
                         >
                           <td className="px-4 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
-                            <div className="flex items-center gap-2 lg:gap-3">
+                            <div className={`flex items-center gap-2 lg:gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                               <div className="w-6 h-6 lg:w-8 lg:h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xs group-hover:scale-110 transition-transform">
                                 #{post.id}
                               </div>
@@ -495,8 +495,8 @@ export default function UserPage({ params }: UserPageProps) {
                               </span>
                             </div>
                           </td>
-                          <td className="px-4 lg:px-8 py-4 lg:py-6 max-w-md">
-                            <div className="group-hover:translate-x-1 transition-transform">
+                          <td className={`px-4 lg:px-8 py-4 lg:py-6 max-w-md ${isRTL ? 'text-right' : 'text-left'}`}>
+                            <div className={`group-hover:translate-x-1 transition-transform ${isRTL ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`}>
                               <h3 className="text-xs lg:text-sm font-semibold text-gray-900 dark:text-white capitalize leading-relaxed hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title={post.title}>
                                 {post.title.length > 50 ? `${post.title.substring(0, 50)}...` : post.title}
                               </h3>
@@ -506,7 +506,7 @@ export default function UserPage({ params }: UserPageProps) {
                             </div>
                           </td>
                           <td className="px-4 lg:px-8 py-4 lg:py-6 whitespace-nowrap">
-                            <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                            <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`} onClick={(e) => e.stopPropagation()}>
                               <button
                                 onClick={() => handleEditPost(post)}
                                 className="min-touch-target group-hover:scale-110 transition-all duration-200 inline-flex items-center px-3 lg:px-4 py-1.5 lg:py-2 border border-transparent text-xs lg:text-sm font-medium rounded-xl text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 dark:bg-green-900/30 dark:text-green-300 dark:hover:bg-green-900/50 shadow-sm hover:shadow-md"
