@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useI18n } from '../contexts/I18nContext';
 
 export function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const { isRTL, t } = useI18n();
 
   // Show button when page is scrolled up to given distance
   const toggleVisibility = () => {
@@ -33,8 +35,8 @@ export function BackToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 group p-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-blue-500/25 focus:outline-none focus:ring-4 focus:ring-blue-500/30 min-touch-target"
-          aria-label="Back to top"
+          className={`fixed bottom-6 ${isRTL ? 'left-6' : 'right-6'} z-50 group p-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-blue-500/25 focus:outline-none focus:ring-4 focus:ring-blue-500/30 min-touch-target`}
+          aria-label={t('posts.backToTop')}
         >
           {/* Background glow effect */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl"></div>
@@ -56,9 +58,9 @@ export function BackToTop() {
           </svg>
 
           {/* Tooltip - Hidden on mobile/small screens */}
-          <div className="hidden sm:block absolute bottom-full right-1/2 translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <div className={`hidden sm:block absolute bottom-full ${isRTL ? 'left-1/2 -translate-x-1/2' : 'right-1/2 translate-x-1/2'} mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}>
             <div className="bg-gray-900 dark:bg-gray-700 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-lg backdrop-blur-sm">
-              Back to top
+              {t('posts.backToTop')}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 dark:bg-gray-700 rotate-45"></div>
             </div>
           </div>
