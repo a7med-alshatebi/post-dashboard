@@ -63,9 +63,12 @@ export function ButtonSkeleton({ className = '' }: { className?: string }) {
   );
 }
 
+import { useI18n } from '../contexts/I18nContext';
+
 export function DashboardSkeleton() {
+  const { isRTL } = useI18n ? useI18n() : { isRTL: false };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header skeleton */}
       <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
         <div className="absolute inset-0 bg-black/10"></div>
