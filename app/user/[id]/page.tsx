@@ -764,13 +764,13 @@ export default function UserPage({ params }: UserPageProps) {
                                 <button
                                   key={page}
                                   onClick={() => handlePageChange(page)}
-                                  className={`w-8 h-8 text-sm font-medium rounded-lg flex-shrink-0 transition-all duration-200 ${
+                                  className={`w-8 h-8 text-sm font-medium rounded-lg flex-shrink-0 transition-all duration-200 flex items-center justify-center ${
                                     page === currentPage
                                       ? 'bg-blue-500 text-white shadow-md scale-105'
                                       : 'text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:scale-105 shadow-sm'
                                   }`}
                                 >
-                                  {page}
+                                  <span className="w-full text-center">{page}</span>
                                 </button>
                               );
                             });
