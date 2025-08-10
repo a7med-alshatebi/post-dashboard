@@ -212,7 +212,7 @@ export default function UsersPage() {
     );
   }
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 safe-area-inset ${isRTL ? 'rtl dashboard-rtl' : 'ltr dashboard-ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <Header 
         title={t('users.title')}
@@ -226,7 +226,7 @@ export default function UsersPage() {
       
       {/* Main content */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8 -mt-3 sm:-mt-6 relative z-10">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm ${isRTL ? 'dashboard-card-rtl' : 'dashboard-card-ltr'}`}>
           
           {/* Search and Filter Controls */}
           <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
@@ -316,11 +316,10 @@ export default function UsersPage() {
                   <Link
                     key={user.id}
                     href={`/user/${user.id}`}
-                    className="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-600 hover:shadow-lg hover:scale-105 transition-all duration-300 hover:border-green-300 dark:hover:border-green-500"
+                    className={`group bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-600 hover:shadow-lg hover:scale-105 transition-all duration-300 hover:border-green-300 dark:hover:border-green-500 ${isRTL ? 'dashboard-usercard-rtl' : 'dashboard-usercard-ltr'}`}
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    {/* User Avatar */}
-                    <div className="flex items-center gap-4 mb-4">
+                    <div className={`flex items-center mb-4 ${isRTL ? 'flex-row-reverse gap-4' : 'gap-4'}`}>
                       <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 group-hover:scale-110 transition-transform">
                         {user.name.charAt(0)}
                       </div>
@@ -333,8 +332,6 @@ export default function UsersPage() {
                         </p>
                       </div>
                     </div>
-
-                    {/* User Stats */}
                     <div className={`space-y-3 mb-4 ${isRTL ? 'font-arabic' : ''}`}>
                       <div className={`flex items-center justify-between text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <span className="text-gray-600 dark:text-gray-400">{t('users.posts')}</span>
@@ -349,13 +346,9 @@ export default function UsersPage() {
                         🏢 {user.company.name}
                       </div>
                     </div>
-
-                    {/* User Location */}
                     <div className={`text-xs text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-600 pt-3 ${isRTL ? 'text-right font-arabic' : ''}`}>
                       📍 {user.address.city}, {user.address.zipcode}
                     </div>
-
-                    {/* Hover indicator */}
                     <div className={`mt-4 flex items-center text-green-600 dark:text-green-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity ${isRTL ? 'flex-row-reverse' : ''}`}>
                       {t('users.viewProfile')}
                       <svg className={`w-4 h-4 ${isRTL ? 'mr-1 transform group-hover:-translate-x-1' : 'ml-1 transform group-hover:translate-x-1'} transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
