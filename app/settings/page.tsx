@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 import { Header } from '../../components/header';
 import { BackToTop } from '../../components/back-to-top';
 import { useI18n, LOCALES } from '../../contexts/I18nContext';
+import { useTimeBasedTheme } from '../../hooks/useTimeBasedTheme';
 
 interface Settings {
   theme: 'light' | 'dark' | 'system';
@@ -23,6 +24,7 @@ export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const { locale, setLocale, t, isRTL } = useI18n();
   const [mounted, setMounted] = useState(false);
+  const timeBasedTheme = useTimeBasedTheme();
   
   const [settings, setSettings] = useState<Settings>({
     theme: 'system',
@@ -92,6 +94,17 @@ export default function SettingsPage() {
     }
   }, [theme]);
 
+  // Handle time-based theme changes when system is selected
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme-preference');
+    if (savedTheme === 'system' && settings.theme === 'system') {
+      setTheme(timeBasedTheme);
+      // Apply theme immediately
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(timeBasedTheme);
+    }
+  }, [timeBasedTheme, settings.theme, setTheme]);
+
   // Save settings to localStorage
   const saveSettings = async () => {
     setIsSaving(true);
@@ -142,15 +155,26 @@ export default function SettingsPage() {
     
     // Special handling for theme changes - apply immediately and save to localStorage
     if (key === 'theme') {
-      setTheme(value as string);
-      // Save theme immediately to localStorage to prevent conflicts
+      const themeValue = value as string;
+      
+      if (themeValue === 'system') {
+        // For system theme, use our custom time-based logic
+        setTheme(timeBasedTheme);
+        // Apply time-based theme immediately
+        document.documentElement.classList.remove('light', 'dark');
+        document.documentElement.classList.add(timeBasedTheme);
+      } else {
+        setTheme(themeValue);
+      }
+      
+      // Save theme preference to localStorage
       const currentSettings = JSON.parse(localStorage.getItem('dashboardSettings') || '{}');
       localStorage.setItem('dashboardSettings', JSON.stringify({
         ...currentSettings,
-        theme: value
+        theme: themeValue
       }));
       // Also update the theme storage key used by next-themes
-      localStorage.setItem('theme-preference', value as string);
+      localStorage.setItem('theme-preference', themeValue);
     }
   };
 

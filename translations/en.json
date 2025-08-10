@@ -151,7 +151,7 @@
     "autoRefreshSettings": "Auto-Refresh Settings",
     "lightModeDesc": "Always light mode",
     "darkModeDesc": "Always dark mode",
-    "systemModeDesc": "Follow system preference",
+    "systemModeDesc": "Light 7AM-7PM, Dark 7PM-7AM",
     "defaultSortOrder": "Default Sort Order",
     "sortById": "Sort by ID",
     "sortByTitle": "Sort by Title",
