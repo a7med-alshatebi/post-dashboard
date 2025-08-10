@@ -45,16 +45,16 @@ export default function LoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-8">
+        <div className={`bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-8 ${isRTL ? 'font-arabic' : ''}`}>
           <div className="space-y-6">
             {/* Error Message */}
             {error && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
-                <div className="flex items-center">
+                <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <svg className={`w-5 h-5 text-red-600 dark:text-red-400 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 16.5c-.77.833.192 2.5 1.732 2.5z" />
                   </svg>
-                  <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                  <p className={`text-sm text-red-600 dark:text-red-400 ${isRTL ? 'font-arabic' : ''}`}>{error}</p>
                 </div>
               </div>
             )}
@@ -63,7 +63,7 @@ export default function LoginPage() {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`w-full flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}
             >
               {loading ? (
                 <>
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                <span className={`px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 ${isRTL ? 'font-arabic' : ''}`}>
                   {t('login.orContinue')}
                 </span>
               </div>
@@ -110,7 +110,7 @@ export default function LoginPage() {
             {/* Guest Access */}
             <Link
               href="/"
-              className="w-full flex items-center justify-center px-6 py-3 border border-transparent rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className={`w-full flex items-center justify-center px-6 py-3 border border-transparent rounded-xl text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}
             >
               <svg className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -120,29 +120,29 @@ export default function LoginPage() {
 
             {/* Features List */}
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className={`text-sm font-medium text-gray-900 dark:text-white mb-4 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
                 {t('login.features.title')}
               </h3>
               <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                <li className="flex items-center">
+                <li className={`flex items-center ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}>
                   <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   {t('login.features.managePosts')}
                 </li>
-                <li className="flex items-center">
+                <li className={`flex items-center ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}>
                   <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   {t('login.features.viewAnalytics')}
                 </li>
-                <li className="flex items-center">
+                <li className={`flex items-center ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}>
                   <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   {t('login.features.customizeSettings')}
                 </li>
-                <li className="flex items-center">
+                <li className={`flex items-center ${isRTL ? 'flex-row-reverse font-arabic' : ''}`}>
                   <svg className={`w-4 h-4 text-green-500 ${isRTL ? 'ml-2' : 'mr-2'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -155,7 +155,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className={`text-xs text-gray-500 dark:text-gray-400 ${isRTL ? 'font-arabic' : ''}`}>
             {t('login.footer.agreeTo')}{' '}
             <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
               {t('login.footer.termsOfService')}
