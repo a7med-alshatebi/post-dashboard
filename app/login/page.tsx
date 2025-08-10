@@ -29,17 +29,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center p-4 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-md w-full space-y-8">
         {/* Logo/Header */}
         <div className="text-center">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
             <span className="text-2xl">📊</span>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h2 className={`text-3xl font-bold text-gray-900 dark:text-white text-center ${isRTL ? 'font-arabic' : ''}`}>
             {t('login.title')}
           </h2>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className={`mt-2 text-sm text-gray-600 dark:text-gray-400 text-center ${isRTL ? 'font-arabic' : ''}`}>
             {t('login.subtitle')}
           </p>
         </div>

@@ -697,15 +697,15 @@ export default function UserPage({ params }: UserPageProps) {
 
                 {/* Mobile Pagination */}
                 {totalPages > 1 && (
-                  <div className={`flex justify-center pt-6 px-2 ${isRTL ? 'font-arabic' : ''}`}>
-                    <div className={`flex flex-col items-center gap-3 w-full max-w-sm ${isRTL ? 'flex-col-reverse' : ''}`}>
-                      {/* Page info */}
-                      <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                        {t('userProfile.pagination.page')} {currentPage} {t('userProfile.pagination.of')} {totalPages}
-                      </div>
-                      
-                      {/* Navigation controls */}
-                      <nav className={`flex items-center justify-center gap-2 w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex flex-col items-center justify-center pt-6 px-4 ${isRTL ? 'font-arabic' : ''}`}>
+                    {/* Page info */}
+                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center mb-4">
+                      {t('userProfile.pagination.page')} {currentPage} {t('userProfile.pagination.of')} {totalPages}
+                    </div>
+                    
+                    {/* Navigation controls - centered container */}
+                    <div className="flex items-center justify-center w-full">
+                      <nav className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <button
                           onClick={() => handlePageChange(currentPage - 1)}
                           disabled={currentPage === 1}
@@ -717,7 +717,7 @@ export default function UserPage({ params }: UserPageProps) {
                           </svg>
                         </button>
                         
-                        <div className={`flex items-center justify-center gap-1.5 flex-1 overflow-x-auto max-w-[240px] px-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center justify-center gap-1.5 overflow-x-auto scrollbar-hide px-2 ${isRTL ? 'flex-row-reverse' : ''}`} style={{ maxWidth: '180px' }}>
                           {(() => {
                             const pages = [];
                             const showEllipsis = totalPages > 5; // Reduced for mobile
