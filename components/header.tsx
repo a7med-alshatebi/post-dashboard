@@ -312,7 +312,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
             <div className="flex flex-wrap gap-2 sm:gap-4 justify-center mt-4 sm:mt-6">
               {stats.posts !== undefined && (
                 <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                  📊 {stats.posts} Posts
+                  📊 {stats.posts} {t('dashboard.totalPosts')}
                 </div>
               )}
               {stats.filteredPosts !== undefined && (
@@ -322,7 +322,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
               )}
               {stats.users !== undefined && (
                 <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                  👥 {stats.users} {typeof stats.users === 'number' ? 'Authors' : ''}
+                  👥 {stats.users} {t('dashboard.totalUsers')}
                 </div>
               )}
               {stats.postId !== undefined && (
@@ -332,7 +332,7 @@ export function Header({ title, subtitle, showStats = false, stats }: HeaderProp
               )}
               {stats.comments !== undefined && (
                 <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-white text-xs sm:text-sm font-medium">
-                  💬 {stats.comments} Comments
+                  💬 {stats.comments} {t('postDetail.comments')}
                 </div>
               )}
               {stats.author && typeof stats.author === 'string' && stats.author !== 'Loading...' && (
