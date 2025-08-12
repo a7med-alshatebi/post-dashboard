@@ -31,6 +31,7 @@ interface I18nProviderProps {
 }
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
+
   // Initialize with saved locale to prevent flash
   const getInitialLocale = (): string => {
     if (typeof window !== 'undefined') {
@@ -46,6 +47,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
 
   const [locale, setLocaleState] = useState<string>(getInitialLocale);
   const [translations, setTranslations] = useState<Translations>({});
+  const [loading, setLoading] = useState(true);
 
   // Load translations when locale changes
   useEffect(() => {
@@ -64,9 +66,11 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
             console.error('Failed to load fallback translations', fallbackError);
           }
         }
+      } finally {
+        setLoading(false);
       }
     };
-
+    setLoading(true);
     loadTranslations();
   }, [locale]);
 
@@ -76,13 +80,10 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     if (savedLocale !== locale) {
       setLocaleState(savedLocale);
     }
-    
     // Ensure DOM attributes are set (should already be done by pre-hydration script)
     if (typeof document !== 'undefined') {
       document.documentElement.lang = savedLocale;
       document.documentElement.dir = savedLocale === 'ar' ? 'rtl' : 'ltr';
-      
-      // Update classes
       document.documentElement.className = document.documentElement.className.replace(/\b(rtl|ltr)\b/g, '');
       document.documentElement.classList.add(savedLocale === 'ar' ? 'rtl' : 'ltr');
     }
@@ -130,6 +131,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
 
   const isRTL = locale === 'ar';
 
+  if (loading) return null;
   return (
     <I18nContext.Provider value={{ locale, setLocale, t, isRTL }}>
       {children}
