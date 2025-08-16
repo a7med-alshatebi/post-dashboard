@@ -772,7 +772,7 @@ export default function SettingsPage() {
                   {isRTL ? (
                     <>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
-                        Timezone
+                        {t('settings.timezone')}
                       </label>
                       <select
                         value={settings.timezone}
@@ -794,7 +794,7 @@ export default function SettingsPage() {
                   ) : (
                     <>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-left mr-4">
-                        Timezone
+                        {t('settings.timezone')}
                       </label>
                       <select
                         value={settings.timezone}
