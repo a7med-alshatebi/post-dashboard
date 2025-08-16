@@ -232,9 +232,9 @@ export default function UsersPage() {
           <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
             <div className="flex flex-col gap-4">
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-500 rounded-full"></span>
-                  <span className={`truncate ${isRTL ? 'text-right w-full' : ''}`}>{t('users.allUsers')} ({filteredUsers.length})</span>
+                <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 w-full ${isRTL ? 'flex-row-reverse justify-end text-right' : ''}`}>
+                  <span className={`w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-500 rounded-full ${isRTL ? 'order-2 ml-2' : 'order-1 mr-2'}`}></span>
+                  <span className={`truncate w-full ${isRTL ? 'text-right' : ''}`}>{t('users.allUsers')} ({filteredUsers.length})</span>
                   {totalPages > 1 && (
                     <span className={`text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right w-full' : ''}`}>
                       {t('common.page')} {currentPage} {t('common.of')} {totalPages}
