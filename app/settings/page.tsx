@@ -502,7 +502,7 @@ export default function SettingsPage() {
 
             {/* Auto-Refresh Settings */}
             <div className="space-y-6">
-              <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
+              <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row justify-end text-right' : 'flex-row text-left'}`}>
                 {isRTL ? (
                   <>
                     <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
