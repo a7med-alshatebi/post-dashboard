@@ -264,7 +264,7 @@ export default function SettingsPage() {
             {/* Display Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center"></div>
+                <div className={`w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
                 <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.displaySettings')}</span>
               </h3>
 
@@ -486,7 +486,7 @@ export default function SettingsPage() {
             {/* Auto-Refresh Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center"></div>
+                <div className={`w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
                 <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.autoRefreshSettings')}</span>
               </h3>
 
@@ -584,7 +584,7 @@ export default function SettingsPage() {
             {/* Notification Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center"></div>
+                <div className={`w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
                 <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.notifications')}</span>
               </h3>
 
@@ -660,7 +660,7 @@ export default function SettingsPage() {
             {/* Localization Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"></div>
+                <div className={`w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
                 <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.localization')}</span>
               </h3>
 
