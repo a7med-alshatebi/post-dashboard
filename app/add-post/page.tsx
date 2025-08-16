@@ -93,9 +93,18 @@ export default function AddPostPage() {
           {/* Add Post Form */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden backdrop-blur-sm">
             <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
-              <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></span>
-                {t('addPost.createNewPost')}
+              <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse text-right w-full justify-end' : ''}`}> 
+                {isRTL ? (
+                  <>
+                    {t('addPost.createNewPost')}
+                    <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></span>
+                  </>
+                ) : (
+                  <>
+                    <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></span>
+                    {t('addPost.createNewPost')}
+                  </>
+                )}
               </h2>
             </div>
             
