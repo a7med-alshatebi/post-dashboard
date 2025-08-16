@@ -293,24 +293,26 @@ export default function UsersPage() {
           {/* Users Grid */}
           <div className="p-4 sm:p-6 lg:p-8">
             {currentUsers.length === 0 ? (
-              <div className={`${isRTL ? 'text-right font-arabic' : 'text-center'} py-12`}>
-                <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                  </svg>
+              <div className={`py-12 flex ${isRTL ? 'justify-end' : 'justify-center'} w-full`}>
+                <div className={`${isRTL ? 'text-right font-arabic' : 'text-center'} w-full max-w-md`}>
+                  <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('users.noUsersFound')}</h3>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    {searchTerm ? t('users.noUsersMatchSearch') : t('users.noUsersAvailable')}
+                  </p>
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
+                    >
+                      {t('users.clearSearch')}
+                    </button>
+                  )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{t('users.noUsersFound')}</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  {searchTerm ? t('users.noUsersMatchSearch') : t('users.noUsersAvailable')}
-                </p>
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm('')}
-                    className="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
-                  >
-                    {t('users.clearSearch')}
-                  </button>
-                )}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
