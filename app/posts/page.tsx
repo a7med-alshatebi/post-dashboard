@@ -267,9 +267,9 @@ export default function PostsPage() {
               <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
                 <div className={`w-full flex items-center gap-2 sm:gap-3 ${isRTL ? 'justify-end' : ''}`}>
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></span>
-                  <span className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate ${isRTL ? 'text-right' : ''}`}>{t('posts.allPosts')} ({filteredAndSortedPosts.length})</span>
+                  <span className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate ${isRTL ? 'text-right w-full block' : ''}`}>{t('posts.allPosts')} ({filteredAndSortedPosts.length})</span>
                   {totalPages > 1 && (
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className={`text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right w-full block' : ''}`}>
                       {t('common.page')} {currentPage} {t('common.of')} {totalPages}
                     </span>
                   )}
