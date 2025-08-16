@@ -829,9 +829,9 @@ export default function SettingsPage() {
                 <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                <span className="xs:hidden">Reset</span>
-                <span className="hidden xs:inline sm:hidden">Reset Default</span>
-                <span className="hidden sm:inline">Reset to Defaults</span>
+                <span className="xs:hidden">{t('settings.resetToDefaults')}</span>
+                <span className="hidden xs:inline sm:hidden">{t('settings.resetToDefaults')}</span>
+                <span className="hidden sm:inline">{t('settings.resetToDefaults')}</span>
               </button>
               
               <button
@@ -842,18 +842,18 @@ export default function SettingsPage() {
                 {isSaving ? (
                   <>
                     <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-1.5 sm:mr-2"></div>
-                    <span className="xs:hidden">Saving...</span>
-                    <span className="hidden xs:inline sm:hidden">Saving...</span>
-                    <span className="hidden sm:inline">Saving Changes...</span>
+                    <span className="xs:hidden">{t('common.loading')}</span>
+                    <span className="hidden xs:inline sm:hidden">{t('common.loading')}</span>
+                    <span className="hidden sm:inline">{t('common.loading')}</span>
                   </>
                 ) : (
                   <>
                     <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="xs:hidden">Save</span>
-                    <span className="hidden xs:inline sm:hidden">Save Changes</span>
-                    <span className="hidden sm:inline">Save All Changes</span>
+                    <span className="xs:hidden">{t('settings.saveChanges')}</span>
+                    <span className="hidden xs:inline sm:hidden">{t('settings.saveChanges')}</span>
+                    <span className="hidden sm:inline">{t('settings.saveChanges')}</span>
                   </>
                 )}
               </button>
