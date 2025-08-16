@@ -351,7 +351,7 @@ export default function SettingsPage() {
                 <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
                   {isRTL ? (
                     <>
-                      <div className={`flex-shrink-0 ml-0`}>
+                      <div className={`flex-shrink-0 ml-0`} style={{order: 2}}>
                         <button
                           onClick={() => updateSetting('compactView', !settings.compactView)}
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
@@ -372,7 +372,7 @@ export default function SettingsPage() {
                           />
                         </button>
                       </div>
-                      <div className={`flex-1 mr-4`}>
+                      <div className={`flex-1 mr-4`} style={{order: 1}}>
                         <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
                           {t('settings.compactView')}
                         </label>
@@ -420,7 +420,7 @@ export default function SettingsPage() {
                 <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
                   {isRTL ? (
                     <>
-                      <div className={`flex-shrink-0 ml-0`}>
+                      <div className={`flex-shrink-0 ml-0`} style={{order: 2}}>
                         <button
                           onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
@@ -441,7 +441,7 @@ export default function SettingsPage() {
                           />
                         </button>
                       </div>
-                      <div className={`flex-1 mr-4`}>
+                      <div className={`flex-1 mr-4`} style={{order: 1}}>
                         <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
                           {t('settings.showAnimations')}
                         </label>
@@ -503,7 +503,7 @@ export default function SettingsPage() {
                 <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
                   {isRTL ? (
                     <>
-                      <div className={`flex-shrink-0 ml-0`}>
+                      <div className={`flex-shrink-0 ml-0`} style={{order: 2}}>
                         <button
                           onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
                           className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 p-0.5 ${
@@ -524,7 +524,7 @@ export default function SettingsPage() {
                           />
                         </button>
                       </div>
-                      <div className={`flex-1 mr-4`}>
+                      <div className={`flex-1 mr-4`} style={{order: 1}}>
                         <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
                           {t('settings.autoRefresh')}
                         </label>
@@ -603,7 +603,7 @@ export default function SettingsPage() {
               <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
                 {isRTL ? (
                   <>
-                    <div className={`flex-shrink-0 ml-0`}>
+                    <div className={`flex-shrink-0 ml-0`} style={{order: 2}}>
                       <button
                         onClick={() => updateSetting('notifications', !settings.notifications)}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 p-0.5 ${
@@ -624,7 +624,7 @@ export default function SettingsPage() {
                         />
                       </button>
                     </div>
-                    <div className={`flex-1 mr-4`}>
+                    <div className={`flex-1 mr-4`} style={{order: 1}}>
                       <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
                         {t('settings.notifications')}
                       </label>
@@ -685,17 +685,18 @@ export default function SettingsPage() {
                 <div className="space-y-2 flex items-center">
                   {isRTL ? (
                     <>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
+                        {t('common.language')}
+                      </label>
                       <select
                         value={locale}
                         onChange={(e) => updateSetting('language', e.target.value)}
                         className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-right"
+                        style={{marginLeft: 'auto'}}
                       >
                         <option value="en">English</option>
                         <option value="ar">العربية</option>
                       </select>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
-                        {t('common.language')}
-                      </label>
                     </>
                   ) : (
                     <>
@@ -718,10 +719,14 @@ export default function SettingsPage() {
                 <div className="space-y-2 flex items-center">
                   {isRTL ? (
                     <>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
+                        Timezone
+                      </label>
                       <select
                         value={settings.timezone}
                         onChange={(e) => updateSetting('timezone', e.target.value)}
                         className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-right"
+                        style={{marginLeft: 'auto'}}
                       >
                         <option value="UTC">UTC</option>
                         <option value="America/New_York">Eastern Time</option>
@@ -733,9 +738,6 @@ export default function SettingsPage() {
                         <option value="Asia/Tokyo">Tokyo</option>
                         <option value="Asia/Dubai">Dubai</option>
                       </select>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
-                        Timezone
-                      </label>
                     </>
                   ) : (
                     <>
