@@ -248,10 +248,7 @@ export default function UsersPage() {
                     )}
                   </h2>
                 </div>
-                <div className={`hidden sm:flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  {t('users.liveData')}
-                </div>
+                {/* Removed Live Data section for cleaner header */}
               </div>
 
               {/* Search Bar */}
