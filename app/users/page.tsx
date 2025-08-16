@@ -232,23 +232,15 @@ export default function UsersPage() {
           <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-700">
             <div className="flex flex-col gap-4">
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className={`w-full flex ${isRTL ? 'justify-end' : 'justify-start'}`}>
-                  <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse text-right' : ''}`} style={isRTL ? {width: '100%'} : {}}>
-                    <span className={`w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-500 rounded-full ${isRTL ? 'order-2 ml-2' : 'order-1 mr-2'}`}></span>
-                    {isRTL && totalPages > 1 && (
-                      <span className="text-sm text-gray-500 dark:text-gray-400 text-left w-full block mr-3">
-                        {t('common.page')} {currentPage} {t('common.of')} {totalPages}
-                      </span>
-                    )}
-                    <span className={`truncate ${isRTL ? 'text-right w-full block' : ''}`}>{t('users.allUsers')} ({filteredUsers.length})</span>
-                    {!isRTL && totalPages > 1 && (
-                      <span className="text-sm text-gray-500 dark:text-gray-400 ml-3">
-                        {t('common.page')} {currentPage} {t('common.of')} {totalPages}
-                      </span>
-                    )}
-                  </h2>
+                <div className="w-full flex items-center gap-2 sm:gap-3">
+                  <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-500 rounded-full"></span>
+                  <span className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate ${isRTL ? 'text-right' : ''}`}>{t('users.allUsers')} ({filteredUsers.length})</span>
+                  {totalPages > 1 && (
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {t('common.page')} {currentPage} {t('common.of')} {totalPages}
+                    </span>
+                  )}
                 </div>
-                {/* Removed Live Data section for cleaner header */}
               </div>
 
               {/* Search Bar */}
