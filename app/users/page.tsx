@@ -234,9 +234,9 @@ export default function UsersPage() {
               <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2 sm:gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <span className="w-1.5 sm:w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-500 rounded-full"></span>
-                  <span className="truncate">{t('users.allUsers')} ({filteredUsers.length})</span>
+                  <span className={`truncate ${isRTL ? 'text-right w-full' : ''}`}>{t('users.allUsers')} ({filteredUsers.length})</span>
                   {totalPages > 1 && (
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className={`text-sm text-gray-500 dark:text-gray-400 ${isRTL ? 'text-right w-full' : ''}`}>
                       {t('common.page')} {currentPage} {t('common.of')} {totalPages}
                     </span>
                   )}
