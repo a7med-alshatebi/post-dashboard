@@ -348,10 +348,21 @@ export default function UsersPage() {
                       📍 {user.address.city}, {user.address.zipcode}
                     </div>
                     <div className={`mt-4 flex items-center text-green-600 dark:text-green-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      {t('users.viewProfile')}
-                      <svg className={`w-4 h-4 ${isRTL ? 'mr-1 transform group-hover:-translate-x-1' : 'ml-1 transform group-hover:translate-x-1'} transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
-                      </svg>
+                      {isRTL ? (
+                        <>
+                          {t('users.viewProfile')}
+                          <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </>
+                      ) : (
+                        <>
+                          {t('users.viewProfile')}
+                          <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </>
+                      )}
                     </div>
                   </Link>
                 ))}
