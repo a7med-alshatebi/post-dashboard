@@ -264,8 +264,10 @@ export default function SettingsPage() {
             {/* Display Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className={`w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
-                <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.displaySettings')}</span>
+                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse justify-end w-full' : ''}`}>
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center"></div>
+                  <span className={isRTL ? 'text-right' : ''}>{t('settings.displaySettings')}</span>
+                </div>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -486,8 +488,10 @@ export default function SettingsPage() {
             {/* Auto-Refresh Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className={`w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
-                <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.autoRefreshSettings')}</span>
+                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse justify-end w-full' : ''}`}>
+                  <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-500 rounded-lg flex items-center justify-center"></div>
+                  <span className={isRTL ? 'text-right' : ''}>{t('settings.autoRefreshSettings')}</span>
+                </div>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -584,8 +588,10 @@ export default function SettingsPage() {
             {/* Notification Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className={`w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
-                <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.notifications')}</span>
+                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse justify-end w-full' : ''}`}>
+                  <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center"></div>
+                  <span className={isRTL ? 'text-right' : ''}>{t('settings.notifications')}</span>
+                </div>
               </h3>
 
               <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
@@ -660,8 +666,10 @@ export default function SettingsPage() {
             {/* Localization Settings */}
             <div className="space-y-6">
               <h3 className={`text-lg font-bold text-gray-900 dark:text-white flex items-center gap-3 ${isRTL ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <div className={`w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center ${isRTL ? 'justify-end' : 'justify-center'}${isRTL ? ' w-full' : ''}`}></div>
-                <span className={isRTL ? 'w-full text-right block' : ''}>{t('settings.localization')}</span>
+                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse justify-end w-full' : ''}`}>
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"></div>
+                  <span className={isRTL ? 'text-right' : ''}>{t('settings.localization')}</span>
+                </div>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
