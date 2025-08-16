@@ -348,69 +348,141 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Compact View Toggle */}
-                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
-                    <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('settings.compactView')}
-                    </label>
-                    <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('settings.compactViewDesc')}
-                    </p>
-                  </div>
-                  <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
-                    <button
-                      onClick={() => updateSetting('compactView', !settings.compactView)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                        settings.compactView 
-                          ? 'bg-blue-600' 
-                          : 'bg-gray-200 dark:bg-gray-700'
-                      }`}
-                      role="switch"
-                      aria-checked={settings.compactView}
-                      aria-labelledby="compact-view-label"
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
-                          settings.compactView 
-                            ? (isRTL ? '-translate-x-5' : 'translate-x-5')
-                            : (isRTL ? 'translate-x-0' : 'translate-x-0')
-                        }`}
-                      />
-                    </button>
-                  </div>
+                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
+                  {isRTL ? (
+                    <>
+                      <div className={`flex-shrink-0 ml-0`}>
+                        <button
+                          onClick={() => updateSetting('compactView', !settings.compactView)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
+                            settings.compactView 
+                              ? 'bg-blue-600' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                          role="switch"
+                          aria-checked={settings.compactView}
+                          aria-labelledby="compact-view-label"
+                        >
+                          <span
+                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                              settings.compactView 
+                                ? '-translate-x-5'
+                                : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <div className={`flex-1 mr-4`}>
+                        <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
+                          {t('settings.compactView')}
+                        </label>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-right">
+                          {t('settings.compactViewDesc')}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={`flex-1 mr-4`}>
+                        <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-left">
+                          {t('settings.compactView')}
+                        </label>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-left">
+                          {t('settings.compactViewDesc')}
+                        </p>
+                      </div>
+                      <div className={`flex-shrink-0 ml-0`}>
+                        <button
+                          onClick={() => updateSetting('compactView', !settings.compactView)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
+                            settings.compactView 
+                              ? 'bg-blue-600' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                          role="switch"
+                          aria-checked={settings.compactView}
+                          aria-labelledby="compact-view-label"
+                        >
+                          <span
+                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                              settings.compactView 
+                                ? 'translate-x-5'
+                                : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Show Animations Toggle */}
-                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
-                    <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('settings.showAnimations')}
-                    </label>
-                    <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('settings.showAnimationsDesc')}
-                    </p>
-                  </div>
-                  <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
-                    <button
-                      onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                        settings.showAnimations 
-                          ? 'bg-blue-600' 
-                          : 'bg-gray-200 dark:bg-gray-700'
-                      }`}
-                      role="switch"
-                      aria-checked={settings.showAnimations}
-                      aria-labelledby="animations-label"
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
-                          settings.showAnimations 
-                            ? (isRTL ? '-translate-x-5' : 'translate-x-5')
-                            : (isRTL ? 'translate-x-0' : 'translate-x-0')
-                        }`}
-                      />
-                    </button>
-                  </div>
+                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
+                  {isRTL ? (
+                    <>
+                      <div className={`flex-shrink-0 ml-0`}>
+                        <button
+                          onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
+                            settings.showAnimations 
+                              ? 'bg-blue-600' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                          role="switch"
+                          aria-checked={settings.showAnimations}
+                          aria-labelledby="animations-label"
+                        >
+                          <span
+                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                              settings.showAnimations 
+                                ? '-translate-x-5'
+                                : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <div className={`flex-1 mr-4`}>
+                        <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
+                          {t('settings.showAnimations')}
+                        </label>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-right">
+                          {t('settings.showAnimationsDesc')}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={`flex-1 mr-4`}>
+                        <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-left">
+                          {t('settings.showAnimations')}
+                        </label>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-left">
+                          {t('settings.showAnimationsDesc')}
+                        </p>
+                      </div>
+                      <div className={`flex-shrink-0 ml-0`}>
+                        <button
+                          onClick={() => updateSetting('showAnimations', !settings.showAnimations)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
+                            settings.showAnimations 
+                              ? 'bg-blue-600' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                          role="switch"
+                          aria-checked={settings.showAnimations}
+                          aria-labelledby="animations-label"
+                        >
+                          <span
+                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                              settings.showAnimations 
+                                ? 'translate-x-5'
+                                : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -428,36 +500,72 @@ export default function SettingsPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Auto Refresh Toggle */}
-                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
-                    <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('settings.autoRefresh')}
-                    </label>
-                    <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {t('settings.autoRefreshDesc')}
-                    </p>
-                  </div>
-                  <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
-                    <button
-                      onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                        settings.autoRefresh 
-                          ? 'bg-green-600' 
-                          : 'bg-gray-200 dark:bg-gray-700'
-                      }`}
-                      role="switch"
-                      aria-checked={settings.autoRefresh}
-                      aria-labelledby="auto-refresh-label"
-                    >
-                      <span
-                        className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
-                          settings.autoRefresh 
-                            ? (isRTL ? '-translate-x-5' : 'translate-x-5')
-                            : (isRTL ? 'translate-x-0' : 'translate-x-0')
-                        }`}
-                      />
-                    </button>
-                  </div>
+                <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
+                  {isRTL ? (
+                    <>
+                      <div className={`flex-shrink-0 ml-0`}>
+                        <button
+                          onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 p-0.5 ${
+                            settings.autoRefresh 
+                              ? 'bg-green-600' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                          role="switch"
+                          aria-checked={settings.autoRefresh}
+                          aria-labelledby="auto-refresh-label"
+                        >
+                          <span
+                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                              settings.autoRefresh 
+                                ? '-translate-x-5'
+                                : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <div className={`flex-1 mr-4`}>
+                        <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
+                          {t('settings.autoRefresh')}
+                        </label>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-right">
+                          {t('settings.autoRefreshDesc')}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className={`flex-1 mr-4`}>
+                        <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-left">
+                          {t('settings.autoRefresh')}
+                        </label>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-left">
+                          {t('settings.autoRefreshDesc')}
+                        </p>
+                      </div>
+                      <div className={`flex-shrink-0 ml-0`}>
+                        <button
+                          onClick={() => updateSetting('autoRefresh', !settings.autoRefresh)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 p-0.5 ${
+                            settings.autoRefresh 
+                              ? 'bg-green-600' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
+                          role="switch"
+                          aria-checked={settings.autoRefresh}
+                          aria-labelledby="auto-refresh-label"
+                        >
+                          <span
+                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                              settings.autoRefresh 
+                                ? 'translate-x-5'
+                                : 'translate-x-0'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Refresh Interval */}
@@ -492,36 +600,72 @@ export default function SettingsPage() {
                 {t('settings.notifications')}
               </h3>
 
-              <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className={`flex-1 ${isRTL ? 'ml-4' : 'mr-4'}`}>
-                  <label className={`block text-sm font-semibold text-gray-800 dark:text-gray-200 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {t('settings.notifications')}
-                  </label>
-                  <p className={`text-xs text-gray-600 dark:text-gray-400 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {t('settings.notificationsDesc')}
-                  </p>
-                </div>
-                <div className={`flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
-                  <button
-                    onClick={() => updateSetting('notifications', !settings.notifications)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 p-0.5 ${
-                      settings.notifications 
-                        ? 'bg-yellow-600' 
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    }`}
-                    role="switch"
-                    aria-checked={settings.notifications}
-                    aria-labelledby="notifications-label"
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
-                        settings.notifications 
-                          ? (isRTL ? '-translate-x-5' : 'translate-x-5')
-                          : (isRTL ? 'translate-x-0' : 'translate-x-0')
-                      }`}
-                    />
-                  </button>
-                </div>
+              <div className={`flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white dark:from-gray-700/50 dark:to-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm hover:shadow-md transition-all duration-200 ${isRTL ? 'flex-row' : ''}`}>
+                {isRTL ? (
+                  <>
+                    <div className={`flex-shrink-0 ml-0`}>
+                      <button
+                        onClick={() => updateSetting('notifications', !settings.notifications)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 p-0.5 ${
+                          settings.notifications 
+                            ? 'bg-yellow-600' 
+                            : 'bg-gray-200 dark:bg-gray-700'
+                        }`}
+                        role="switch"
+                        aria-checked={settings.notifications}
+                        aria-labelledby="notifications-label"
+                      >
+                        <span
+                          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                            settings.notifications 
+                              ? '-translate-x-5'
+                              : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    <div className={`flex-1 mr-4`}>
+                      <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-right">
+                        {t('settings.notifications')}
+                      </label>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-right">
+                        {t('settings.notificationsDesc')}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={`flex-1 mr-4`}>
+                      <label className="block text-sm font-semibold text-gray-800 dark:text-gray-200 text-left">
+                        {t('settings.notifications')}
+                      </label>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-left">
+                        {t('settings.notificationsDesc')}
+                      </p>
+                    </div>
+                    <div className={`flex-shrink-0 ml-0`}>
+                      <button
+                        onClick={() => updateSetting('notifications', !settings.notifications)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 p-0.5 ${
+                          settings.notifications 
+                            ? 'bg-yellow-600' 
+                            : 'bg-gray-200 dark:bg-gray-700'
+                        }`}
+                        role="switch"
+                        aria-checked={settings.notifications}
+                        aria-labelledby="notifications-label"
+                      >
+                        <span
+                          className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ease-in-out ${
+                            settings.notifications 
+                              ? 'translate-x-5'
+                              : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -538,40 +682,83 @@ export default function SettingsPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Language */}
-                <div className="space-y-2">
-                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {t('common.language')}
-                  </label>
-                  <select
-                    value={locale}
-                    onChange={(e) => updateSetting('language', e.target.value)}
-                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
-                  >
-                    <option value="en">English</option>
-                    <option value="ar">العربية</option>
-                  </select>
+                <div className="space-y-2 flex items-center">
+                  {isRTL ? (
+                    <>
+                      <select
+                        value={locale}
+                        onChange={(e) => updateSetting('language', e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-right"
+                      >
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                      </select>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
+                        {t('common.language')}
+                      </label>
+                    </>
+                  ) : (
+                    <>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-left mr-4">
+                        {t('common.language')}
+                      </label>
+                      <select
+                        value={locale}
+                        onChange={(e) => updateSetting('language', e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-left"
+                      >
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                      </select>
+                    </>
+                  )}
                 </div>
 
                 {/* Timezone */}
-                <div className="space-y-2">
-                  <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    Timezone
-                  </label>
-                  <select
-                    value={settings.timezone}
-                    onChange={(e) => updateSetting('timezone', e.target.value)}
-                    className={`block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'}`}
-                  >
-                    <option value="UTC">UTC</option>
-                    <option value="America/New_York">Eastern Time</option>
-                    <option value="America/Chicago">Central Time</option>
-                    <option value="America/Denver">Mountain Time</option>
-                    <option value="America/Los_Angeles">Pacific Time</option>
-                    <option value="Europe/London">London</option>
-                    <option value="Europe/Paris">Paris</option>
-                    <option value="Asia/Tokyo">Tokyo</option>
-                    <option value="Asia/Dubai">Dubai</option>
-                  </select>
+                <div className="space-y-2 flex items-center">
+                  {isRTL ? (
+                    <>
+                      <select
+                        value={settings.timezone}
+                        onChange={(e) => updateSetting('timezone', e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-right"
+                      >
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">Eastern Time</option>
+                        <option value="America/Chicago">Central Time</option>
+                        <option value="America/Denver">Mountain Time</option>
+                        <option value="America/Los_Angeles">Pacific Time</option>
+                        <option value="Europe/London">London</option>
+                        <option value="Europe/Paris">Paris</option>
+                        <option value="Asia/Tokyo">Tokyo</option>
+                        <option value="Asia/Dubai">Dubai</option>
+                      </select>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-right ml-4">
+                        Timezone
+                      </label>
+                    </>
+                  ) : (
+                    <>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-left mr-4">
+                        Timezone
+                      </label>
+                      <select
+                        value={settings.timezone}
+                        onChange={(e) => updateSetting('timezone', e.target.value)}
+                        className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-left"
+                      >
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">Eastern Time</option>
+                        <option value="America/Chicago">Central Time</option>
+                        <option value="America/Denver">Mountain Time</option>
+                        <option value="America/Los_Angeles">Pacific Time</option>
+                        <option value="Europe/London">London</option>
+                        <option value="Europe/Paris">Paris</option>
+                        <option value="Asia/Tokyo">Tokyo</option>
+                        <option value="Asia/Dubai">Dubai</option>
+                      </select>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
